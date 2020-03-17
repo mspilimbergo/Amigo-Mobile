@@ -12,27 +12,27 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   int selectedIndex = 0;
   final widgetOptions = [
-    Text('Beer List'),
-    Text('Add new beer'),
-    Text('Favourites'),
+    Text('Home'),
+    Text('Discover'),
+    Text('Profile'),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Beer App'),
+        title: Text('Amigo'),
       ),
       body: Center(
         child: widgetOptions.elementAt(selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.local_drink), title: Text('Beers')),
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_a_photo), title: Text('New Beer')),
+              icon: Icon(Icons.search), title: Text('Discover')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), title: Text('Favourites')),
+              icon: Icon(Icons.person), title: Text('Profile')),
         ],
         currentIndex: selectedIndex,
         fixedColor: Colors.deepPurple,
