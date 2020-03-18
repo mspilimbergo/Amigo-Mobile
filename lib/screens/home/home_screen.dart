@@ -13,7 +13,9 @@ class HomePage extends StatelessWidget {
         itemCount: tags.length,
         itemBuilder: (context, index) {
           return ListTile(
+            leading: Icon(Icons.map),
             title: Text(tags[index].title),
+            subtitle: Text(tags[index].subtitle),
             onTap: () {
               Navigator.push(
                 context,
