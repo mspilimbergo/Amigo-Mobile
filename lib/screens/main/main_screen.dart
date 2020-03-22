@@ -1,11 +1,24 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:convert' show json, base64, ascii;
 import '../home/home_screen.dart';
 import '../../classes/tag_class.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key}) : super(key: key);
+  MainPage(this.jwt, this.payload);
+  
+  factory MainPage.fromBase64(String jwt) =>
+    MainPage(
+      jwt,
+      json.decode(
+        ascii.decode(
+          base64.decode(base64.normalize(jwt.split(".")[1]))
+        )
+      )
+    );
+  
+  final String jwt;
+  final Map<String, dynamic> payload;
 
   @override
   MainPageState createState() => MainPageState();
