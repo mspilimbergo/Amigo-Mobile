@@ -43,10 +43,6 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Amigo'),
-        centerTitle: true,
-      ),
       body: Center(
         child: widgetOptions.elementAt(selectedIndex),
       ),

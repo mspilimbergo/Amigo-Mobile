@@ -8,28 +8,47 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: tags.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(Icons.map),
-            title: Text(tags[index].title),
-            subtitle: Text(tags[index].subtitle),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(),
-                  settings: RouteSettings(
-                    arguments: tags[index],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: new AppBar(
+          title: Text('Amigo'),
+            bottom: new TabBar(
+              tabs: <Tab>[
+              new Tab(text: "Groups"),
+              new Tab(text: "Direct"),
+            ]
+          )
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            ListView.builder(
+              itemCount: tags.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Icon(Icons.map),
+                  title: Text(tags[index].title),
+                  subtitle: Text(tags[index].subtitle),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(),
+                        settings: RouteSettings(
+                          arguments: tags[index],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            Text(
+              'Direct'
+            )
+          ],
+        ),
+      )
     );
   }
 }
