@@ -79,6 +79,10 @@ class LoginPage extends StatelessWidget {
                     var email = _emailController.text;
                     var password = _passwordController.text;
                     var res = await attemptLogIn(email, password);
+                    if (res == null) {
+                      displayDialog(context, "Error", "Please try again or register if you don't already have an account");
+                      return;
+                    }
                     var jsonRes = json.decode(res);
                     if(jsonRes["success"]) {
                       var jwt = jsonRes["x-access-token"];
