@@ -48,11 +48,11 @@ class MainPageState extends State<MainPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
           BottomNavigationBarItem(
               icon: Icon(Icons.search), title: Text('Discover')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person), title: Text('Profile')),
+              icon: Icon(Icons.perm_identity), title: Text('Profile')),
         ],
         currentIndex: selectedIndex,
         fixedColor: Colors.deepPurple,
