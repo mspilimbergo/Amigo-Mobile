@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../home/home_screen.dart';
+import '../discover/discover_screen.dart';
 import '../../classes/tag_class.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,11 +20,11 @@ class MainPageState extends State<MainPage> {
         20,
         (i) => Tag(
           'Tag $i',
-          'This is the sample description for tag $i. We\'re leaving it a little long in order to get the best possible idea of how this will look.'
+          'This is the sample description for tag $i. We\'re leaving it a little long in order to get the best possible idea of how this will look.', null, null, null
         ),
       ),
     ),
-    Text('Discover'),
+    new DiscoverPage(),
     Text('Profile'),
   ];
 
