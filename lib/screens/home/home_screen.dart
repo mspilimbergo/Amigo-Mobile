@@ -12,7 +12,13 @@ class HomePage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: new AppBar(
-          title: Text('Amigo'),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Text(
+                'Chats',
+                style: TextStyle(fontSize: 30.0)
+              ),
+          ),
             bottom: new TabBar(
               tabs: <Tab>[
               new Tab(text: "Groups"),
