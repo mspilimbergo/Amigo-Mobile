@@ -28,13 +28,13 @@ class MainPageState extends State<MainPage> {
   int selectedIndex = 0;
   final widgetOptions = [
     new HomePage(
-      tags: List.generate(
-        20,
-        (i) => Tag(
-          'Tag $i',
-          'This is the sample description for tag $i. We\'re leaving it a little long in order to get the best possible idea of how this will look.'
-        ),
-      ),
+      // tags: List.generate(
+      //   20,
+      //   (i) => Tag(
+      //     'Tag $i',
+      //     'This is the sample description for tag $i. We\'re leaving it a little long in order to get the best possible idea of how this will look.'
+      //   ),
+      // ),
     ),
     Text('Discover'),
     Text('Profile'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../classes/tag_class.dart';
 
 const String _name = "Your Name";
@@ -50,8 +51,24 @@ class ChatMessage extends StatelessWidget {
 class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
-  bool _isComposing = false; 
+  bool _isComposing = false;
 
+  IO.Socket socket = IO.io('https://amigo-web-app.azurewebsites.net/', <String, dynamic>{
+    'transports': ['websocket'],
+  });
+
+  void initState() {
+    socket.on('connect', (_) {
+      print('connect');
+    });
+    socket.on('message', (_) {
+      print('message came in');
+    });
+    socket.on('disconnect', (_) {
+      print('disconnect');
+    });
+    socket.connect();
+  }
 
   Widget _buildTextComposer() {
     return new IconTheme(
@@ -89,6 +106,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
 
   void _handleSubmitted(String text) {
+    socket.emit('message', text);
     _textController.clear();
     setState(() {
       _isComposing = false;
@@ -115,10 +133,12 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final Tag tag = ModalRoute.of(context).settings.arguments;
+    List<String> obj = ModalRoute.of(context).settings.arguments;
+    final String name = obj[0];
+    final String id = obj[1];
     return new Scaffold(
       appBar: AppBar(
-        title: Text(tag.title),
+        title: Text(name),
         centerTitle: true,
       ),
       body: new Column(
