@@ -1,6 +1,9 @@
 class Tag {
-  final String title;
-  final String subtitle;
+  final String tagId;
+  final String name;
+  final String location;
+  final String photo;
+  final String createdOn;
 
-  Tag(this.title, this.subtitle);
+  Tag(this.tagId, this.name, this.location, this.photo, this.createdOn);
 }
