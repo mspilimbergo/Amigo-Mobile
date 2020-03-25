@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../home/home_screen.dart';
 import '../../classes/tag_class.dart';
+import '../discover/discover_view/discover_screen.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key}) : super(key: key);
+  MainPage({Key key} ) : super(key: key);
 
   @override
   MainPageState createState() => MainPageState();
@@ -23,7 +23,7 @@ class MainPageState extends State<MainPage> {
         ),
       ),
     ),
-    Text('Discover'),
+    DiscoverScreen(),
     Text('Profile'),
   ];
 
@@ -34,7 +34,7 @@ class MainPageState extends State<MainPage> {
         title: Text('Amigo'),
         centerTitle: true,
       ),
-      body: Center(
+      body: Center( 
         child: widgetOptions.elementAt(selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -53,7 +53,7 @@ class MainPageState extends State<MainPage> {
   }
 
   void onItemTapped(int index) {
-    setState(() {
+    setState(() { 
       selectedIndex = index;
     });
   }
