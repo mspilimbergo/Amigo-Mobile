@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:convert' show json, base64, ascii;
 import '../home/home_screen.dart';
-import '../../classes/tag_class.dart';
+import '../discover/discover_tag_view.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(this.jwt, this.payload);
@@ -27,16 +27,8 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> {
   int selectedIndex = 0;
   final widgetOptions = [
-    new HomePage(
-      // tags: List.generate(
-      //   20,
-      //   (i) => Tag(
-      //     'Tag $i',
-      //     'This is the sample description for tag $i. We\'re leaving it a little long in order to get the best possible idea of how this will look.'
-      //   ),
-      // ),
-    ),
-    Text('Discover'),
+    new HomePage(),
+    new DiscoverTagView(),
     Text('Profile'),
   ];
 
@@ -62,7 +54,7 @@ class MainPageState extends State<MainPage> {
   }
 
   void onItemTapped(int index) {
-    setState(() {
+    setState(() { 
       selectedIndex = index;
     });
   }
