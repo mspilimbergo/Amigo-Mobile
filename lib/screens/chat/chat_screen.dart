@@ -118,7 +118,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     final Tag tag = ModalRoute.of(context).settings.arguments;
     return new Scaffold(
       appBar: AppBar(
-        title: Text(tag.title),
+        title: Text(tag.name),
         centerTitle: true,
       ),
       body: new Column(

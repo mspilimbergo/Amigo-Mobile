@@ -3,19 +3,12 @@ import '../../../classes/channel.class.dart';
 import './Data/channelList_data.dart';
 import '../widgets/ChannelCard.dart';
 
-//Todo: 
-// Add 'Here's what we found' title
-// Discover View: Add Search bar
-// Implement getChannelsFromTag
-// Style Page appropriately 
-class DiscoverResponseScreen extends StatelessWidget {
+class DiscoverChannelView extends StatelessWidget {
 
   final String tagSelected;
   
-  DiscoverResponseScreen({Key key, @required this.tagSelected}) : super(key:key);
+  DiscoverChannelView({Key key, @required this.tagSelected}) : super(key:key);
   // Todo: implement getChannelsFromTagID using tageSelected
-  
-  //List of channels response from getChannelsFromTag
   final List<Channel> channelList = ChannelListData.getChannelList();
 
   @override 
@@ -36,7 +29,6 @@ class DiscoverResponseScreen extends StatelessWidget {
             'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
             );
         }
-
       )
     )
     );
