@@ -24,7 +24,7 @@ class DiscoverChannelView extends StatelessWidget {
           return ChannelCard(
             '123',
             'Ghana Soccer Group', 
-            'This is some description of the channel... This text is a temporary placeholder and it is only being used for display purposes',
+            'This is some description of the channel... This text is a temporary placeholder and it is only being used for display purposes and this extra text is to show how it handles overflow',
             18,
             'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
             );
@@ -34,4 +34,3 @@ class DiscoverChannelView extends StatelessWidget {
     );
   }
 }
-

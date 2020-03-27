@@ -7,12 +7,14 @@ class ChannelCard extends StatelessWidget {
   final int memberCount;
   final String photo;
 
-  ChannelCard(this.channelId, this.name, this.description, this.memberCount, this.photo);
+  ChannelCard(this.channelId, this.name, this.description, this.memberCount,
+      this.photo);
   @override
   Widget build(BuildContext context) {
     return Container(
         height: 100,
         child: Card(
+            color: Colors.transparent,
             elevation: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,14 +35,24 @@ class ChannelCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text("$name",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               )),
-                          Text(
-                            "$description",
-                            style: TextStyle(fontSize: 12),
+                          Expanded(
+                            child: Container(
+                              child: Text(
+                                "$description",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 4,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
                           ),
                           Text("$memberCount members",
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 11)),
                         ])),
