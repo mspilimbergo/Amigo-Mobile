@@ -4,12 +4,12 @@ import './Data/tag_object.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json, base64, ascii;
+import 'dart:math';
 
 //String img = "https://media-exp1.licdn.com/dms/image/C560BAQG4QXbbg39AfQ/company-logo_100_100/0?e=2159024400&v=beta&t=QYCFMlTBClczprYLrvWL1W4sbCrWw0TmGfuUTapBmDY";
 String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
 final SERVER_URL = "http://10.0.2.2:3000";
-final myController = TextEditingController();
 
 class DiscoverTagView extends StatefulWidget {
   @override
@@ -17,11 +17,11 @@ class DiscoverTagView extends StatefulWidget {
 }
 
 class _DiscoverTagViewState extends State<DiscoverTagView> {
-  final searchController = TextEditingController();
   String searchQuery;
   var popularTags;
   var allTags;
   int tagCount = 0;
+  var rng = new Random();
 
   void getTags() async {
     var key = await storage.read(key: "jwt");
@@ -48,7 +48,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
 
   @override
   void dispose() {
-    myController.dispose();
     super.dispose();
   }
 
@@ -87,7 +86,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                     child: TextField(
                       obscureText: false,
                       enableInteractiveSelection: true,
-                      controller: myController,
                       onChanged: (string) {
                         setState(() {
                           searchQuery = string;
@@ -137,7 +135,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                       child: TagButton(
                                           tagID: index.toString(),
                                           name: "BasketballBasket",
-                                          photo: randimg),
+                                          photo: "https://i.picsum.photos/id/${rng.nextInt(300)}/200/200.jpg"),
                                     );
                                   })),
                         ),
@@ -161,9 +159,9 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                 return Container(
                                   margin: EdgeInsets.symmetric(horizontal: 5),
                                   child: TagButton(
-                                      tagID: index.toString(),
+                                      tagID: allTags[index].tagId,
                                       name: allTags[index].name,
-                                      photo: randimg),
+                                      photo: "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg"),
                                 );
                               },
                               childCount: tagCount,
