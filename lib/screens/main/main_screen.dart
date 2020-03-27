@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:convert' show json, base64, ascii;
 import '../home/home_screen.dart';
-import '../discover/discover_tag_view.dart';
+import '../discover/discover_tag_view/discover_tag_view.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(this.jwt, this.payload);

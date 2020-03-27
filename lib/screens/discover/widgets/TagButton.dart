@@ -5,8 +5,9 @@ class TagButton extends StatelessWidget {
   final String tagID;
   final String name;
   final String photo;
+  final String createdOn;
 
-  TagButton(this.tagID, this.name, this.photo);
+  TagButton({this.tagID, this.name, this.photo, this.createdOn});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +17,8 @@ class TagButton extends StatelessWidget {
           height: 125,
           width: 125,
           decoration: BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(photo), fit: BoxFit.cover),
+            image:
+                DecorationImage(image: NetworkImage(photo), fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(12),
           ),
           child: FlatButton(
@@ -30,7 +31,11 @@ class TagButton extends StatelessWidget {
                             )));
               },
               child: null)),
-      Text("Basketball", style: TextStyle(fontSize: 16)),
+      Expanded(
+        child: Text(name,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+      ),
     ]));
   }
 }
