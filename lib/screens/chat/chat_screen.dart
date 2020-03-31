@@ -4,8 +4,12 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 const String _name = "Your Name";
 
 class ChatScreen extends StatefulWidget {
+  final String name;
+  final String id;
+
+  ChatScreen({Key key, @required this.name, @required this.id}) : super(key: key);
   @override
-  State createState() => new ChatScreenState();
+  State createState() => new ChatScreenState(name: name, id: id);
 }
 
 class ChatMessage extends StatelessWidget {
@@ -51,6 +55,11 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
   bool _isComposing = false;
+
+  final String name;
+  final String id;
+
+  ChatScreenState({Key key, @required this.name, @required this.id});
 
   IO.Socket socket = IO.io('https://amigo-269801.appspot.com/', <String, dynamic>{
     'transports': ['websocket'],
@@ -132,12 +141,9 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    List<String> obj = ModalRoute.of(context).settings.arguments;
-    final String name = obj[0];
-    final String id = obj[1];
     return new Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        title: Text(this.name),
         centerTitle: true,
       ),
       body: new Column(

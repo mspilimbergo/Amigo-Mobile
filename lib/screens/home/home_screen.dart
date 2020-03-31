@@ -40,7 +40,6 @@ class _HomePageState extends State<HomePage>
       "$SERVER_URL/api/user/channels",
         headers: { "x-access-token": key },
       );
-      print(res.body);
       if(res.statusCode == 200) return res.body;
       return res.body.toString();
   }
@@ -82,7 +81,6 @@ class _HomePageState extends State<HomePage>
                 List<Widget> children;
                 if (snapshot.hasData && snapshot.data != null) {
                   var jsonSnap = json.decode(snapshot.data);
-                  print(channels);
                   children = <Widget>[
                     ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -100,13 +98,7 @@ class _HomePageState extends State<HomePage>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatScreen(),
-                                settings: RouteSettings(
-                                  arguments: [
-                                    jsonSnap["channels"][index]["name"],
-                                    jsonSnap["channels"][index]["channel_id"]
-                                  ],
-                                ),
+                                builder: (context) => ChatScreen(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["name"])
                               ),
                             );
                           },
@@ -145,94 +137,3 @@ class _HomePageState extends State<HomePage>
     );
   }
 }
-
-
-
-
-// DefaultTabController(
-//       length: 2,
-//       child: Scaffold(
-//         appBar: new AppBar(
-//           title: Padding(
-//             padding: const EdgeInsets.only(top: 10.0),
-//             child: Text(
-//                 'Chats',
-//                 style: TextStyle(fontSize: 30.0)
-//               ),
-//           ),
-//             bottom: new TabBar(
-//               tabs: <Tab>[
-//               new Tab(text: "Groups"),
-//               new Tab(text: "Direct"),
-//             ]
-//           )
-//         ),
-//         body: TabBarView(
-//           children: <Widget>[
-//             NestedScrollView(
-//               body: FutureBuilder<String>(
-//                 future: getChannels(),
-//                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-//                   List<Widget> children;
-
-//                   if (snapshot.hasData && snapshot.data != null) {
-//                     var jsonSnap = json.decode(snapshot.data);
-//                     print(channels);
-//                     children = <Widget>[
-//                       ListView.builder(
-//                         scrollDirection: Axis.vertical,
-//                         shrinkWrap: true,
-//                         itemCount: jsonSnap["channels"].length,
-//                         itemBuilder: (context, index) {
-//                           return ListTile(
-//                             leading: CircleAvatar(
-//                               backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
-//                             ),
-//                             title: Text(jsonSnap["channels"][index]["name"]),
-//                             subtitle: Text(jsonSnap["channels"][index]["description"]),
-//                             onTap: () {
-//                               Navigator.push(
-//                                 context,
-//                                 MaterialPageRoute(
-//                                   builder: (context) => ChatScreen(),
-//                                   settings: RouteSettings(
-//                                     arguments: [
-//                                       jsonSnap["channels"][index]["name"],
-//                                       jsonSnap["channels"][index]["channel_id"]
-//                                     ],
-//                                   ),
-//                                 ),
-//                               );
-//                             },
-//                           );
-//                         },
-//                       ),
-//                     ];
-//                   } else if (snapshot.hasError) {
-//                     children = <Widget>[
-//                       Text('An error occured grabbing your channels')
-//                     ];
-//                   } else {
-//                     children = <Widget>[
-//                       Text(
-//                         'You don\'t have any channels yet'
-//                       )
-//                     ];
-//                   }
-//                   return Center(
-//                     child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: children,
-//                     ),
-//                   );
-//                 }
-//               )
-//             ),
-//             Text(
-//               'Direct'
-//             )
-//           ],
-//         ),
-//       )
-//     );
