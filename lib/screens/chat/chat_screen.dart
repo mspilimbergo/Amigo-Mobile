@@ -52,7 +52,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final TextEditingController _textController = new TextEditingController();
   bool _isComposing = false;
 
-  IO.Socket socket = IO.io('https://amigo-web-app.azurewebsites.net/', <String, dynamic>{
+  IO.Socket socket = IO.io('https://amigo-269801.appspot.com/', <String, dynamic>{
     'transports': ['websocket'],
   });
 
