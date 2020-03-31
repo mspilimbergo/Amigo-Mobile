@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatScreen(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["name"])
+                                builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["name"])
                               ),
                             );
                           },
