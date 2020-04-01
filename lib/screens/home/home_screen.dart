@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     initUser();
+    getDirect();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
   }
@@ -47,10 +48,20 @@ class _HomePageState extends State<HomePage>
     var key = await storage.read(key: "jwt");
     var res = await http.get(
       "$SERVER_URL/api/user/channels",
-        headers: { "x-access-token": key },
-      );
-      if(res.statusCode == 200) return res.body;
-      return res.body.toString();
+      headers: { "x-access-token": key },
+    );
+    if(res.statusCode == 200) return res.body;
+    return res.body.toString();
+  }
+
+  Future<String> getDirect() async {
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "$SERVER_URL/api/directmessages/receivers",
+      headers: { "x-access-token": key },
+    );
+    if(res.statusCode == 200) return res.body;
+    return res.body.toString();
   }
 
   Future<String> getUser() async {
@@ -136,7 +147,7 @@ class _HomePageState extends State<HomePage>
                     )
                   ];
                 }
-                return Center(
+                return Container(
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -146,9 +157,58 @@ class _HomePageState extends State<HomePage>
                   ),
                 );
               }
-          ),
-          Text(
-            'Direct'
+            ),
+            FutureBuilder<String>(
+              future: getDirect(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                List<Widget> children;
+                if (snapshot.hasData && snapshot.data != null) {
+                  var jsonSnap = json.decode(snapshot.data);
+                  children = <Widget>[
+                    ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: jsonSnap["users"].length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                          ),
+                          title: Text(jsonSnap["users"][index]["display_name"]),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName)
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ];
+                } else if (snapshot.hasError) {
+                  children = <Widget>[
+                    Text('An error occured grabbing your direct messages')
+                  ];
+                } else {
+                  children = <Widget>[
+                    Text(
+                      'You don\'t have any direct messages yet.'
+                    )
+                  ];
+                }
+                return Container(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: children,
+                    )
+                  ),
+                );
+              }
           )
         ]
       )
