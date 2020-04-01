@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Amigo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: FutureBuilder(
         future: jwtOrEmpty,            

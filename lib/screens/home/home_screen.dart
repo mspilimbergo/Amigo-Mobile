@@ -88,14 +88,31 @@ class _HomePageState extends State<HomePage>
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
                     'Chats',
-                    style: TextStyle(fontSize: 30.0)
+                    style: TextStyle(fontSize: 30.0, color: Colors.red[200])
                   ),
               ),
               pinned: true,
               floating: true,
               forceElevated: boxIsScrolled,
+              backgroundColor: Colors.white,
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.add_box,
+                      size: 26.0,
+                      color: Colors.red[200],
+                    ),
+                  )
+                )
+              ],
               bottom: new TabBar(
                 controller: _tabController,
+                indicatorColor: Colors.red[200],
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
                 tabs: <Tab>[
                   new Tab(text: "Groups"),
                   new Tab(text: "Direct"),
