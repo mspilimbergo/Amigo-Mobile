@@ -39,6 +39,9 @@ class MainPageState extends State<MainPage> {
         child: widgetOptions.elementAt(selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.red[200],
+        unselectedItemColor: Colors.grey,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
           BottomNavigationBarItem(
@@ -47,7 +50,6 @@ class MainPageState extends State<MainPage> {
               icon: Icon(Icons.perm_identity), title: Text('Profile')),
         ],
         currentIndex: selectedIndex,
-        fixedColor: Colors.deepPurple,
         onTap: onItemTapped,
       ),
     );
