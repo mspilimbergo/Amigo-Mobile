@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
   with SingleTickerProviderStateMixin {
   String displayName;
+  String userId;
   List<Object> channels;
   TabController _tabController;
   ScrollController _scrollController;
@@ -42,6 +43,7 @@ class _HomePageState extends State<HomePage>
     var map = json.decode(jsonSnap);
     print(map);
     displayName = map["display_name"];
+    userId = map["user_id"];
   }
 
   Future<String> getChannels() async {
@@ -128,7 +130,7 @@ class _HomePageState extends State<HomePage>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName)
+                                builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false)
                               ),
                             );
                           },
@@ -180,7 +182,7 @@ class _HomePageState extends State<HomePage>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName)
+                                builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true)
                               ),
                             );
                           },

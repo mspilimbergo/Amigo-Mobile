@@ -10,16 +10,21 @@ class ChatPage extends StatefulWidget {
   final String name;
   final String id;
   final String display;
+  final String sender;
+  final bool direct;
 
-  ChatPage({Key key, @required this.name, @required this.id, @required this.display}) : super(key: key);
+  ChatPage({Key key, @required this.name, @required this.id, @required this.display, @required this.sender, @required this.direct}) : super(key: key);
   @override
-  _ChatPageState createState() => _ChatPageState(name: name, id: id, display: display);
+  _ChatPageState createState() => _ChatPageState(name: name, id: id, display: display, sender: sender, direct: direct);
 }
 
 class _ChatPageState extends State<ChatPage> {
   final String name;
   final String id;
   final String display;
+  final String sender;
+  final bool direct;
+
   List<Map> messages = new List<Map>();
   double height, width;
   SocketIOManager manager;
@@ -29,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
   Map<String, SocketIO> sockets = {};
 
 
-  _ChatPageState({Key key, @required this.name, @required this.id, @required this.display});
+  _ChatPageState({Key key, @required this.name, @required this.id, @required this.display, @required this.sender, @required this.direct});
 
   @override
   void initState() {
@@ -67,7 +72,7 @@ class _ChatPageState extends State<ChatPage> {
     socket.onConnect((data){
       print("Connected...");
       print(data);
-      socket.emit('join', [{'token': key, 'channel_id': id.toString()}]);
+      socket.emit('join', [{'token': key, 'channel_id': direct ? "$sender:$id" : id.toString()}]);
     });
     socket.onConnectError((data) {
       print("Connect Error");
@@ -101,7 +106,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   initMessages() async {
-    String jsonSnap = await getMessages();
+    String jsonSnap = direct ? await getDirectMessages() : getChannelMessages();
     Map map = json.decode(jsonSnap);
     for(var i = 0; i < map["messages"].length; ++i) {
       this.setState(() => messages.add(map["messages"][i]));
@@ -112,7 +117,7 @@ class _ChatPageState extends State<ChatPage> {
     // );
   }
 
-  Future<String> getMessages() async {
+  Future<String> getChannelMessages() async {
     var key = await storage.read(key: "jwt");
     var res = await http.get(
       "https://amigo-269801.appspot.com/api/channels/messages?channel_id=$id",
@@ -120,6 +125,20 @@ class _ChatPageState extends State<ChatPage> {
         "x-access-token": key
       }
     );
+    print(res.statusCode);
+    if(res.statusCode == 200) return res.body;
+    return null;
+  }
+
+  Future<String> getDirectMessages() async {
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "https://amigo-269801.appspot.com/api/directmessages?=receiver_user_id=15",
+      headers: {
+        "x-access-token": key
+      }
+    );
+    print(res.body);
     print(res.statusCode);
     if(res.statusCode == 200) return res.body;
     return null;
