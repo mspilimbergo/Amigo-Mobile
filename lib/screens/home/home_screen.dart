@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
   with SingleTickerProviderStateMixin {
+  String displayName;
   List<Object> channels;
   TabController _tabController;
   ScrollController _scrollController;
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    initUser();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
   }
@@ -34,6 +36,13 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  initUser() async {
+    String jsonSnap = await getUser();
+    var map = json.decode(jsonSnap);
+    print(map);
+    displayName = map["display_name"];
+  }
+
   Future<String> getChannels() async {
     var key = await storage.read(key: "jwt");
     var res = await http.get(
@@ -42,6 +51,16 @@ class _HomePageState extends State<HomePage>
       );
       if(res.statusCode == 200) return res.body;
       return res.body.toString();
+  }
+
+  Future<String> getUser() async {
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+    "$SERVER_URL/api/user",
+      headers: { "x-access-token": key },
+    );
+    if(res.statusCode == 200) return res.body;
+    return res.body.toString();
   }
 
   @override
@@ -98,7 +117,7 @@ class _HomePageState extends State<HomePage>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["name"])
+                                builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName)
                               ),
                             );
                           },

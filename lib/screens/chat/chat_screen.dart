@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 // import 'package:flutter_socket_io/flutter_socket_io.dart';
 // import 'package:flutter_socket_io/socket_io_manager.dart';
@@ -12,75 +11,132 @@ final storage = FlutterSecureStorage();
 class ChatPage extends StatefulWidget {
   final String name;
   final String id;
+  final String display;
 
-  ChatPage({Key key, @required this.name, @required this.id}) : super(key: key);
+  ChatPage({Key key, @required this.name, @required this.id, @required this.display}) : super(key: key);
   @override
-  _ChatPageState createState() => _ChatPageState(name: name, id: id);
+  _ChatPageState createState() => _ChatPageState(name: name, id: id, display: display);
 }
 
 class _ChatPageState extends State<ChatPage> {
   final String name;
   final String id;
-  List<String> messages;
+  final String display;
+  List<Map> messages = new List<Map>();
   double height, width;
   SocketIOManager manager;
   TextEditingController textController;
   ScrollController scrollController;
-  _ChatPageState({Key key, @required this.name, @required this.id});
+  Map<String, bool> _isProbablyConnected = {};
+  Map<String, SocketIO> sockets = {};
+
+
+  _ChatPageState({Key key, @required this.name, @required this.id, @required this.display});
 
   @override
   void initState() {
     manager = SocketIOManager();
-    initSocket();
-    super.initState();
-  }
-
-  initSocket() async {
-    //Initializing the message list
-    messages = List<String>();
-    //Initializing the TextEditingController and ScrollController
     textController = TextEditingController();
     scrollController = ScrollController();
-    //Creating the socket
-    SocketIOManager manager = SocketIOManager();
+    initMessages();
+    initSocket("default");
+    super.initState();
+  }
+  
+  @override
+  void dispose() {
+    super.dispose();
+    disconnect("default");
+  }
+
+  bool isProbablyConnected(String identifier){
+    return _isProbablyConnected[identifier]??false;
+  }
+
+  disconnect(String identifier) async {
+    await manager.clearInstance(sockets[identifier]);
+    setState(() => _isProbablyConnected[identifier] = false);
+  }
+
+  initSocket(String identifier) async {
+    setState(() => _isProbablyConnected[identifier] = true);
+    var key = await storage.read(key: "jwt");
     SocketIO socket = await manager.createInstance(SocketOptions(
-      //Socket IO server URI
         "https://amigo-269801.appspot.com",
-        //Enable or disable platform channel logging
         enableLogging: true,
-        transports: [Transports.WEB_SOCKET/*, Transports.POLLING*/] //Enable required transport
+        transports: [Transports.WEB_SOCKET, Transports.POLLING]
     ));
     socket.onConnect((data){
-      print("connected...");
+      print("Connected...");
       print(data);
-      socket.emit('join', [{'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTgiLCJpYXQiOjE1ODU2NDgyMzYsImV4cCI6MTU4NjI1MzAzNn0.5fPzBzlkPu33pG5sS2W66d7CSjz0hefS_9J-gfkXslM', 'channel_id': '1'}]);
+      socket.emit('join', [{'token': key, 'channel_id': id.toString()}]);
+    });
+    socket.onConnectError((data) {
+      print("Connect Error");
+      print(data);
+    });
+    socket.onConnectTimeout((data) {
+      print("Timeout");
+      print(data);
+    });
+    socket.onError((data) {
+      print("Error");
+      print(data);
+    });
+    socket.onDisconnect((data) {
+      print("Disconnect");
+      print(data);
     });
     socket.on("message", (jsonData) {   //sample event
-      //Convert the JSON data received into a Map
       print("THERE WAS A MESSAGE!!!!!");
       print(jsonData);
-      var data = json.decode(jsonData);
-      print(data);
-      print("I'm right here!");
-      this.setState(() => messages.add(data['message']));
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 600),
-        curve: Curves.ease,
+      Map map = jsonData;
+      print(map);
+      this.setState(() => messages.add(map));
+      var scrollPosition = scrollController.position;
+      scrollController.jumpTo(
+        scrollPosition.maxScrollExtent
       );
     });
     socket.connect();
+    sockets[identifier] = socket;
   }
 
-  Future<String> sendNewMessage(String channel_id, String message) async {
+  initMessages() async {
+    String jsonSnap = await getMessages();
+    Map map = json.decode(jsonSnap);
+    for(var i = 0; i < map["messages"].length; ++i) {
+      this.setState(() => messages.add(map["messages"][i]));
+    }
+    // var scrollPosition = scrollController.position;
+    // scrollController.jumpTo(
+    //   scrollPosition.maxScrollExtent
+    // );
+  }
+
+  Future<String> getMessages() async {
     var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "https://amigo-269801.appspot.com/api/channels/messages?channel_id=$id",
+      headers: {
+        "x-access-token": key
+      }
+    );
+    print(res.statusCode);
+    if(res.statusCode == 200) return res.body;
+    return null;
+  }
+
+  Future<String> sendNewMessage(String message) async {
+    var key = await storage.read(key: "jwt");
+    print(id);
     var res = await http.post(
       'https://amigo-269801.appspot.com/api/channels/messages',
       headers: {
         "x-access-token": key
       },
       body: {
-        "channel_id": channel_id,
+        "channel_id": id,
         "message": message,
       }
     );
@@ -90,20 +146,29 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget buildSingleMessage(int index) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        margin: const EdgeInsets.only(bottom: 20.0, left: 20.0),
-        decoration: BoxDecoration(
-          color: Colors.deepPurple,
-          borderRadius: BorderRadius.circular(20.0),
+    return Column(
+      children: <Widget> [
+        Container(
+          alignment: display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight,
+          margin: display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 2.0, left: 12.0) : const EdgeInsets.only(bottom: 2.0, right: 12.0),
+          child: Text(messages[index]["display_name"])
         ),
-        child: Text(
-          messages[index],
-          style: TextStyle(color: Colors.white, fontSize: 15.0),
-        ),
-      ),
+        Container(
+          alignment: display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight,
+          child: Container(
+            padding: const EdgeInsets.all(10.0),
+            margin: display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0),
+            decoration: BoxDecoration(
+              color: Colors.red[200],
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Text(
+              messages[index]["message"],
+              style: TextStyle(color: Colors.black, fontSize: 15.0),
+            ),
+          ),
+        )
+      ]
     );
   }
 
@@ -111,7 +176,9 @@ class _ChatPageState extends State<ChatPage> {
     return Container(
       height: height * 0.8,
       width: width,
+      padding: const EdgeInsets.all(2.0),
       child: ListView.builder(
+        shrinkWrap: true,
         controller: scrollController,
         itemCount: messages.length,
         itemBuilder: (BuildContext context, int index) {
@@ -136,27 +203,25 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget buildSendButton() {
-    return FloatingActionButton(
-      backgroundColor: Colors.deepPurple,
-      onPressed: () {
-        //Check if the textfield has text or not
-        if (textController.text.isNotEmpty) {
-          this.sendNewMessage("1", textController.text);
-          //Add the message to the list
-          this.setState(() => messages.add(textController.text));
-          textController.text = '';
-          //Scrolldown the list to show the latest message
-          scrollController.animateTo(
-            scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 600),
-            curve: Curves.ease,
-          );
+    return Container(
+      width: width * 0.1,
+      height: height * 0.1,
+      child: new RawMaterialButton(
+        shape: new CircleBorder(),
+        elevation: 0.0,
+        child: Icon(
+          Icons.send,
+          color: Colors.red[100]        
+          ),
+          onPressed: () {
+            //Check if the textfield has text or not
+            if (textController.text.isNotEmpty) {
+            this.sendNewMessage(textController.text);
+            //Add the message to the list
+            textController.text = '';
+          }
         }
-      },
-      child: Icon(
-        Icons.send,
-        size: 30,
-      ),
+      )
     );
   }
 
@@ -185,7 +250,6 @@ class _ChatPageState extends State<ChatPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            SizedBox(height: height * 0.1),
             buildMessageList(),
             buildInputArea(),
           ],
