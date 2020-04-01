@@ -167,6 +167,7 @@ class _HomePageState extends State<HomePage>
                   ];
                 }
                 return Container(
+                  color: Colors.white,
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -219,6 +220,7 @@ class _HomePageState extends State<HomePage>
                   ];
                 }
                 return Container(
+                  color: Colors.white,
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
