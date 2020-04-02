@@ -127,43 +127,69 @@ class _HomePageState extends State<HomePage>
               future: getChannels(),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 List<Widget> children;
-                if (snapshot.hasData && snapshot.data != null) {
-                  var jsonSnap = json.decode(snapshot.data);
-                  children = <Widget>[
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: jsonSnap["channels"].length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
-                          ),
-                          title: Text(jsonSnap["channels"][index]["name"]),
-                          subtitle: Text(jsonSnap["channels"][index]["description"]),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false)
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    var jsonSnap = json.decode(snapshot.data);
+                    if (jsonSnap["channels"].length == 0) {
+                      children = <Widget>[
+                        new Container(
+                          color: Colors.white,
+                          child: Center(
+                            child: Text(
+                              "You haven't joined any channels yet! Head over to the discover page to join some!"
+                            )
+                          )
+                        )
+                      ];
+                    } else {
+                      children = <Widget>[
+                        ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: jsonSnap["channels"].length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
                               ),
+                              title: Text(jsonSnap["channels"][index]["name"]),
+                              subtitle: Text(jsonSnap["channels"][index]["description"]),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false)
+                                  ),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                    ),
-                  ];
-                } else if (snapshot.hasError) {
-                  children = <Widget>[
-                    Text('An error occured grabbing your channels')
-                  ];
+                        ),
+                      ];
+                    }
+                  } else if (snapshot.hasError) {
+                    children = <Widget>[
+                      new Container(
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            "There was an error fetching your channels, please check your internet connection and try again in a second."
+                          )
+                        )
+                      )
+                    ];
+                  }
                 } else {
-                  children = <Widget>[
-                    Text(
-                      'You don\'t have any channels yet'
+                  return new Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        valueColor: new AlwaysStoppedAnimation<Color>(Colors.red[200])
+                      )
                     )
-                  ];
+                  );
                 }
                 return Container(
                   color: Colors.white,
