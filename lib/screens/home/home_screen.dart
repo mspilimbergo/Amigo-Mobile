@@ -207,42 +207,69 @@ class _HomePageState extends State<HomePage>
               future: getDirect(),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 List<Widget> children;
-                if (snapshot.hasData && snapshot.data != null) {
-                  var jsonSnap = json.decode(snapshot.data);
-                  children = <Widget>[
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: jsonSnap["users"].length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
-                          ),
-                          title: Text(jsonSnap["users"][index]["display_name"]),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true)
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    var jsonSnap = json.decode(snapshot.data);
+                    if (jsonSnap["users"].length == 0) {
+                      children = <Widget>[
+                        new Container(
+                          color: Colors.white,
+                          child: Center(
+                            child: Text(
+                              "You haven't sent any direct messages yet! Use the button above to send some!"
+                            )
+                          )
+                        )
+                      ];
+                    } else {
+                      children = <Widget>[
+                        ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: jsonSnap["users"].length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
                               ),
+                              title: Text(jsonSnap["users"][index]["display_name"]),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true)
+                                  ),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                    ),
-                  ];
-                } else if (snapshot.hasError) {
-                  children = <Widget>[
-                    Text('An error occured grabbing your direct messages')
-                  ];
+                        ),
+                      ];
+                    }
+                  }
+                  else if (snapshot.hasError) {
+                    children = <Widget>[
+                      new Container(
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            "There was an error fetching your channels, please check your internet connection and try again in a second."
+                          )
+                        )
+                      )
+                    ];
+                  }
                 } else {
-                  children = <Widget>[
-                    Text(
-                      'You don\'t have any direct messages yet.'
+                  return new Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        valueColor: new AlwaysStoppedAnimation<Color>(Colors.red[200])
+                      )
                     )
-                  ];
+                  );
                 }
                 return Container(
                   color: Colors.white,
