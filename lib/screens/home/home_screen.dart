@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     initUser();
-    getDirect();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
   }

@@ -106,7 +106,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   initMessages() async {
-    String jsonSnap = direct ? await getDirectMessages() : getChannelMessages();
+    String jsonSnap = direct ? await getDirectMessages() : await getChannelMessages();
     Map map = json.decode(jsonSnap);
     for(var i = 0; i < map["messages"].length; ++i) {
       this.setState(() => messages.add(map["messages"][i]));
@@ -133,7 +133,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<String> getDirectMessages() async {
     var key = await storage.read(key: "jwt");
     var res = await http.get(
-      "https://amigo-269801.appspot.com/api/directmessages?=receiver_user_id=15",
+      "https://amigo-269801.appspot.com/api/directmessages?receiver_user_id=$id",
       headers: {
         "x-access-token": key
       }
@@ -166,15 +166,25 @@ class _ChatPageState extends State<ChatPage> {
     return Column(
       children: <Widget> [
         Container(
-          alignment: display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight,
-          margin: display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 2.0, left: 12.0) : const EdgeInsets.only(bottom: 2.0, right: 12.0),
-          child: Text(messages[index]["display_name"])
+          alignment: !direct
+          ? (display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight)
+          : (display == messages[index]["sender_display_name"] ? Alignment.centerLeft : Alignment.centerRight),
+          margin: !direct
+          ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 2.0, left: 12.0) : const EdgeInsets.only(bottom: 2.0, right: 12.0))
+          : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 2.0, left: 12.0) : const EdgeInsets.only(bottom: 2.0, right: 12.0)),
+          child: !direct
+          ? Text(messages[index]["display_name"])
+          : Text(messages[index]["sender_display_name"])
         ),
         Container(
-          alignment: display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight,
+          alignment: !direct
+          ? (display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight)
+          : (display == messages[index]["sender_display_name"] ? Alignment.centerLeft : Alignment.centerRight),
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            margin: display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0),
+            margin: !direct
+            ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0))
+            : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0)),
             decoration: BoxDecoration(
               color: Colors.red[200],
               borderRadius: BorderRadius.circular(10.0),
