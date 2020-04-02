@@ -261,8 +261,29 @@ class _ChatPageState extends State<ChatPage> {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text(this.name),
+        backgroundColor: Colors.grey[200],
+        iconTheme: IconThemeData(
+          color: Colors.red[200], //change your color here
+        ),
+        title: Text(this.name, style: TextStyle(
+          color: Colors.black,
+        )),
         centerTitle: true,
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {},
+              child: new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                  radius: 25.0,
+                ),
+              )
+            )
+          ),
+        ]
       ),
       body: SingleChildScrollView(
         child: Column(
