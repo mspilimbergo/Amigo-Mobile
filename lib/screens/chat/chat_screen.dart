@@ -72,7 +72,9 @@ class _ChatPageState extends State<ChatPage> {
     socket.onConnect((data){
       print("Connected...");
       print(data);
-      socket.emit('join', [{'token': key, 'channel_id': direct ? "$sender:$id" : id.toString()}]);
+      !direct
+      ? socket.emit('join', [{'token': key, 'channel_id': id.toString()}])
+      : socket.emit('join', [{'token': key, 'receiver_user_id': id.toString()}]);
     });
     socket.onConnectError((data) {
       print("Connect Error");
@@ -144,7 +146,26 @@ class _ChatPageState extends State<ChatPage> {
     return null;
   }
 
-  Future<String> sendNewMessage(String message) async {
+  Future<String> sendDirectMessage(String message) async {
+    var key = await storage.read(key: "jwt");
+    print("Sending a direct message");
+    var res = await http.post(
+      "https://amigo-269801.appspot.com/api/directmessages",
+      body: {
+        "message": message,
+        "receiver_user_id": id,
+      },
+      headers: {
+        "x-access-token": key
+      }
+    );
+    print(res.body);
+    print(res.statusCode);
+    if(res.statusCode == 200) return res.body;
+    return null;
+  }
+
+  Future<String> sendChannelMessage(String message) async {
     var key = await storage.read(key: "jwt");
     print(id);
     var res = await http.post(
@@ -240,10 +261,10 @@ class _ChatPageState extends State<ChatPage> {
           Icons.send,
           color: Colors.red[100]        
           ),
-          onPressed: () {
-            //Check if the textfield has text or not
-            if (textController.text.isNotEmpty) {
-            this.sendNewMessage(textController.text);
+        onPressed: () async {
+          //Check if the textfield has text or not
+          if (textController.text.isNotEmpty) {
+            !direct ? await sendChannelMessage(textController.text) : await sendDirectMessage(textController.text);
             //Add the message to the list
             textController.text = '';
           }
