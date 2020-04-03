@@ -26,6 +26,7 @@ class CreateChatPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(left: 30.0, right: 30.0, top: MediaQuery.of(context).size.height / 12, bottom: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,

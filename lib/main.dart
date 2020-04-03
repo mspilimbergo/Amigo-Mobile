@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json, base64, ascii;
 import './screens/main/main_screen.dart';
 import './screens/auth/login_screen.dart';
+import './util/colors.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Amigo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: amigoRed,
       ),
       home: FutureBuilder(
         future: jwtOrEmpty,            
