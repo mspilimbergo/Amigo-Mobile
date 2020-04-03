@@ -293,6 +293,7 @@ class _ChatPageState extends State<ChatPage> {
     width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () {
+        disconnect("default");
         return Navigator.push(
           context, 
           MaterialPageRoute(builder: (context) => HomePage()),
