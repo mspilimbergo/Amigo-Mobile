@@ -188,26 +188,29 @@ class _ChatPageState extends State<ChatPage> {
       children: <Widget> [
         Container(
           alignment: !direct
-          ? (display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight)
-          : (display == messages[index]["sender_display_name"] ? Alignment.centerLeft : Alignment.centerRight),
+          ? (display == messages[index]["display_name"] ? Alignment.centerRight : Alignment.centerLeft)
+          : (display == messages[index]["sender_display_name"] ? Alignment.centerRight : Alignment.centerLeft),
           margin: !direct
-          ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 2.0, left: 12.0) : const EdgeInsets.only(bottom: 2.0, right: 12.0))
-          : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 2.0, left: 12.0) : const EdgeInsets.only(bottom: 2.0, right: 12.0)),
+          ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 2.0, right: 12.0) : const EdgeInsets.only(bottom: 2.0, left: 12.0))
+          : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 2.0, right: 12.0) : const EdgeInsets.only(bottom: 2.0, left: 12.0)),
           child: !direct
           ? Text(messages[index]["display_name"])
           : Text(messages[index]["sender_display_name"])
         ),
         Container(
           alignment: !direct
-          ? (display == messages[index]["display_name"] ? Alignment.centerLeft : Alignment.centerRight)
-          : (display == messages[index]["sender_display_name"] ? Alignment.centerLeft : Alignment.centerRight),
+          ? (display == messages[index]["display_name"] ? Alignment.centerRight : Alignment.centerLeft)
+          : (display == messages[index]["sender_display_name"] ? Alignment.centerRight : Alignment.centerLeft),
           child: Container(
+            constraints: BoxConstraints(maxWidth: 300.0),
             padding: const EdgeInsets.all(10.0),
             margin: !direct
-            ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0))
-            : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0)),
+            ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 10.0, right: 10.0) : const EdgeInsets.only(bottom: 10.0, left: 10.0))
+            : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 10.0, right: 10.0) : const EdgeInsets.only(bottom: 10.0, left: 10.0)),
             decoration: BoxDecoration(
-              color: amigoRed[200],
+              color: !direct
+              ? (display == messages[index]["display_name"] ? amigoRed[200] : Colors.grey[200])
+              : (display == messages[index]["sender_display_name"] ? amigoRed[200] : Colors.grey[200]),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Text(
