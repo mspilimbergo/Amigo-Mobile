@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json, base64, ascii;
-import './screens/main/main_screen.dart';
-import './screens/auth/login_screen.dart';
-import './util/colors.dart';
+import 'package:amigo_mobile/screens/main/main_screen.dart';
+import 'package:amigo_mobile/screens/auth/login_screen.dart';
+import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
 

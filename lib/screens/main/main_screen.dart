@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'dart:convert' show json, base64, ascii;
 import '../home/home_screen.dart';
 import '../discover/discover_tag_view/discover_tag_view.dart';
+import 'package:amigo_mobile/util/colors.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class MainPageState extends State<MainPage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.red[200],
+          selectedItemColor: amigoRed,
           unselectedItemColor: Colors.grey,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
