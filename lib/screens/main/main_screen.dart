@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'dart:convert' show json, base64, ascii;
-import '../home/home_screen.dart';
-import '../discover/discover_tag_view/discover_tag_view.dart';
+import 'package:amigo_mobile/screens/home/home_screen.dart';
+import 'package:amigo_mobile/screens/discover/discover_tag_view/discover_tag_view.dart';
 import 'package:amigo_mobile/util/colors.dart';
 
 class MainPage extends StatefulWidget {
