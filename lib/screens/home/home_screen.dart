@@ -96,6 +96,7 @@ class _HomePageState extends State<HomePage>
                 floating: true,
                 forceElevated: boxIsScrolled,
                 backgroundColor: Colors.white,
+                automaticallyImplyLeading: false,
                 actions: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(right: 20.0),
