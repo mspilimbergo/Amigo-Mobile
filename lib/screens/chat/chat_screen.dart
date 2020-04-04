@@ -100,10 +100,11 @@ class _ChatPageState extends State<ChatPage> {
       print(jsonData);
       Map map = jsonData;
       print(map);
-      this.setState(() => messages.add(map));
-      var scrollPosition = scrollController.position;
-      scrollController.jumpTo(
-        scrollPosition.maxScrollExtent
+      this.setState(() => messages.insert(0, map));
+      scrollController.animateTo(
+        0.0,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
       );
     });
     socket.connect();
@@ -113,13 +114,9 @@ class _ChatPageState extends State<ChatPage> {
   initMessages() async {
     String jsonSnap = direct ? await getDirectMessages() : await getChannelMessages();
     Map map = json.decode(jsonSnap);
-    for(var i = 0; i < map["messages"].length; ++i) {
+    for (var i = map["messages"].length - 1; i >= 0; --i) {
       this.setState(() => messages.add(map["messages"][i]));
     }
-    // var scrollPosition = scrollController.position;
-    // scrollController.jumpTo(
-    //   scrollPosition.maxScrollExtent
-    // );
   }
 
   Future<String> getChannelMessages() async {
@@ -230,6 +227,7 @@ class _ChatPageState extends State<ChatPage> {
       padding: const EdgeInsets.all(2.0),
       child: ListView.builder(
         shrinkWrap: true,
+        reverse: true,
         controller: scrollController,
         itemCount: messages.length,
         itemBuilder: (BuildContext context, int index) {
