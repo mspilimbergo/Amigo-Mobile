@@ -58,9 +58,20 @@ class LoginPage extends StatelessWidget {
             ),
             TextField(
               controller: _emailController,
+              style: TextStyle(
+                fontSize: 16.0,
+                height: 1.5,
+                color: Colors.black                  
+              ),
               decoration: InputDecoration(
                 labelText: 'Email',
-                labelStyle: TextStyle(color: Colors.black)
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder: new UnderlineInputBorder(
+                  borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                ),  
+                focusedBorder: new UnderlineInputBorder(
+                  borderSide: BorderSide(width: 4.0, color: amigoRed),
+                ),
               ),
             ),
             Padding(
@@ -68,14 +79,19 @@ class LoginPage extends StatelessWidget {
               child: TextField(
                 controller: _passwordController,
                 obscureText: true,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  height: 1.5,
+                  color: Colors.black                  
+                ),
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: TextStyle(color: Colors.black),
                   enabledBorder: new UnderlineInputBorder(
-                    borderSide: BorderSide(width: 5.0, color: Colors.grey[350]),
+                    borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
                   ),  
                   focusedBorder: new UnderlineInputBorder(
-                    borderSide: BorderSide(width: 5.0, color: amigoRed),
+                    borderSide: BorderSide(width: 4.0, color: amigoRed),
                   ),
                 ),
               ),
@@ -84,6 +100,7 @@ class LoginPage extends StatelessWidget {
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 14.0,
                 child: new FlatButton(
                   color: amigoRed,
                   textColor: Colors.white,
@@ -109,7 +126,7 @@ class LoginPage extends StatelessWidget {
                       displayDialog(context, jsonRes["message"], "Please try again or register if you don't already have an account");
                     }
                   },
-                  child: Text("Log In")
+                  child: Text("Log In", style: TextStyle(fontSize: 16.0))
                 )
               ),
             ),
