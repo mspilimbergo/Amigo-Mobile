@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:amigo_mobile/screens/chat/chat_screen.dart';
 import 'package:amigo_mobile/screens/chat/user_search_screen.dart';
+import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -89,7 +90,7 @@ class _HomePageState extends State<HomePage>
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
                       'Chats',
-                      style: TextStyle(fontSize: 30.0, color: Colors.red[200])
+                      style: TextStyle(fontSize: 30.0, color: amigoRed)
                     ),
                 ),
                 pinned: true,
@@ -110,14 +111,14 @@ class _HomePageState extends State<HomePage>
                       child: Icon(
                         Icons.add_box,
                         size: 26.0,
-                        color: Colors.red[200],
+                        color: amigoRed,
                       ),
                     )
                   )
                 ],
                 bottom: new TabBar(
                   controller: _tabController,
-                  indicatorColor: Colors.red[200],
+                  indicatorColor: amigoRed,
                   labelColor: Colors.black,
                   unselectedLabelColor: Colors.grey,
                   tabs: <Tab>[
@@ -194,7 +195,7 @@ class _HomePageState extends State<HomePage>
                       child: Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.white,
-                          valueColor: new AlwaysStoppedAnimation<Color>(Colors.red[200])
+                          valueColor: new AlwaysStoppedAnimation<Color>(amigoRed)
                         )
                       )
                     );
@@ -274,7 +275,7 @@ class _HomePageState extends State<HomePage>
                       child: Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.white,
-                          valueColor: new AlwaysStoppedAnimation<Color>(Colors.red[200])
+                          valueColor: new AlwaysStoppedAnimation<Color>(amigoRed)
                         )
                       )
                     );
