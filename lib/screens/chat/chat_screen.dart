@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:amigo_mobile/screens/main/main_screen.dart';
+import 'package:amigo_mobile/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -208,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
             ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0))
             : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0)),
             decoration: BoxDecoration(
-              color: Colors.red[200],
+              color: amigoRed,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Text(
@@ -303,7 +304,7 @@ class _ChatPageState extends State<ChatPage> {
         appBar: AppBar(
           backgroundColor: Colors.grey[200],
           iconTheme: IconThemeData(
-            color: Colors.red[200], //change your color here
+            color: amigoRed,
           ),
           title: Text(this.name, style: TextStyle(
             color: Colors.black,
