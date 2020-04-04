@@ -17,11 +17,27 @@ class MainPageState extends State<MainPage> {
     Text('Profile'),
   ];
 
+  final titles = ["Chats", "What are your interests?", "Profile"];
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        appBar: selectedIndex != 0
+        ? AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            iconTheme: new IconThemeData(color: Colors.red),
+            title: Center(
+                child: Text(
+              "${titles[selectedIndex]}",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                  color: Colors.red, fontSize: 30, fontWeight: FontWeight.w400),
+            )),
+          )
+        : null,
         body: Center(
           child: widgetOptions.elementAt(selectedIndex),
         ),
@@ -44,7 +60,7 @@ class MainPageState extends State<MainPage> {
   }
 
   void onItemTapped(int index) {
-    setState(() { 
+    setState(() {
       selectedIndex = index;
     });
   }
