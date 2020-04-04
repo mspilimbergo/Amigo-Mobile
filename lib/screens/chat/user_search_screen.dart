@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert' show json, base64, ascii;
+import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
-import './chat_screen.dart';
+import 'package:amigo_mobile/screens/chat/chat_screen.dart';
 
 class UserSearchDelegate extends SearchDelegate {
   final String display;
