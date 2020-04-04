@@ -1,3 +1,4 @@
+import 'package:amigo_mobile/screens/chat/user_search_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +15,7 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
+  String schoolId;
 
   void displayDialog(context, title, text) => showDialog(
     context: context,
@@ -24,7 +26,7 @@ class RegisterPage extends StatelessWidget {
       ),
   );
 
-  Future<String> attemptSignUp(String email, String password, String confirm, String firstName, String lastName, String displayName) async {
+  Future<String> attemptSignUp(String email, String password, String confirm, String firstName, String lastName, String displayName, String schoolId) async {
     var res = await http.post(
       '$SERVER_URL/api/signup',
       body: {
@@ -34,6 +36,7 @@ class RegisterPage extends StatelessWidget {
         "first_name": firstName,
         "last_name": lastName,
         "display_name": displayName,
+        "school_id": schoolId
       }
     );
     if(res.statusCode == 200) return res.body;
@@ -92,6 +95,17 @@ class RegisterPage extends StatelessWidget {
                 labelText: 'Last Name'
               ),
             ),
+            DropdownButton(
+              items: <String>['A', 'B', 'C', 'D'].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: (String selectedSchool) {
+                schoolId = selectedSchool;
+              }
+            ),
             Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 20),
               child: TextField(
@@ -113,7 +127,7 @@ class RegisterPage extends StatelessWidget {
                     var firstName = _firstNameController.text;
                     var lastName = _lastNameController.text;
                     var displayName = _displayNameController.text;
-                    var res = await attemptSignUp(email, password, confirm, firstName, lastName, displayName);
+                    var res = await attemptSignUp(email, password, confirm, firstName, lastName, displayName, schoolId);
                     if (res == null) {
                       displayDialog(context, "Error", "An error occured, please try registering again.");
                       return;
