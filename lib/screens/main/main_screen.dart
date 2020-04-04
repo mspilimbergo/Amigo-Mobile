@@ -19,24 +19,27 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: widgetOptions.elementAt(selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.red[200],
-        unselectedItemColor: Colors.grey,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search), title: Text('Discover')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.perm_identity), title: Text('Profile')),
-        ],
-        currentIndex: selectedIndex,
-        onTap: onItemTapped,
-      ),
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Center(
+          child: widgetOptions.elementAt(selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.red[200],
+          unselectedItemColor: Colors.grey,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.search), title: Text('Discover')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.perm_identity), title: Text('Profile')),
+          ],
+          currentIndex: selectedIndex,
+          onTap: onItemTapped,
+        ),
+      )
     );
   }
 
