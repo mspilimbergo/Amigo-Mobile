@@ -94,7 +94,7 @@ class _ChatListPageState extends State<ChatListPage>
           headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 175,
+                expandedHeight: 180,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,15 +103,15 @@ class _ChatListPageState extends State<ChatListPage>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
+                          Container(
+                            margin: const EdgeInsets.only(left: 20.0, bottom: 10.0),
                             child: Text(
                               'Chats',
                               style: TextStyle(fontSize: 30.0, color: amigoRed, fontWeight: FontWeight.bold)
                             )
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20.0, bottom: 10.0),
+                          Container(
+                            margin: const EdgeInsets.only(right: 20.0, bottom: 10.0),
                             child: GestureDetector(
                               onTap: () {
                                 showSearch(
@@ -137,7 +137,8 @@ class _ChatListPageState extends State<ChatListPage>
                               filled: true,
                               fillColor: Colors.grey[200],
                               hintText: 'Search for your chats',
-                              prefixIcon: Icon(Icons.search, color: Colors.grey),
+                              prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                                 borderRadius: BorderRadius.circular(10.0),
