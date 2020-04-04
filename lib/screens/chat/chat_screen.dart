@@ -209,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
             ? (display == messages[index]["display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0))
             : (display == messages[index]["sender_display_name"] ? const EdgeInsets.only(bottom: 10.0, left: 10.0) : const EdgeInsets.only(bottom: 10.0, right: 10.0)),
             decoration: BoxDecoration(
-              color: amigoRed,
+              color: amigoRed[200],
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Text(
