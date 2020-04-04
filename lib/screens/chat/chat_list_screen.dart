@@ -4,18 +4,18 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:amigo_mobile/screens/chat/chat_screen.dart';
-import 'package:amigo_mobile/screens/chat/user_search_screen.dart';
+import 'package:amigo_mobile/screens/chat/user_search_delegate.dart';
 import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
 
-class HomePage extends StatefulWidget {
+class ChatListPage extends StatefulWidget {
     @override
-  _HomePageState createState() => _HomePageState();
+  _ChatListPageState createState() => _ChatListPageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _ChatListPageState extends State<ChatListPage>
   with SingleTickerProviderStateMixin {
   String displayName;
   String userId;

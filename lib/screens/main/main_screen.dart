@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:amigo_mobile/screens/home/home_screen.dart';
+import 'package:amigo_mobile/screens/chat/chat_list_screen.dart';
 import 'package:amigo_mobile/screens/discover/discover_tag_view/discover_tag_view.dart';
 import 'package:amigo_mobile/util/colors.dart';
 
@@ -12,7 +12,7 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> {
   int selectedIndex = 0;
   final widgetOptions = [
-    new HomePage(),
+    new ChatListPage(),
     new DiscoverTagView(),
     Text('Profile'),
   ];
