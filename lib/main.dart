@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json, base64, ascii;
-import './screens/main/main_screen.dart';
-import './screens/auth/login_screen.dart';
+import 'package:amigo_mobile/screens/main/main_screen.dart';
+import 'package:amigo_mobile/screens/auth/login_screen.dart';
+import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Amigo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: amigoRed,
       ),
       home: FutureBuilder(
         future: jwtOrEmpty,            
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
             } else {
               var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
               if(DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000).isAfter(DateTime.now())) {
-                return MainPage(str, payload);
+                return MainPage();
               } else {
                 return LoginPage();
               }
