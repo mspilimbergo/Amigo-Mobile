@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import '../chat/chat_screen.dart';
-import '../chat/create_chat_screen.dart';
 import '../chat/user_search_screen.dart';
 
 final storage = FlutterSecureStorage();
@@ -102,7 +101,7 @@ class _HomePageState extends State<HomePage>
                     onTap: () {
                       showSearch(
                         context: context,
-                        delegate: UserSearchDelegate()
+                        delegate: UserSearchDelegate(display: displayName, sender: userId)
                       );
                     },
                     child: Icon(
