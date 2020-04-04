@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 
 final storage = FlutterSecureStorage();
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class ChatPage extends StatefulWidget {
   final String name;
@@ -67,7 +68,7 @@ class _ChatPageState extends State<ChatPage> {
     setState(() => _isProbablyConnected[identifier] = true);
     var key = await storage.read(key: "jwt");
     SocketIO socket = await manager.createInstance(SocketOptions(
-        "https://amigo-269801.appspot.com",
+        "$SERVER_URL",
         enableLogging: true,
         transports: [Transports.WEB_SOCKET, Transports.POLLING]
     ));
@@ -124,7 +125,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<String> getChannelMessages() async {
     var key = await storage.read(key: "jwt");
     var res = await http.get(
-      "https://amigo-269801.appspot.com/api/channels/messages?channel_id=$id",
+      "$SERVER_URL/api/channels/messages?channel_id=$id",
       headers: {
         "x-access-token": key
       }
@@ -137,7 +138,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<String> getDirectMessages() async {
     var key = await storage.read(key: "jwt");
     var res = await http.get(
-      "https://amigo-269801.appspot.com/api/directmessages?receiver_user_id=$id",
+      "$SERVER_URL/api/directmessages?receiver_user_id=$id",
       headers: {
         "x-access-token": key
       }
@@ -152,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
     var key = await storage.read(key: "jwt");
     print("Sending a direct message");
     var res = await http.post(
-      "https://amigo-269801.appspot.com/api/directmessages",
+      "$SERVER_URL/api/directmessages",
       body: {
         "message": message,
         "receiver_user_id": id,
@@ -171,7 +172,7 @@ class _ChatPageState extends State<ChatPage> {
     var key = await storage.read(key: "jwt");
     print(id);
     var res = await http.post(
-      'https://amigo-269801.appspot.com/api/channels/messages',
+      '$SERVER_URL/api/channels/messages',
       headers: {
         "x-access-token": key
       },
