@@ -5,20 +5,20 @@ import '../home/home_screen.dart';
 import '../discover/discover_tag_view/discover_tag_view.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage(this.jwt, this.payload);
+  // MainPage();
   
-  factory MainPage.fromBase64(String jwt) =>
-    MainPage(
-      jwt,
-      json.decode(
-        ascii.decode(
-          base64.decode(base64.normalize(jwt.split(".")[1]))
-        )
-      )
-    );
+  // factory MainPage.fromBase64(String jwt) =>
+  //   MainPage(
+  //     jwt,
+  //     json.decode(
+  //       ascii.decode(
+  //         base64.decode(base64.normalize(jwt.split(".")[1]))
+  //       )
+  //     )
+  //   );
   
-  final String jwt;
-  final Map<String, dynamic> payload;
+  // final String jwt;
+  // final Map<String, dynamic> payload;
 
   @override
   MainPageState createState() => MainPageState();

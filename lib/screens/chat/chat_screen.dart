@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:amigo_mobile/screens/home/home_screen.dart';
+import 'package:amigo_mobile/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -296,7 +296,7 @@ class _ChatPageState extends State<ChatPage> {
         disconnect("default");
         return Navigator.push(
           context, 
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => MainPage()),
         );
       },
       child: Scaffold(
