@@ -120,7 +120,7 @@ class LoginPage extends StatelessWidget {
                       if(jsonRes["success"]) {
                         var jwt = jsonRes["x-access-token"];
                         storage.write(key: "jwt", value: jwt);
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MainPage()
