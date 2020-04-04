@@ -6,7 +6,7 @@ import './login_screen.dart';
 import '../main/main_screen.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
