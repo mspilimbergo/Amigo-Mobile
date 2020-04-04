@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import './register_screen.dart';
-import '../main/main_screen.dart';
+import 'package:amigo_mobile/screens/auth/register_screen.dart';
+import 'package:amigo_mobile/screens/main/main_screen.dart';
 import 'dart:convert' show json;
 
 final storage = FlutterSecureStorage();
