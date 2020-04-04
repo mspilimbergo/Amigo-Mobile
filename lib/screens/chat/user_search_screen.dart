@@ -8,8 +8,8 @@ class UserSearchDelegate extends SearchDelegate {
   final String display;
   final String sender;
   final storage = FlutterSecureStorage();
-  final SERVER_URL = "http://10.0.2.2:3000";
-// "https://amigo-269801.appspot.com"
+  final SERVER_URL = "https://amigo-269801.appspot.com";
+
   UserSearchDelegate({Key key, @required this.display, @required this.sender });
 
   Future<String> searchUsers(String query) async {
