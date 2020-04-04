@@ -6,17 +6,12 @@ import '../discover/discover_tag_view/discover_tag_view.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(this.jwt, this.payload);
-  
-  factory MainPage.fromBase64(String jwt) =>
-    MainPage(
+
+  factory MainPage.fromBase64(String jwt) => MainPage(
       jwt,
       json.decode(
-        ascii.decode(
-          base64.decode(base64.normalize(jwt.split(".")[1]))
-        )
-      )
-    );
-  
+          ascii.decode(base64.decode(base64.normalize(jwt.split(".")[1])))));
+
   final String jwt;
   final Map<String, dynamic> payload;
 
@@ -32,15 +27,30 @@ class MainPageState extends State<MainPage> {
     Text('Profile'),
   ];
 
+  final titles = ["Chats", "What are your interests?", "Profile"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        iconTheme: new IconThemeData(color: Colors.red),
+        title: Center(
+            child: Text(
+          "${titles[selectedIndex]}",
+          textAlign: TextAlign.start,
+          style: TextStyle(
+              color: Colors.red, fontSize: 30, fontWeight: FontWeight.w400),
+        )),
+      ),
       body: Center(
         child: widgetOptions.elementAt(selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
           BottomNavigationBarItem(
               icon: Icon(Icons.search), title: Text('Discover')),
           BottomNavigationBarItem(
@@ -54,7 +64,7 @@ class MainPageState extends State<MainPage> {
   }
 
   void onItemTapped(int index) {
-    setState(() { 
+    setState(() {
       selectedIndex = index;
     });
   }
