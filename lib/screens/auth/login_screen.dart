@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:amigo_mobile/screens/auth/register_screen.dart';
 import 'package:amigo_mobile/screens/main/main_screen.dart';
+import 'package:amigo_mobile/util/colors.dart';
 import 'dart:convert' show json;
 
 final storage = FlutterSecureStorage();
@@ -36,6 +37,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
@@ -50,13 +52,15 @@ class LoginPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
               child: Text(
-                'Please sign in below'
+                'Please sign in below',
+                style: new TextStyle(color: Colors.grey)
               ),
             ),
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
-                labelText: 'Email'
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.black)
               ),
             ),
             Padding(
@@ -65,7 +69,14 @@ class LoginPage extends StatelessWidget {
                 controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: 'Password'
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.black),
+                  enabledBorder: new UnderlineInputBorder(
+                    borderSide: BorderSide(width: 5.0, color: Colors.grey[350]),
+                  ),  
+                  focusedBorder: new UnderlineInputBorder(
+                    borderSide: BorderSide(width: 5.0, color: amigoRed),
+                  ),
                 ),
               ),
             ),
@@ -73,7 +84,9 @@ class LoginPage extends StatelessWidget {
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: new RaisedButton(
+                child: new FlatButton(
+                  color: amigoRed,
+                  textColor: Colors.white,
                   onPressed: () async {
                     var email = _emailController.text;
                     var password = _passwordController.text;
@@ -111,7 +124,20 @@ class LoginPage extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text("Don't have an account yet? Sign up!")
+                child: new RichText(
+                  text: new TextSpan(
+                    // Note: Styles for TextSpans must be explicitly defined.
+                    // Child text spans will inherit styles from parent
+                    style: new TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.grey,
+                    ),
+                    children: <TextSpan>[
+                      new TextSpan(text: 'Don\'t have an account yet? '),
+                      new TextSpan(text: 'Sign up now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                )
               )
             )
           ],
