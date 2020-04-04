@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' show json, base64, ascii;
-import './login_screen.dart';
-import '../main/main_screen.dart';
+import 'dart:convert' show json;
+import 'package:amigo_mobile/screens/auth/login_screen.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
