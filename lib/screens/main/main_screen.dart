@@ -32,9 +32,34 @@ class MainPageState extends State<MainPage> {
     Text('Profile'),
   ];
 
+  final titles = [
+    "Chats",
+    "What are your interests?",
+    "Profile"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          iconTheme: new IconThemeData(color: Colors.red),
+          title: Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "${titles[selectedIndex]}",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400),
+              ),
+            ],
+          )),
+        ),
       body: Center(
         child: widgetOptions.elementAt(selectedIndex),
       ),
