@@ -202,21 +202,26 @@ class _ChatListPageState extends State<ChatListPage>
                             shrinkWrap: true,
                             itemCount: jsonSnap["channels"].length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
-                                ),
-                                title: Text(jsonSnap["channels"][index]["name"]),
-                                subtitle: Text(jsonSnap["channels"][index]["description"]),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false)
-                                    ),
-                                  );
-                                },
-                              );
+                              var listItem;
+                              searchQuery == null || jsonSnap["channels"][index]["name"].toLowerCase().contains(searchQuery.toLowerCase()) ?
+                                listItem = ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                                  ),
+                                  title: Text(jsonSnap["channels"][index]["name"]),
+                                  subtitle: Text(jsonSnap["channels"][index]["description"]),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false)
+                                      ),
+                                    );
+                                  },
+                                )
+                              : 
+                                listItem = new Container();
+                              return listItem;
                             },
                           ),
                         ];
