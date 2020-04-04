@@ -282,20 +282,25 @@ class _ChatListPageState extends State<ChatListPage>
                             shrinkWrap: true,
                             itemCount: jsonSnap["users"].length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
-                                ),
-                                title: Text(jsonSnap["users"][index]["display_name"]),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true)
-                                    ),
-                                  );
-                                },
-                              );
+                              var listItem;
+                              searchQuery == null || jsonSnap["users"][index]["display_name"].toLowerCase().contains(searchQuery.toLowerCase()) ?
+                                 listItem = ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                                  ),
+                                  title: Text(jsonSnap["users"][index]["display_name"]),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true)
+                                      ),
+                                    );
+                                  },
+                                )
+                              :
+                                listItem = new Container();
+                              return listItem;
                             },
                           ),
                         ];
