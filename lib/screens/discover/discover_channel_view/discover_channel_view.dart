@@ -1,38 +1,68 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import '../../../classes/channel.class.dart';
-import './Data/channelList_data.dart';
+import '../../../classes/channel.dart';
 import '../widgets/ChannelCard.dart';
-import 'dart:developer';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 
-String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
-class DiscoverChannelView extends StatelessWidget {
-
+class DiscoverChannelView extends StatefulWidget {
   final String tagSelected;
-  
-  DiscoverChannelView({Key key, @required this.tagSelected}) : super(key:key);
-  
-  final List<Channel> channelList = ChannelListData.getChannelList();
 
-  Future<List<Channel>> getChannels () async {
-    log(tagSelected);
-    // var key = await storage.read(key: "jwt");
-    // Response res = await http.get(
-    //   "$SERVER_URL/api/channels/?tag_id=$tagSelected",
-    //   headers: {"x-access-token": key},
-    // );
+  const DiscoverChannelView ({Key key, @required this.tagSelected}) : super(key:key);
+
+  @override
+  _DiscoverChannelViewState createState() => _DiscoverChannelViewState();
+}
+
+
+class _DiscoverChannelViewState extends State<DiscoverChannelView> {
+  List<Channel> channels;
+
+  void getChannels () async {
+    var key = await storage.read(key: "jwt");
+    String tagSelected = widget.tagSelected;
+    print(tagSelected);
+    Response res = await http.get(
+      "$SERVER_URL/api/channels/?tag_id=$tagSelected",
+      headers: {"x-access-token": key},
+    );
+    if (res.statusCode == 200) {
+      // Deserialize JSON into a map
+      Map response = jsonDecode(res.body);
+      
+      // Store JSON array of channels into a List
+      List jsonChannels = response["channels"] as List;
+
+      setState(() {
+        // Iterate through JSON array of channels and turn list into array of Channels
+        channels = jsonChannels.map<Channel>((channel) => Channel.fromJson(channel)).toList();        
+      });
+    }
+    else {
+      return null;
+    }
+  }
+
+   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getChannels();
   }
 
   @override 
   Widget build(BuildContext context) { 
-    getChannels();
-    log(tagSelected);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -52,7 +82,8 @@ class DiscoverChannelView extends StatelessWidget {
       body: Container(
           // decoration: BoxDecoration(color: Theme.of(context).accentColor),
           margin: EdgeInsets.all(20.0),
-          child: Column(children: <Widget>[
+          child: Column(
+            children: <Widget>[              
             Container(
               height: 50,
                 child: TextField(
@@ -70,42 +101,42 @@ class DiscoverChannelView extends StatelessWidget {
                   SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      child:Text('We recommend',textAlign: TextAlign.start,style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500)),
+                      child:Text('We recommend',textAlign: TextAlign.start, style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500)),
                     )
                   ),
                   SliverList(
                     delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                      if (index == 5 ) return null;
-                      if (channelList[index].memberCount == 18) {
                         return ChannelCard(
-                      "123",
-                      'Recommended Group', 
-                      'This is some description of the channel... This text is a temporary placeholder and it is only being used for display purposes and this extra text is to show how it handles overflow',
-                      18,
-                      'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
-                      );
-                      }
-                      }
+                          channels[index].channelId,
+                          channels[index].name,
+                          channels[index].description,
+                          12,
+                          'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
+                        );
+                    }
                     ) ),
-                    SliverToBoxAdapter(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      child:Text('All',textAlign: TextAlign.start,style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500)),
-                    )
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                      if (index == 5) return null;
-                        return ChannelCard(
-                      '101',
-                      'Ghana Soccer Group', 
-                      'some description of the channel... This text is a temporary placeholder and it is only being used for display purposes and this extra text is to show how it handles overflow',
-                      18,
-                      'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
-                      );
-
-                      }
-                    ) ),
+                  //   SliverToBoxAdapter(
+                  //   child: Container(
+                  //     margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  //     child:Text('All',textAlign: TextAlign.start,style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500)),
+                  //   )
+                  // ),
+                  // SliverList(
+                  //   delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                      // if (index == 5 ) {
+                      //   return null;
+                      // }
+                      // if (true) {
+                      //   return ChannelCard(
+                      //     channels[index].channelId,
+                      //     channels[index].name,
+                      //     channels[index].description,
+                      //     12,
+                      //     'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
+                      //   );
+                      // }
+                    // }
+                    // ) ),
                 ],
               ),
             )
@@ -116,15 +147,4 @@ class DiscoverChannelView extends StatelessWidget {
   }
 }
 
-
-// ![CustomScrollView]
-//   ![SliverToBoxAdapter]
-//     "We Recommend"
-//   ![SliverList]
-//     ![SliverChildBuilderDelegate]
-//       Build Your Widget Here
-//   SliverToBoxAdapter
-//     "All"
-//   SliverList
-//     SliverChildBuilderDelegate
        

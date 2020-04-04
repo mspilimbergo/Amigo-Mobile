@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import '../widgets/TagButton.dart';
 import './Data/tag_object.dart';
@@ -19,26 +17,23 @@ class DiscoverTagView extends StatefulWidget {
 }
 
 class _DiscoverTagViewState extends State<DiscoverTagView> {
-  String searchQuery = "";
+  String searchQuery;
   var popularTags;
   var allTags;
   int tagCount = 0;
   var rng = new Random();
-  var thing = 'a';
 
   void getTags() async {
     var key = await storage.read(key: "jwt");
     var res = await http.get(
-      "$SERVER_URL/api/tags?school_id=1&query=$searchQuery",
+      "$SERVER_URL/api/tags",
       headers: {"x-access-token": key},
     );
-
     if (res.statusCode == 200) {
       Map response = json.decode(res.body);
       setState(() {
-        if (searchQuery == null) searchQuery = "";
-
         allTags = Tag.fromJson(response).tags;
+        print('all tags: ' + allTags);
         tagCount = allTags.length;
         print(allTags[0].name);
       });
@@ -65,7 +60,26 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+        // appBar: AppBar(
+        //   backgroundColor: Colors.transparent,
+        //   elevation: 0,
+        //   title: Row(
+        //     mainAxisAlignment: MainAxisAlignment.start,
+        //     children: <Widget>[
+        //       Container(
+        //         margin: EdgeInsets.fromLTRB(5, 5, 0, 0),
+        //         child: Text("Whatfre f your interests?",
+        //             style: TextStyle(color: Colors.red, fontSize: 22),
+        //             textAlign: TextAlign.left,
+        //             ),
+
+        //       )
+        //     ],
+        //   ),
+        //   // centerTitle: true,
+        // ),
+        body: Container(
           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,18 +90,15 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                     child: TextField(
                       obscureText: false,
                       enableInteractiveSelection: true,
-                      onChanged: (context) {
-                        setState(
-                          () {
-                            searchQuery = context;
-                            getTags();
-                          },
-                        );
+                      onChanged: (string) {
+                        setState(() {
+                          searchQuery = string;
+                          print(searchQuery);
+                        });
                       },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Try "Pickup Soccer"',
-                        prefixIcon: Icon(Icons.search),
+                        labelText: 'Search',
                       ),
                     )),
                 Container(
@@ -111,7 +122,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                           child: CustomScrollView(slivers: <Widget>[
                         SliverToBoxAdapter(
                             child: Container(
-                                margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
+                                margin: EdgeInsets.fromLTRB(10, 0, 0, 10),
                                 child: Text("Popular Now",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -128,8 +139,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                       child: TagButton(
                                           tagID: index.toString(),
                                           name: "BasketballBasket",
-                                          photo:
-                                              "https://i.picsum.photos/id/${rng.nextInt(300)}/200/200.jpg"),
+                                          photo: "https://i.picsum.photos/id/${rng.nextInt(300)}/200/200.jpg"),
                                     );
                                   })),
                         ),
@@ -155,8 +165,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                   child: TagButton(
                                       tagID: allTags[index].tagId,
                                       name: allTags[index].name,
-                                      photo:
-                                          "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg"),
+                                      photo: "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg"),
                                 );
                               },
                               childCount: tagCount,
@@ -168,6 +177,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                   children: <Widget>[],
                 ))
               ]),
-        );
+        ));
   }
 }

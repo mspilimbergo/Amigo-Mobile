@@ -30,7 +30,10 @@ class LoginPage extends StatelessWidget {
         "password": password
       }
     );
-    if(res.statusCode == 200) return res.body;
+    if(res.statusCode == 200) {
+      print('succesful request was sent');
+      return res.body;
+    }
     return null;
   }
 
