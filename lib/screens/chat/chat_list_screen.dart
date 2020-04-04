@@ -19,9 +19,11 @@ class _ChatListPageState extends State<ChatListPage>
   with SingleTickerProviderStateMixin {
   String displayName;
   String userId;
+  String searchQuery;
   List<Object> channels;
   TabController _tabController;
   ScrollController _scrollController;
+  TextEditingController _searchController;
 
   @override
   void initState() {
@@ -29,6 +31,12 @@ class _ChatListPageState extends State<ChatListPage>
     initUser();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
+    _searchController = new TextEditingController();
+    _searchController.addListener(() {
+      setState(() {
+        searchQuery = _searchController.text;
+      });
+    });
   }
 
   @override
@@ -86,36 +94,72 @@ class _ChatListPageState extends State<ChatListPage>
           headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                title: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                      'Chats',
-                      style: TextStyle(fontSize: 30.0, color: amigoRed)
-                    ),
+                expandedHeight: 175,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget> [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
+                            child: Text(
+                              'Chats',
+                              style: TextStyle(fontSize: 30.0, color: amigoRed, fontWeight: FontWeight.bold)
+                            )
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20.0, bottom: 10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                showSearch(
+                                  context: context,
+                                  delegate: UserSearchDelegate(display: displayName, sender: userId)
+                                );
+                              },
+                              child: Icon(
+                                Icons.add_box,
+                                size: 26.0,
+                                color: amigoRed,
+                              ),
+                            )
+                          )
+                        ]
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                        child: Theme(
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              hintText: 'Search for your chats',
+                              prefixIcon: Icon(Icons.search, color: Colors.grey),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          data: Theme.of(context)
+                                  .copyWith(primaryColor: Colors.grey,),
+                        )
+                      )
+                    ]
+                  )
                 ),
                 pinned: true,
                 floating: true,
                 forceElevated: boxIsScrolled,
                 backgroundColor: Colors.white,
                 automaticallyImplyLeading: false,
-                actions: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        showSearch(
-                          context: context,
-                          delegate: UserSearchDelegate(display: displayName, sender: userId)
-                        );
-                      },
-                      child: Icon(
-                        Icons.add_box,
-                        size: 26.0,
-                        color: amigoRed,
-                      ),
-                    )
-                  )
-                ],
                 bottom: new TabBar(
                   controller: _tabController,
                   indicatorColor: amigoRed,
