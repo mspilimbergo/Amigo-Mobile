@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:convert';
 import '../chat/chat_screen.dart';
 import '../chat/create_chat_screen.dart';
+import '../chat/user_search_screen.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -99,11 +100,9 @@ class _HomePageState extends State<HomePage>
                   padding: EdgeInsets.only(right: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateChatPage(display: displayName, sender: userId)
-                        )
+                      showSearch(
+                        context: context,
+                        delegate: UserSearchDelegate()
                       );
                     },
                     child: Icon(
