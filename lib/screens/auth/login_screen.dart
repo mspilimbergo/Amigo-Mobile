@@ -3,10 +3,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import './register_screen.dart';
 import '../main/main_screen.dart';
-import 'dart:convert' show json, base64, ascii;
+import 'dart:convert' show json;
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
