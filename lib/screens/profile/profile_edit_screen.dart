@@ -236,6 +236,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20.0),
+                                  child: Icon(
+                                    Icons.lock,
+                                    color: Colors.black54,
+                                    size: 50.0,
+                                  )
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20.0),
+                                  child: 
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Password", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                                      Text("Password", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                    ],
+                                  )
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
