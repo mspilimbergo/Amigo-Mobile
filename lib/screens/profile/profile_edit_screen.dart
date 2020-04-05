@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:amigo_mobile/util/profile_background.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:amigo_mobile/util/profile_background.dart';
+
+final storage = FlutterSecureStorage();
 
 class EditProfilePage extends StatefulWidget {
   final Map user;
@@ -34,37 +38,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     'Profile',
                     style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.bold)
                   ),
-                  PopupMenuButton<String>(
-                    onSelected: (String choice) {
-                      switch (choice) {
-                        case "Logout":
-                          storage.delete(key: "jwt");
-                          return Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage()
-                            ),
-                          );
-                        case "Edit Profile":
-                          return Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditProfilePage()
-                            ),
-                          );
-                        default:
-                      }
-                    },
-                    icon: Icon(Icons.more_vert, color: Colors.white, size: 30.0),
-                    itemBuilder: (BuildContext context) {
-                      return ["Edit Profile", "Logout"].map((String choice) {
-                        return PopupMenuItem<String>(
-                          value: choice,
-                          child: Text(choice),
-                        );
-                      }).toList();
-                    },
-                  ),
+                  Text("placeholder")
                 ]
               )
             ),

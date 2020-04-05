@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:amigo_mobile/util/colors.dart';
 
 class ProfileBackgroundPainter extends CustomPainter {
   @override
