@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   PopupMenuButton<String>(
                     onSelected: (String choice) {
                       switch (choice) {
-                        case "Log Out":
+                        case "Logout":
                           storage.delete(key: "jwt");
                           return Navigator.push(
                             context,
