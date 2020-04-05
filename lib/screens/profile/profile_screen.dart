@@ -272,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text("School", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                            Text(user["school_id"], style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                            Text(user["school_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
                                           ],
                                         )
                                       )
@@ -299,36 +299,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text("Chat Count", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                            Text("7", style: TextStyle(fontSize: 18.0, color: Colors.black))
-                                          ],
-                                        )
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 5.0),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 20.0),
-                                        child: Icon(
-                                          Icons.chat_bubble_outline,
-                                          color: Colors.black54,
-                                          size: 50.0,
-                                        )
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 20.0),
-                                        child: 
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text("Message Count", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                            Text("1000", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                            Text("Channel Count", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                                            Text(user["channel_count"], style: TextStyle(fontSize: 18.0, color: Colors.black))
                                           ],
                                         )
                                       )
