@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:amigo_mobile/screens/chat/chat_list_screen.dart';
 import 'package:amigo_mobile/screens/discover/discover_tag_view/discover_tag_view.dart';
 import 'package:amigo_mobile/util/colors.dart';
+import 'package:amigo_mobile/screens/profile/profile_screen.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class MainPageState extends State<MainPage> {
   final widgetOptions = [
     new ChatListPage(),
     new DiscoverTagView(),
-    Text('Profile'),
+    new ProfilePage(),
   ];
 
   final titles = ["Chats", "What are your interests?", "Profile"];
@@ -24,7 +25,7 @@ class MainPageState extends State<MainPage> {
     return new WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: selectedIndex != 0
+        appBar: (selectedIndex == 1)
         ? AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0.0,

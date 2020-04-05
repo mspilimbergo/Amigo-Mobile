@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: amigoRed,
       ),
       home: FutureBuilder(
-        future: jwtOrEmpty,            
+        future: jwtOrEmpty,      
         builder: (context, snapshot) {
           if(!snapshot.hasData) return CircularProgressIndicator();
           if(snapshot.data != "") {
