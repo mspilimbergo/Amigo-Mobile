@@ -8,7 +8,9 @@ import 'package:amigo_mobile/screens/auth/login_screen.dart';
 import 'package:amigo_mobile/screens/profile/profile_edit_screen.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "https://amigo-269801.appspot.com";
+final SERVER_URL = "http://10.0.2.2:3000";
+
+// "https://amigo-269801.appspot.com"
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -17,23 +19,47 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Map user;
+  final months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
 
   @override
   initState() {
     super.initState();
   }
 
+  String getJoined() {
+    var joined = DateTime.parse(user["created_on"]);
+    String str = months[joined.month - 1] + " " + joined.day.toString() + ", " + joined.year.toString();
+    return str;
+  }
+
   Future<String> getUser() async {
+    print("Getting the user now");
     var key = await storage.read(key: "jwt");
     var res = await http.get(
     "$SERVER_URL/api/user",
       headers: { "x-access-token": key },
     );
+    print("done");
     if(res.statusCode == 200) {
+      print(res.body);
       var map = json.decode(res.body);
       user = map;
       return res.body;
     }
+    print(res.body.toString());
     return res.body.toString();
   }
 
@@ -95,6 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData && snapshot.data != null) {
+                      String joined = getJoined();
                       return Column(
                         children: <Widget>[
                           Container(
@@ -131,8 +158,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text("Full Name", style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
-                                      Text("Member Since: December 5th, 2020", style: new TextStyle(fontSize: 15.0))
+                                      Text(user["first_name"] + " " + user["last_name"] , style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
+                                      Text("Member Since: $joined", style: new TextStyle(fontSize: 15.0))
                                     ]
                                   )
                                 )
