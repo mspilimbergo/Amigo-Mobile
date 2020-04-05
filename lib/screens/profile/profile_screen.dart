@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:amigo_mobile/util/colors.dart';
+import 'package:amigo_mobile/screens/auth/login_screen.dart';
+import 'package:amigo_mobile/screens/profile/profile_edit_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -7,6 +9,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
@@ -27,7 +30,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.bold)
                   ),
                   PopupMenuButton<String>(
-                    onSelected: null,
+                    onSelected: (String choice) {
+                      switch (choice) {
+                        case "Log Out":
+                          storage.delete(key: "jwt");
+                          return Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage()
+                            ),
+                          );
+                        case "Edit Profile":
+                          return Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfilePage()
+                            ),
+                          );
+                        default:
+                      }
+                    },
                     icon: Icon(Icons.more_vert, color: Colors.white, size: 30.0),
                     itemBuilder: (BuildContext context) {
                       return ["Edit Profile", "Logout"].map((String choice) {
