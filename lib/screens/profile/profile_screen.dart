@@ -181,6 +181,31 @@ class ProfilePage extends StatelessWidget {
                       )
                     ],
                   ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: Icon(
+                          Icons.phone_android,
+                          color: Colors.black54,
+                          size: 50.0,
+                        )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: 
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("Last Logged In", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                            Text("February 6th, 2000", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                          ],
+                        )
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),
