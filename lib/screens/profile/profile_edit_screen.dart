@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:amigo_mobile/util/profile_background.dart';
+import 'package:amigo_mobile/util/colors.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:amigo_mobile/util/profile_background.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -38,7 +38,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     'Profile',
                     style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.bold)
                   ),
-                  Text("placeholder")
+                  FlatButton(
+                    color: Colors.black54,
+                    child: Text("Save", style: TextStyle(fontSize: 16.0, color: Colors.white),),
+                    onPressed: () {}
+                  )
                 ]
               )
             ),
