@@ -12,9 +12,38 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 30.0, bottom: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget> [
+                  Text(
+                    'Profile',
+                    style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.bold)
+                  ),
+                  PopupMenuButton<String>(
+                    onSelected: null,
+                    icon: Icon(Icons.more_vert, color: Colors.white, size: 30.0),
+                    itemBuilder: (BuildContext context) {
+                      return ["Edit Profile", "Logout"].map((String choice) {
+                        return PopupMenuItem<String>(
+                          value: choice,
+                          child: Text(choice),
+                        );
+                      }).toList();
+                    },
+                  ),
+                  // IconButton(
+                  //   icon: Icon(Icons.more_vert, color: Colors.white,),
+                  //   iconSize: 30.0,
+                  //   onPressed: null
+                  // )
+                ]
+              )
+            ),
             Container(
               height:  MediaQuery.of(context).size.height / 4,
-              margin: new EdgeInsets.only(bottom: 10.0, top: MediaQuery.of(context).size.height / 7),
+              margin: new EdgeInsets.only(bottom: 10.0),
               decoration: new BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
@@ -34,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget> [
                   Padding(
-                    padding: EdgeInsets.only(left: 10.0, right: 20.0),
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
                     child: CircleAvatar(
                       backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
                       radius: MediaQuery.of(context).size.height / 16,
@@ -69,31 +98,9 @@ class ProfilePage extends StatelessWidget {
                 ],
                 borderRadius: new BorderRadius.all(Radius.circular(10.0)),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 14.0,
-                child: new FlatButton(
-                  color: amigoRed,
-                  textColor: Colors.white,
-                  onPressed: () {},
-                  child: Text("Edit", style: TextStyle(fontSize: 16.0))
-                )
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 14.0,
-                child: new FlatButton(
-                  color: amigoRed,
-                  textColor: Colors.white,
-                  onPressed: () {},
-                  child: Text("Edit", style: TextStyle(fontSize: 16.0))
-                )
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
               ),
             ),
           ],
