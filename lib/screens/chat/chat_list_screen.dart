@@ -11,7 +11,7 @@ final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class ChatListPage extends StatefulWidget {
-    @override
+  @override
   _ChatListPageState createState() => _ChatListPageState();
 }
 
@@ -28,6 +28,7 @@ class _ChatListPageState extends State<ChatListPage>
   @override
   void initState() {
     super.initState();
+    initUser();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
     _searchController = new TextEditingController();
@@ -43,6 +44,14 @@ class _ChatListPageState extends State<ChatListPage>
     _tabController.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  initUser() async {
+    String jsonSnap = await getUser();
+    var map = json.decode(jsonSnap);
+    print(map);
+    displayName = map["display_name"];
+    userId = map["user_id"];
   }
 
   Future<String> getChannels() async {
