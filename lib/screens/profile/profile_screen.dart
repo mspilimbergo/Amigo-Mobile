@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 import 'package:amigo_mobile/util/colors.dart';
 import 'package:amigo_mobile/screens/auth/login_screen.dart';
 import 'package:amigo_mobile/screens/profile/profile_edit_screen.dart';
+
+final storage = FlutterSecureStorage();
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -9,6 +16,29 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Map user;
+
+  @override
+  initState() {
+    super.initState();
+  }
+
+  initUser() async {
+    String jsonSnap = await getUser();
+    var map = json.decode(jsonSnap);
+    user = map;
+    print(user);
+  }
+
+  Future<String> getUser() async {
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+    "$SERVER_URL/api/user",
+      headers: { "x-access-token": key },
+    );
+    if(res.statusCode == 200) return res.body;
+    return res.body.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
