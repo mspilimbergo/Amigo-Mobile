@@ -22,6 +22,7 @@ dependencies:
   adhara_socket_io: ^0.4.1
   getflutter: ^1.0.11
   rxdart: ^0.23.1
+  image_picker: ^0.6.4
   flutter:
     sdk: flutter
 
