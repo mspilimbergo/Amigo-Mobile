@@ -45,6 +45,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return str;
   }
 
+  String getLoggedIn() {
+    var loggedIn = DateTime.parse(user["last_logged_in"]);
+    String str = months[loggedIn.month - 1] + " " + loggedIn.day.toString() + ", " + loggedIn.year.toString();
+    return str;
+  }
+
   Future<String> getUser() async {
     print("Getting the user now");
     var key = await storage.read(key: "jwt");
@@ -122,6 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData && snapshot.data != null) {
                       String joined = getJoined();
+                      String loggedIn = getLoggedIn();
                       return Column(
                         children: <Widget>[
                           Container(
@@ -209,7 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text("Display Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                            Text("Display Name", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                            Text(user["display_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
                                           ],
                                         )
                                       )
@@ -237,7 +244,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text("Email", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                            Text("Email", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                            Text(user["email"], style: TextStyle(fontSize: 18.0, color: Colors.black))
                                           ],
                                         )
                                       )
@@ -265,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text("School", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                            Text("School", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                            Text(user["school_id"], style: TextStyle(fontSize: 18.0, color: Colors.black))
                                           ],
                                         )
                                       )
@@ -347,7 +354,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text("Last Logged In", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                          Text("February 6th, 2000", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                          Text(loggedIn, style: TextStyle(fontSize: 18.0, color: Colors.black))
                                         ],
                                       )
                                     )
