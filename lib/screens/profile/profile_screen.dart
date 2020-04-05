@@ -69,13 +69,16 @@ class ProfilePage extends StatelessWidget {
                       radius: MediaQuery.of(context).size.height / 16,
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Full Name", style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
-                      Text("Member Since: December 5th, 2020", style: new TextStyle(fontSize: 15.0))
-                    ]
+                  Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Full Name", style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
+                        Text("Member Since: December 5th, 2020", style: new TextStyle(fontSize: 15.0))
+                      ]
+                    )
                   )
                 ]
               )
@@ -83,6 +86,7 @@ class ProfilePage extends StatelessWidget {
             Container(
               height:  MediaQuery.of(context).size.height / 2,
               margin: new EdgeInsets.only(bottom: 10.0, top: 30.0),
+              padding: new EdgeInsets.all(20.0),
               decoration: new BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
@@ -101,6 +105,33 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: Icon(
+                          Icons.account_circle,
+                          color: Colors.black54,
+                          size: 50.0,
+                        )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: 
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("Display Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                            Text("Display Name", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                          ],
+                        )
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           ],
