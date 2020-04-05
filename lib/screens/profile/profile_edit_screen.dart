@@ -1,6 +1,10 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:amigo_mobile/util/profile_background.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:amigo_mobile/util/colors.dart';
+import 'package:image_picker/image_picker.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -15,8 +19,25 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final Map user;
+  File _image;
 
   _EditProfilePageState({Key key, @required this.user});
+
+  Future getCameraImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  Future getLibraryImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,20 +99,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           Padding(
                             padding: EdgeInsets.only(left: 20.0, right: 20.0),
                             child: CircleAvatar(
-                              backgroundImage: user["photo"] != null ? NetworkImage(user["photo"]) : AssetImage('assets/profile-placeholder.jpg'),
+                              backgroundImage: _image != null
+                              ? FileImage(_image)
+                              : (user["photo"] != null ? NetworkImage(user["photo"]) : AssetImage('assets/profile-placeholder.jpg')),
                               radius: MediaQuery.of(context).size.height / 16,
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(right: 20.0),
+                            padding: EdgeInsets.only(right: 5.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Text(user["first_name"] + " " + user["last_name"] , style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
+                                FlatButton(
+                                  color: amigoRed,
+                                  child: Text("Take a picture", style: TextStyle(fontSize: 16.0, color: Colors.white)),
+                                  onPressed: getCameraImage,
+                                ),
+                                FlatButton(
+                                  color: amigoRed,
+                                  child: Text("Upload a picture", style: TextStyle(fontSize: 16.0, color: Colors.white)),
+                                  onPressed: getLibraryImage,
+                                )
                               ]
                             )
-                          )
+                          ),
                         ]
                       )
                     ),
