@@ -38,11 +38,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       }).toList();
                     },
                   ),
-                  // IconButton(
-                  //   icon: Icon(Icons.more_vert, color: Colors.white,),
-                  //   iconSize: 30.0,
-                  //   onPressed: null
-                  // )
                 ]
               )
             ),
