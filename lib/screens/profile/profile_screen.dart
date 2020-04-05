@@ -155,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 20.0, right: 20.0),
                                   child: CircleAvatar(
-                                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                                    backgroundImage: user["photo"] != null ? NetworkImage("https://picsum.photos/seed/picsum/200") : AssetImage('assets/profile-placeholder.jpg'),
                                     radius: MediaQuery.of(context).size.height / 16,
                                   ),
                                 ),
