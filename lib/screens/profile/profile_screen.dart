@@ -84,7 +84,6 @@ class ProfilePage extends StatelessWidget {
               )
             ),
             Container(
-              height:  MediaQuery.of(context).size.height / 2,
               margin: new EdgeInsets.only(bottom: 10.0, top: 30.0),
               padding: new EdgeInsets.all(20.0),
               decoration: new BoxDecoration(
@@ -106,130 +105,145 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(
-                          Icons.account_circle,
-                          color: Colors.black54,
-                          size: 50.0,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: Icon(
+                            Icons.account_circle,
+                            color: Colors.black54,
+                            size: 50.0,
+                          )
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: 
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Display Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                              Text("Display Name", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                            ],
+                          )
                         )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: 
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Display Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                            Text("Display Name", style: TextStyle(fontSize: 18.0, color: Colors.black))
-                          ],
-                        )
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(
-                          Icons.mail_outline,
-                          color: Colors.black54,
-                          size: 50.0,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: Icon(
+                            Icons.mail_outline,
+                            color: Colors.black54,
+                            size: 50.0,
+                          )
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: 
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Email", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                              Text("Email", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                            ],
+                          )
                         )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: 
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Email", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                            Text("Email", style: TextStyle(fontSize: 18.0, color: Colors.black))
-                          ],
-                        )
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(
-                          Icons.school,
-                          color: Colors.black54,
-                          size: 50.0,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: Icon(
+                            Icons.school,
+                            color: Colors.black54,
+                            size: 50.0,
+                          )
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: 
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("School", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                              Text("School", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                            ],
+                          )
                         )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: 
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("School", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                            Text("School", style: TextStyle(fontSize: 18.0, color: Colors.black))
-                          ],
-                        )
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(
-                          Icons.chat,
-                          color: Colors.black54,
-                          size: 50.0,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: Icon(
+                            Icons.chat,
+                            color: Colors.black54,
+                            size: 50.0,
+                          )
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: 
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Chat Count", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                              Text("7", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                            ],
+                          )
                         )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: 
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Chat Count", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                            Text("7", style: TextStyle(fontSize: 18.0, color: Colors.black))
-                          ],
-                        )
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(
-                          Icons.chat_bubble_outline,
-                          color: Colors.black54,
-                          size: 50.0,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: Icon(
+                            Icons.chat_bubble_outline,
+                            color: Colors.black54,
+                            size: 50.0,
+                          )
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: 
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Message Count", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                              Text("1000", style: TextStyle(fontSize: 18.0, color: Colors.black))
+                            ],
+                          )
                         )
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: 
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Message Count", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                            Text("1000", style: TextStyle(fontSize: 18.0, color: Colors.black))
-                          ],
-                        )
-                      )
-                    ],
+                      ],
+                    ),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
