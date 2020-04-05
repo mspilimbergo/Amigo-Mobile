@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:amigo_mobile/util/colors.dart';
+import 'package:amigo_mobile/util/profile_background.dart';
 import 'package:amigo_mobile/screens/auth/login_screen.dart';
 import 'package:amigo_mobile/screens/profile/profile_edit_screen.dart';
 
@@ -72,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: BackgroundPainter(),
+      painter: ProfileBackgroundPainter(),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(10.0),
         child: Column(
@@ -368,29 +369,5 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       )
     );
-  }
-}
-
-class BackgroundPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final height = size.height;
-    final width = size.width;
-    Paint paint = Paint();
-
-    Path mainBackground = Path();
-    mainBackground.addRect(Rect.fromLTRB(0.0, 0.0, width, height));
-    paint.color = Colors.white;
-    canvas.drawPath(mainBackground, paint);
-
-    Path profileBackground = Path();
-    profileBackground.addRect(Rect.fromLTRB(0.0, 0.0, width, height / 4));
-    paint.color = amigoRed;
-    canvas.drawPath(profileBackground, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return oldDelegate != this;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:amigo_mobile/util/profile_background.dart';
 
 class EditProfilePage extends StatefulWidget {
   final Map user;
@@ -17,7 +18,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: BackgroundPainter(),
+      painter: ProfileBackgroundPainter(),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(10.0),
         child: Column(
