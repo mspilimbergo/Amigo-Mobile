@@ -28,6 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _schoolController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   File _image;
   List schools = new List();
@@ -42,6 +43,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _firstNameController.text = user["first_name"];
     _lastNameController.text = user["last_name"];
     _emailController.text = user["email"];
+    _schoolController.text = school == null ? user["school_name"] : school["name"];
     getSchools();
   }
 
@@ -216,9 +218,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 color: Colors.black
                               ),
                               decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.person, size: 50.0),
+                                icon: Icon(Icons.person, size: 50.0, color: Colors.black54),
                                 labelText: 'Display Name',
-                                labelStyle: TextStyle(color: Colors.black),
+                                labelStyle: TextStyle(color: Colors.black54),
                                 enabledBorder: InputBorder.none,  
                                 focusedBorder: InputBorder.none,
                               ),
@@ -233,140 +235,92 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 color: Colors.black
                               ),
                               decoration: InputDecoration(
-                                icon: Icon(Icons.person, size: 50.0),
+                                icon: Icon(Icons.person, size: 50.0, color: Colors.black54),
                                 labelText: 'First Name',
-                                labelStyle: TextStyle(color: Colors.black),
-                                enabledBorder: new UnderlineInputBorder(
-                                  borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
-                                ),  
-                                focusedBorder: new UnderlineInputBorder(
-                                  borderSide: BorderSide(width: 4.0, color: amigoRed),
+                                labelStyle: TextStyle(color: Colors.black54),
+                                enabledBorder: InputBorder.none, 
+                                focusedBorder: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5.0),
+                            child: TextField(
+                              controller: _lastNameController,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black
+                              ),
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.person, size: 50.0, color: Colors.black54),
+                                labelText: 'Last Name',
+                                labelStyle: TextStyle(color: Colors.black54),
+                                enabledBorder: InputBorder.none, 
+                                focusedBorder: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5.0),
+                            child: TextField(
+                              controller: _emailController,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black
+                              ),
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.mail_outline, size: 50.0, color: Colors.black54),
+                                labelText: 'Email',
+                                labelStyle: TextStyle(color: Colors.black54),
+                                enabledBorder: InputBorder.none, 
+                                focusedBorder: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5.0),
+                            child: FlatButton(
+                              onPressed: () {
+                                showSearch(
+                                  context: context,
+                                  delegate: SchoolSearchDelegate(user: user)
+                                );
+                              },
+                              padding: EdgeInsets.all(0),
+                              child: TextField(
+                                enabled: false,
+                                controller: _schoolController,
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.school, size: 50.0, color: Colors.black54),
+                                  labelText: 'School',
+                                  labelStyle: TextStyle(color: Colors.black54),
+                                  enabledBorder: InputBorder.none, 
+                                  focusedBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
                                 ),
                               ),
                             ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(bottom: 5.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: Colors.black54,
-                                    size: 50.0,
-                                  )
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("Last Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                      Text(user["last_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
-                                    ],
-                                  )
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 5.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: Icon(
-                                    Icons.mail_outline,
-                                    color: Colors.black54,
-                                    size: 50.0,
-                                  )
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("Email", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                      Text(user["email"], style: TextStyle(fontSize: 18.0, color: Colors.black))
-                                    ],
-                                  )
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 5.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: Icon(
-                                    Icons.school,
-                                    color: Colors.black54,
-                                    size: 50.0,
-                                  )
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("School", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                      FlatButton(
-                                        onPressed: () {
-                                          showSearch(
-                                            context: context,
-                                            delegate: SchoolSearchDelegate(user: user)
-                                          );
-                                        },
-                                        child: Text(school == null ? user["school_name"] : school["name"])
-                                      )
-                                    ],
-                                  )
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 5.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: Icon(
-                                    Icons.lock,
-                                    color: Colors.black54,
-                                    size: 50.0,
-                                  )
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("Password", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                      Text("Password", style: TextStyle(fontSize: 18.0, color: Colors.black))
-                                    ],
-                                  )
-                                )
-                              ],
+                            child: TextField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black
+                              ),
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.lock, size: 50.0, color: Colors.black54),
+                                labelText: 'Password',
+                                labelStyle: TextStyle(color: Colors.black54),
+                                enabledBorder: InputBorder.none, 
+                                focusedBorder: InputBorder.none,
+                              ),
                             ),
                           ),
                         ],
