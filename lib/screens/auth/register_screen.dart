@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 import 'package:amigo_mobile/screens/auth/login_screen.dart';
+import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -15,7 +16,7 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
-  String schoolId;
+  Map school;
 
   void displayDialog(context, title, text) => showDialog(
     context: context,
@@ -26,17 +27,17 @@ class RegisterPage extends StatelessWidget {
       ),
   );
 
-  Future<String> attemptSignUp(String email, String password, String confirm, String firstName, String lastName, String displayName, String schoolId) async {
+  Future<String> attemptSignUp() async {
     var res = await http.post(
       '$SERVER_URL/api/signup',
       body: {
-        "email": email,
-        "password": password,
-        "confirmation_password": confirm,
-        "first_name": firstName,
-        "last_name": lastName,
-        "display_name": displayName,
-        "school_id": schoolId
+        "email": _emailController.text,
+        "password": _passwordController.text,
+        "confirmation_password": _confirmController.text,
+        "first_name": _firstNameController.text,
+        "last_name": _lastNameController.text,
+        "display_name": _displayNameController.text,
+        "school_id": school["school_id"];
       }
     );
     if(res.statusCode == 200) return res.body;
@@ -114,6 +115,28 @@ class RegisterPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
+                  child: TextField(
+                    controller: _confirmController,
+                    obscureText: true,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      height: 1.5,
+                      color: Colors.black                  
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      labelStyle: TextStyle(color: Colors.black),
+                      enabledBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                      ),  
+                      focusedBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: amigoRed),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 14.0,
@@ -121,28 +144,19 @@ class RegisterPage extends StatelessWidget {
                       color: amigoRed,
                       textColor: Colors.white,
                       onPressed: () async {
-                        var email = _emailController.text;
-                        var password = _passwordController.text;
-                        var res = await attemptLogIn(email, password);
+                        var res = await attemptSignUp();
                         if (res == null) {
-                          displayDialog(context, "Error", "Please try again or register if you don't already have an account");
+                          displayDialog(context, "Error", "An error occured please try again");
                           return;
                         }
                         var jsonRes = json.decode(res);
                         if(jsonRes["success"]) {
-                          var jwt = jsonRes["x-access-token"];
-                          storage.write(key: "jwt", value: jwt);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainPage()
-                            )
-                          );
+                          displayDialog(context, "Success!", jsonRes["message"] + "Please verify the account with the email provided and then login with your credentials.");
                         } else {
-                          displayDialog(context, jsonRes["message"], "Please try again or register if you don't already have an account");
+                          displayDialog(context, "Error", "Error with values provided, please fix errors and try again");
                         }
                       },
-                      child: Text("Log In", style: TextStyle(fontSize: 16.0))
+                      child: Text("Sign up", style: TextStyle(fontSize: 16.0))
                     )
                   ),
                 ),
@@ -153,7 +167,7 @@ class RegisterPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RegisterPage(),
+                          builder: (context) => LoginPage(),
                         ),
                       );
                     },
