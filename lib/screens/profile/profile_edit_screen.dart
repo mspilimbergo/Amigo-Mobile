@@ -9,7 +9,7 @@ import 'package:amigo_mobile/util/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:amigo_mobile/screens/profile/school_search_delegate.dart';
 import 'package:dio/dio.dart';
-import 'package:amigo_mobile/screens/profile/profile_screen.dart';
+import 'package:amigo_mobile/screens/main/main_screen.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "http://10.0.2.2:3000";
@@ -173,7 +173,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               print("printing status code");
                               print(res.statusCode);
                               if (res.statusCode == 200) {
-                                return Navigator.pop(context);
+                                return Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MainPage(initialIndex: 2)
+                                  ),
+                                );
                               } else {
                                 return displayDialog(context, "Error", "There was an error editing your profile");
                               }

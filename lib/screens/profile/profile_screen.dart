@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:amigo_mobile/util/colors.dart';
 import 'package:amigo_mobile/util/profile_background.dart';
 import 'package:amigo_mobile/screens/auth/login_screen.dart';
@@ -156,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 20.0, right: 20.0),
                                   child: CircleAvatar(
-                                    backgroundImage: user["photo"] != null ? NetworkImage(user["photo"]) : AssetImage('assets/profile-placeholder.jpg'),
+                                    backgroundImage: user["photo"] != null ? NetworkImage(user["photo"]+ "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/profile-placeholder.jpg'),
                                     radius: MediaQuery.of(context).size.height / 16,
                                   ),
                                 ),
