@@ -37,7 +37,7 @@ class RegisterPage extends StatelessWidget {
         "first_name": _firstNameController.text,
         "last_name": _lastNameController.text,
         "display_name": _displayNameController.text,
-        "school_id": school["school_id"];
+        "school_id": school["school_id"]
       }
     );
     if(res.statusCode == 200) return res.body;
@@ -51,131 +51,42 @@ class RegisterPage extends StatelessWidget {
       child: 
       Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Welcome back,',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40.0),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
-                  child: Text(
-                    'Please sign in below',
-                    style: new TextStyle(color: Colors.grey)
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          behavior: HitTestBehavior.translucent,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(left: 30.0, right: 30.0, top: MediaQuery.of(context).size.height / 10),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Sign Up',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50.0),
                   ),
-                ),
-                TextField(
-                  controller: _displayNameController,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    height: 1.5,
-                    color: Colors.black                  
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'First Name',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
-                    ),  
-                    focusedBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: amigoRed),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 30.0),
+                    child: Text(
+                      'Sign up to join!',
+                      style: new TextStyle(color: Colors.grey, fontSize: 18.0)
                     ),
                   ),
-                ),
-                TextField(
-                  controller: _firstNameController,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    height: 1.5,
-                    color: Colors.black                  
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'First Name',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
-                    ),  
-                    focusedBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: amigoRed),
-                    ),
-                  ),
-                ),
-                TextField(
-                  controller: _lastNameController,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    height: 1.5,
-                    color: Colors.black                  
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'Last Name',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
-                    ),  
-                    focusedBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: amigoRed),
-                    ),
-                  ),
-                ),
-                TextField(
-                  controller: _emailController,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    height: 1.5,
-                    color: Colors.black                  
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
-                    ),  
-                    focusedBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: amigoRed),
-                    ),
-                  ),
-                ),
-                TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    height: 1.5,
-                    color: Colors.black                  
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
-                    ),  
-                    focusedBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: amigoRed),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
-                  child: TextField(
-                    controller: _confirmController,
-                    obscureText: true,
+                  TextField(
+                    controller: _displayNameController,
                     style: TextStyle(
                       fontSize: 16.0,
                       height: 1.5,
                       color: Colors.black                  
                     ),
                     decoration: InputDecoration(
-                      labelText: 'Confirm Password',
+                      labelText: 'Display Name',
                       labelStyle: TextStyle(color: Colors.black),
                       enabledBorder: new UnderlineInputBorder(
                         borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
@@ -185,61 +96,159 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 14.0,
-                    child: new FlatButton(
-                      color: amigoRed,
-                      textColor: Colors.white,
-                      onPressed: () async {
-                        var res = await attemptSignUp();
-                        if (res == null) {
-                          displayDialog(context, "Error", "An error occured please try again");
-                          return;
-                        }
-                        var jsonRes = json.decode(res);
-                        if(jsonRes["success"]) {
-                          displayDialog(context, "Success!", jsonRes["message"] + "Please verify the account with the email provided and then login with your credentials.");
-                        } else {
-                          displayDialog(context, "Error", "Error with values provided, please fix errors and try again");
-                        }
-                      },
-                      child: Text("Sign up", style: TextStyle(fontSize: 16.0))
-                    )
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: new FlatButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                      );
-                    },
-                    child: new RichText(
-                      text: new TextSpan(
-                        // Note: Styles for TextSpans must be explicitly defined.
-                        // Child text spans will inherit styles from parent
-                        style: new TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.grey,
-                        ),
-                        children: <TextSpan>[
-                          new TextSpan(text: 'Don\'t have an account yet? '),
-                          new TextSpan(text: 'Sign up now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
-                        ],
+                  TextField(
+                    controller: _firstNameController,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      height: 1.5,
+                      color: Colors.black                  
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'First Name',
+                      labelStyle: TextStyle(color: Colors.black),
+                      enabledBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                      ),  
+                      focusedBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: amigoRed),
                       ),
+                    ),
+                  ),
+                  TextField(
+                    controller: _lastNameController,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      height: 1.5,
+                      color: Colors.black                  
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Last Name',
+                      labelStyle: TextStyle(color: Colors.black),
+                      enabledBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                      ),  
+                      focusedBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: amigoRed),
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    controller: _emailController,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      height: 1.5,
+                      color: Colors.black                  
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(color: Colors.black),
+                      enabledBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                      ),  
+                      focusedBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: amigoRed),
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      height: 1.5,
+                      color: Colors.black                  
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: Colors.black),
+                      enabledBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                      ),  
+                      focusedBorder: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 4.0, color: amigoRed),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
+                    child: TextField(
+                      controller: _confirmController,
+                      obscureText: true,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        height: 1.5,
+                        color: Colors.black                  
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: TextStyle(color: Colors.black),
+                        enabledBorder: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                        ),  
+                        focusedBorder: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 4.0, color: amigoRed),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 14.0,
+                      child: new FlatButton(
+                        color: amigoRed,
+                        textColor: Colors.white,
+                        onPressed: () async {
+                          var res = await attemptSignUp();
+                          if (res == null) {
+                            displayDialog(context, "Error", "An error occured please try again");
+                            return;
+                          }
+                          var jsonRes = json.decode(res);
+                          if(jsonRes["success"]) {
+                            displayDialog(context, "Success!", jsonRes["message"] + "Please verify the account with the email provided and then login with your credentials.");
+                          } else {
+                            displayDialog(context, "Error", "Error with values provided, please fix errors and try again");
+                          }
+                        },
+                        child: Text("Sign up", style: TextStyle(fontSize: 16.0))
+                      )
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: new FlatButton(
+                        onPressed: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
+                        },
+                        child: new RichText(
+                          text: new TextSpan(
+                            // Note: Styles for TextSpans must be explicitly defined.
+                            // Child text spans will inherit styles from parent
+                            style: new TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                            children: <TextSpan>[
+                              new TextSpan(text: 'Don\'t have an account yet? '),
+                              new TextSpan(text: 'Sign up now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        )
+                      )
                     )
                   )
-                )
-              ],
-            ),
+                ],
+              ),
+            )
           )
         )
       )

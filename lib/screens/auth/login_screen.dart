@@ -52,15 +52,15 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Welcome back,',
+                  'Welcome Back!',
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40.0),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 45.0),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
                   child: Text(
                     'Please sign in below',
-                    style: new TextStyle(color: Colors.grey)
+                    style: new TextStyle(color: Colors.grey, fontSize: 16.0)
                   ),
                 ),
                 TextField(
