@@ -1,20 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
 
-class ChannelCard extends StatelessWidget {
-  final String channelId;
-  final String name;
-  final String description;
-  final int memberCount;
-  final String photo;
+class ChannelCard extends StatefulWidget {
+    final String channelId;
+    final String name;
+    final String description;
+    final int memberCount;
+    final String photo;
 
-  ChannelCard(this.channelId, this.name, this.description, this.memberCount,
-      this.photo);
+    const ChannelCard ({@required this.channelId, this.name,  @required this.description, this. memberCount, this.photo });
+
+    @override
+    _ChannelCardState createState() => _ChannelCardState();
+}
+
+class _ChannelCardState extends State<ChannelCard> {
+  bool isChannelSelected;
+  String channelId;
+  String name;
+  String description;
+  int memberCount;
+  String photo;
+
+  _ChannelCardState(this.channelId, this.name, this.description, this.memberCount)
+
+  final storage = FlutterSecureStorage();
+  final SERVER_URL = "https://amigo-269801.appspot.com";
+
+  void addUserToChannel(String channelId) async {
+    var key = await storage.read(key: "jwt");
+
+    var res = await http.post(
+      "$SERVER_URL/api/channels/join",
+      headers: {"x-access-token": key},
+      body: {
+        "channel_id": channelId
+      }
+    );
+
+    if (res.statusCode == 200) {
+      print('User was added to channel');
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
         height: 100,
         child: Card(
-            color: Colors.transparent,
+            color: Colors.white10,
             elevation: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,7 +67,6 @@ class ChannelCard extends StatelessWidget {
                 Container(
                     height: 100,
                     width: 180,
-                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,9 +94,7 @@ class ChannelCard extends StatelessWidget {
                                   fontWeight: FontWeight.bold, fontSize: 11)),
                         ])),
                 OutlineButton(
-                    onPressed: () {
-                      print("Joining");
-                    },
+                    onPressed: () => addUserToChannel(channelId),
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Text("Join"),
                     borderSide: BorderSide(
@@ -69,5 +104,5 @@ class ChannelCard extends StatelessWidget {
                     ))
               ],
             )));
+    }
   }
-}
