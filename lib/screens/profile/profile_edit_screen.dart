@@ -157,7 +157,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               color: Colors.black54,
                               child: Text("Cancel", style: TextStyle(fontSize: 16.0, color: Colors.white),),
                               onPressed: () {
-                                Navigator.pop(context);
+                                return Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MainPage(initialIndex: 2)
+                                  ),
+                                );
                               }
                             ),
                           ),
@@ -166,10 +171,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             child: Text("Save", style: TextStyle(fontSize: 16.0, color: Colors.white),),
                             onPressed: () async {
                               Response res = await updateUser();
-                              print("printing res");
-                              print(res);
-                              print("printing status code");
-                              print(res.statusCode);
                               if (res.statusCode == 200) {
                                 return Navigator.push(
                                   context,

@@ -25,6 +25,12 @@ class MainPageState extends State<MainPage> {
 
   MainPageState({Key key, @required this.initialIndex});
 
+  @override 
+  void initState() {
+    super.initState();
+    selectedIndex = initialIndex;
+  }
+
   final titles = ["Chats", "What are your interests?", "Profile"];
 
   @override
@@ -60,7 +66,7 @@ class MainPageState extends State<MainPage> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.perm_identity), title: Text('Profile')),
           ],
-          currentIndex: selectedIndex != null ? selectedIndex : initialIndex,
+          currentIndex: selectedIndex,
           onTap: onItemTapped,
         ),
       )
