@@ -9,6 +9,7 @@ import 'package:amigo_mobile/util/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:amigo_mobile/screens/profile/school_search_delegate.dart';
 import 'package:dio/dio.dart';
+import 'package:amigo_mobile/screens/profile/profile_screen.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "http://10.0.2.2:3000";
@@ -64,18 +65,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
     });
   }
 
-  Future<String> updateUser() async {
+  void displayDialog(context, title, text) => showDialog(
+    context: context,
+    builder: (context) =>
+      AlertDialog(
+        title: Text(title),
+        content: Text(text)
+      ),
+  );
+
+  Future<Response> updateUser() async {
     var dio = Dio();
+    print("Updating");
     var key = await storage.read(key: "jwt");
     FormData formData = FormData.fromMap({
       "display_name": _displayNameController.text,
       "first_name": _firstNameController.text,
       "last_name": _lastNameController.text,
       "email": _emailController.text,
-      "school_id": school == null ? school["school_id"] : user["school_id"],
+      "school_id": school == null ? user["school_id"] : school["school_id"],
       "password": _passwordController.text,
-      "file": _image == null ? await MultipartFile.fromFile(_image.path) : null,
+      "file": _image == null ? user["photo"] : await MultipartFile.fromFile(_image.path)
     });
+    print("Got the form data");
+    print(formData.fields);
+    print(formData.files);
     Response response = await dio.post(
       "$SERVER_URL/api/user",
       data: formData,
@@ -85,7 +99,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
       ) 
     );
-    print(response);
+    return response;
+    // var request = new http.MultipartRequest("POST","$S");
+    // request.fields['display_name'] = 'someone@somewhere.com';
+    // request.files.add(http.MultipartFile.fromPath(
+    //     'package',
+    //     'build/package.tar.gz',
+    //     contentType: new MediaType('application', 'x-tar'),
+    // ));
+    // request.send().then((response) {
+    //   if (response.statusCode == 200) print("Uploaded!");
+    // });
   }
 
   void getSchools() async {
@@ -142,7 +166,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           FlatButton(
                             color: Colors.black54,
                             child: Text("Save", style: TextStyle(fontSize: 16.0, color: Colors.white),),
-                            onPressed: () {}
+                            onPressed: () async {
+                              Response res = await updateUser();
+                              print("printing res");
+                              print(res);
+                              print("printing status code");
+                              print(res.statusCode);
+                              if (res.statusCode == 200) {
+                                return Navigator.pop(context);
+                              } else {
+                                return displayDialog(context, "Error", "There was an error editing your profile");
+                              }
+                            }
                           )
                         ],
                       )
@@ -182,11 +217,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               radius: MediaQuery.of(context).size.height / 16,
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 5.0),
+                          new Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 20.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
                                 FlatButton(
                                   color: amigoRed,
@@ -201,6 +237,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               ]
                             )
                           ),
+                          )
                         ]
                       )
                     ),
