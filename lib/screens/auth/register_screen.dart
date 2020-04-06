@@ -9,17 +9,33 @@ import 'package:amigo_mobile/screens/auth/school_search_delegate.dart';
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  final Map school;
+  RegisterPage({Key key, @required this.school}) : super(key: key);
+
+  @override
+  _RegisterPageState createState() => _RegisterPageState(school: school);
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
-  final TextEditingController _schoolController = TextEditingController(text: school["school_name"]);
+  final TextEditingController _schoolController = TextEditingController();
   final Map school;
 
-  RegisterPage({Key key, @required this.school}) : super(key: key);
+  _RegisterPageState({Key key, @required this.school});
+
+  @override
+  void initState() {
+    super.initState();
+    if (school != null) {
+      _schoolController.text = school["name"];
+    }
+  }
 
   void displayDialog(context, title, text) => showDialog(
     context: context,
@@ -40,7 +56,7 @@ class RegisterPage extends StatelessWidget {
         "first_name": _firstNameController.text,
         "last_name": _lastNameController.text,
         "display_name": _displayNameController.text,
-        "school_id": _schoolController.text
+        "school_id": school["school_id"]
       }
     );
     if(res.statusCode == 200) return res.body;
@@ -271,8 +287,8 @@ class RegisterPage extends StatelessWidget {
                               color: Colors.grey,
                             ),
                             children: <TextSpan>[
-                              new TextSpan(text: 'Don\'t have an account yet? '),
-                              new TextSpan(text: 'Sign up now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
+                              new TextSpan(text: 'Already have an account yet? '),
+                              new TextSpan(text: 'Log in!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         )
