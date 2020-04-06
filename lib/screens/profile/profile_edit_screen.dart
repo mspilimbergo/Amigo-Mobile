@@ -14,11 +14,12 @@ final SERVER_URL = "http://10.0.2.2:3000";
 
 class EditProfilePage extends StatefulWidget {
   final Map user;
+  final school;
 
-  EditProfilePage({Key key, @required this.user}) : super(key: key);
+  EditProfilePage({Key key, @required this.user, @required this.school}) : super(key: key);
 
   @override
-  _EditProfilePageState createState() => _EditProfilePageState(user: user);
+  _EditProfilePageState createState() => _EditProfilePageState(user: user, school: school);
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
@@ -30,10 +31,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController _passwordController = TextEditingController();
   File _image;
   List schools = new List();
-  String schoolName;
-  String schoolId;
+  final school;
 
-  _EditProfilePageState({Key key, @required this.user});
+  _EditProfilePageState({Key key, @required this.user, @required this.school});
 
   @override
   void initState() {
@@ -343,13 +343,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       Text("School", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
                                       FlatButton(
                                         onPressed: () {
-                                          var res = showSearch(
+                                          showSearch(
                                             context: context,
-                                            delegate: SchoolSearchDelegate()
+                                            delegate: SchoolSearchDelegate(user: user)
                                           );
-                                          print(res);
                                         },
-                                        child: Text(user['school_name'])
+                                        child: Text(school == null ? user["school_name"] : school["name"])
                                       )
                                     ],
                                   )

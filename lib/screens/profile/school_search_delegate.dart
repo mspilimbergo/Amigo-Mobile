@@ -1,14 +1,17 @@
+import 'package:amigo_mobile/screens/profile/profile_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
 
-class SchoolSearchDelegate extends SearchDelegate {
-  final storage = FlutterSecureStorage();
+final storage = FlutterSecureStorage();
 final SERVER_URL = "http://10.0.2.2:3000";
-  String query = '';
 
-  SchoolSearchDelegate({Key key });
+class SchoolSearchDelegate extends SearchDelegate {
+  String query = '';
+  final Map user;
+
+  SchoolSearchDelegate({Key key, @required this.user });
 
   Future<String> searchSchools(String query) async {
     var key = await storage.read(key: "jwt");
@@ -216,7 +219,13 @@ final SERVER_URL = "http://10.0.2.2:3000";
   );
   }
 
-  void close(BuildContext context, result) {
-    Navigator.of(context).pop(result);
+  close(BuildContext context, result) {
+    print(result);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfilePage(user: user, school: result)
+      ),
+    );
   }
 }
