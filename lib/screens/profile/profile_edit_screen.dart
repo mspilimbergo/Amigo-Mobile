@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:amigo_mobile/util/profile_background.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:amigo_mobile/util/colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:amigo_mobile/screens/profile/school_search_delegate.dart';
 
 final storage = FlutterSecureStorage();
+final SERVER_URL = "http://10.0.2.2:3000";
 
 class EditProfilePage extends StatefulWidget {
   final Map user;
@@ -19,9 +23,23 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final Map user;
+  final TextEditingController _displayNameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   File _image;
+  List schools = new List();
+  String schoolName;
+  String schoolId;
 
   _EditProfilePageState({Key key, @required this.user});
+
+  @override
+  void initState() {
+    super.initState();
+    getSchools();
+  }
 
   Future getCameraImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -37,6 +55,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
     setState(() {
       _image = image;
     });
+  }
+
+  Future<String> updateUser() async {
+    var res = await http.post(
+      "$SERVER_URL/api/login",
+    );
+    if(res.statusCode == 200) return res.body;
+    return null;
+  }
+
+  void getSchools() async {
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "$SERVER_URL/api/schools",
+      headers: { "x-access-token": key },
+    );
+    print(json.decode(res.body)["schools"]);
+    if(res.statusCode == 200) {
+      setState(() {
+        schools = json.decode(res.body)["schools"];
+      });
+    }
   }
 
   @override
@@ -64,10 +104,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         'Edit Profile',
                         style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.bold)
                       ),
-                      FlatButton(
-                        color: Colors.black54,
-                        child: Text("Save", style: TextStyle(fontSize: 16.0, color: Colors.white),),
-                        onPressed: () {}
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 10.0),
+                            child: FlatButton(
+                              color: Colors.black54,
+                              child: Text("Cancel", style: TextStyle(fontSize: 16.0, color: Colors.white),),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                            ),
+                          ),
+                          FlatButton(
+                            color: Colors.black54,
+                            child: Text("Save", style: TextStyle(fontSize: 16.0, color: Colors.white),),
+                            onPressed: () {}
+                          )
+                        ],
                       )
                     ]
                   )
@@ -158,7 +212,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 Padding(
                                   padding: EdgeInsets.only(right: 20.0),
                                   child: Icon(
-                                    Icons.account_circle,
+                                    Icons.person,
                                     color: Colors.black54,
                                     size: 50.0,
                                   )
@@ -172,6 +226,64 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     children: <Widget>[
                                       Text("Display Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
                                       Text(user["display_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                    ],
+                                  )
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20.0),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Colors.black54,
+                                    size: 50.0,
+                                  )
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20.0),
+                                  child: 
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("First Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                                      Text(user["first_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                    ],
+                                  )
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20.0),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Colors.black54,
+                                    size: 50.0,
+                                  )
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20.0),
+                                  child: 
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Last Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+                                      Text(user["last_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
                                     ],
                                   )
                                 )
@@ -229,7 +341,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text("School", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                      Text(user["school_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
+                                      FlatButton(
+                                        onPressed: () {
+                                          var res = showSearch(
+                                            context: context,
+                                            delegate: SchoolSearchDelegate()
+                                          );
+                                          print(res);
+                                        },
+                                        child: Text(user['school_name'])
+                                      )
                                     ],
                                   )
                                 )

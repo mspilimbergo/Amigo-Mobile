@@ -204,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Padding(
                                         padding: EdgeInsets.only(right: 20.0),
                                         child: Icon(
-                                          Icons.account_circle,
+                                          Icons.person,
                                           color: Colors.black54,
                                           size: 50.0,
                                         )
