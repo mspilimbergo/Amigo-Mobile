@@ -234,31 +234,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(bottom: 5.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: Colors.black54,
-                                    size: 50.0,
-                                  )
+                            child: TextField(
+                              controller: _firstNameController,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black
+                              ),
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.person, size: 50.0),
+                                labelText: 'First Name',
+                                labelStyle: TextStyle(color: Colors.black),
+                                enabledBorder: new UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                                ),  
+                                focusedBorder: new UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 4.0, color: amigoRed),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("First Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                      Text(user["first_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
-                                    ],
-                                  )
-                                )
-                              ],
+                              ),
                             ),
                           ),
                           Padding(
