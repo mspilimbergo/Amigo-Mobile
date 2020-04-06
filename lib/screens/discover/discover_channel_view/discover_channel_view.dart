@@ -118,11 +118,11 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
                           if (index == channels.length) return null;
                           return ChannelCard(
-                            channels[index].channelId,
-                            channels[index].name,
-                            channels[index].description,
-                            12,
-                            'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
+                            channelId: channels[index].channelId,
+                            name: channels[index].name,
+                            description: channels[index].description,
+                            memberCount: 12,
+                            photo: 'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
                           );
                         })
                     );

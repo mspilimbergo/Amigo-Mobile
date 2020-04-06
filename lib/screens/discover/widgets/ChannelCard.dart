@@ -10,21 +10,13 @@ class ChannelCard extends StatefulWidget {
     final int memberCount;
     final String photo;
 
-    const ChannelCard ({@required this.channelId, this.name,  @required this.description, this. memberCount, this.photo });
+    const ChannelCard ({Key key, @required this.channelId, @required this.name, @required this.description, @required this. memberCount, @required this.photo }) : super(key:key);
 
     @override
     _ChannelCardState createState() => _ChannelCardState();
 }
 
 class _ChannelCardState extends State<ChannelCard> {
-  bool isChannelSelected;
-  String channelId;
-  String name;
-  String description;
-  int memberCount;
-  String photo;
-
-  _ChannelCardState(this.channelId, this.name, this.description, this.memberCount)
 
   final storage = FlutterSecureStorage();
   final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -71,7 +63,7 @@ class _ChannelCardState extends State<ChannelCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("$name",
+                          Text(widget.name,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(
@@ -80,21 +72,21 @@ class _ChannelCardState extends State<ChannelCard> {
                           Expanded(
                             child: Container(
                               child: Text(
-                                "$description",
+                                widget.description,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 4,
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
                           ),
-                          Text("$memberCount members",
+                          Text(widget.memberCount.toString(),
                               overflow: TextOverflow.fade,
                               maxLines: 1,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 11)),
                         ])),
                 OutlineButton(
-                    onPressed: () => addUserToChannel(channelId),
+                    onPressed: () => addUserToChannel(widget.channelId),
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Text("Join"),
                     borderSide: BorderSide(
