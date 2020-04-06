@@ -8,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:amigo_mobile/util/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:amigo_mobile/screens/profile/school_search_delegate.dart';
+import 'package:dio/dio.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "http://10.0.2.2:3000";
@@ -64,11 +65,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<String> updateUser() async {
-    var res = await http.post(
-      "$SERVER_URL/api/login",
+    var dio = Dio();
+    var key = await storage.read(key: "jwt");
+    FormData formData = FormData.fromMap({
+      "display_name": _displayNameController.text,
+      "first_name": _firstNameController.text,
+      "last_name": _lastNameController.text,
+      "email": _emailController.text,
+      "school_id": school == null ? school["school_id"] : user["school_id"],
+      "password": _passwordController.text,
+      "file": _image == null ? await MultipartFile.fromFile(_image.path) : null,
+    });
+    Response response = await dio.post(
+      "$SERVER_URL/api/user",
+      data: formData,
+      options: RequestOptions(
+        headers: {
+          "x-access-token": key,
+        },
+      ) 
     );
-    if(res.statusCode == 200) return res.body;
-    return null;
+    print(response);
   }
 
   void getSchools() async {
