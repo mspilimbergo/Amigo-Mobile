@@ -1,54 +1,75 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../home/home_screen.dart';
-import '../../classes/tag_class.dart';
+import 'package:amigo_mobile/screens/chat/chat_list_screen.dart';
+import 'package:amigo_mobile/screens/discover/discover_tag_view/discover_tag_view.dart';
+import 'package:amigo_mobile/util/colors.dart';
+import 'package:amigo_mobile/screens/profile/profile_screen.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key}) : super(key: key);
+  final int initialIndex;
+
+  MainPage({Key key, @required this.initialIndex}) : super(key: key);
 
   @override
-  MainPageState createState() => MainPageState();
+  MainPageState createState() => MainPageState(initialIndex: initialIndex);
 }
 
 class MainPageState extends State<MainPage> {
-  int selectedIndex = 0;
+  final int initialIndex;
+  int selectedIndex;
   final widgetOptions = [
-    new HomePage(
-      tags: List.generate(
-        20,
-        (i) => Tag(
-          'Tag $i',
-          'This is the sample description for tag $i. We\'re leaving it a little long in order to get the best possible idea of how this will look.'
-        ),
-      ),
-    ),
-    Text('Discover'),
-    Text('Profile'),
+    new ChatListPage(),
+    new DiscoverTagView(),
+    new ProfilePage(),
   ];
+
+  MainPageState({Key key, @required this.initialIndex});
+
+  @override 
+  void initState() {
+    super.initState();
+    selectedIndex = initialIndex;
+  }
+
+  final titles = ["Chats", "What are your interests?", "Profile"];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Amigo'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: widgetOptions.elementAt(selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search), title: Text('Discover')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), title: Text('Profile')),
-        ],
-        currentIndex: selectedIndex,
-        fixedColor: Colors.deepPurple,
-        onTap: onItemTapped,
-      ),
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: (selectedIndex == 1)
+        ? AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            iconTheme: new IconThemeData(color: Colors.red),
+            title: Center(
+                child: Text(
+              "${titles[selectedIndex]}",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                  color: Colors.red, fontSize: 30, fontWeight: FontWeight.w400),
+            )),
+          )
+        : null,
+        body: Center(
+          child: widgetOptions.elementAt(selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          selectedItemColor: amigoRed,
+          unselectedItemColor: Colors.grey,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), title: Text('Chats')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.search), title: Text('Discover')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.perm_identity), title: Text('Profile')),
+          ],
+          currentIndex: selectedIndex,
+          onTap: onItemTapped,
+        ),
+      )
     );
   }
 
