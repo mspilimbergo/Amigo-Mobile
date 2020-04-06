@@ -126,7 +126,7 @@ class LoginPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MainPage()
+                              builder: (context) => MainPage(initialIndex: 0)
                             )
                           );
                         } else {

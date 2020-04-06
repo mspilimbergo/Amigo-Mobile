@@ -6,17 +6,24 @@ import 'package:amigo_mobile/util/colors.dart';
 import 'package:amigo_mobile/screens/profile/profile_screen.dart';
 
 class MainPage extends StatefulWidget {
+  final int initialIndex;
+
+  MainPage({Key key, @required this.initialIndex}) : super(key: key);
+
   @override
-  MainPageState createState() => MainPageState();
+  MainPageState createState() => MainPageState(initialIndex: initialIndex);
 }
 
 class MainPageState extends State<MainPage> {
-  int selectedIndex = 0;
+  final int initialIndex;
+  int selectedIndex;
   final widgetOptions = [
     new ChatListPage(),
     new DiscoverTagView(),
     new ProfilePage(),
   ];
+
+  MainPageState({Key key, @required this.initialIndex});
 
   final titles = ["Chats", "What are your interests?", "Profile"];
 
@@ -53,7 +60,7 @@ class MainPageState extends State<MainPage> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.perm_identity), title: Text('Profile')),
           ],
-          currentIndex: selectedIndex,
+          currentIndex: selectedIndex != null ? selectedIndex : initialIndex,
           onTap: onItemTapped,
         ),
       )
