@@ -76,20 +76,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<Response> updateUser() async {
     var dio = Dio();
-    print("Updating");
     var key = await storage.read(key: "jwt");
-    FormData formData = FormData.fromMap({
-      "display_name": _displayNameController.text,
-      "first_name": _firstNameController.text,
-      "last_name": _lastNameController.text,
-      "email": _emailController.text,
-      "school_id": school == null ? user["school_id"] : school["school_id"],
-      "password": _passwordController.text,
-      "file": _image == null ? user["photo"] : await MultipartFile.fromFile(_image.path)
-    });
-    print("Got the form data");
-    print(formData.fields);
-    print(formData.files);
+    FormData formData;
+    if (_image != null) {
+      formData = FormData.fromMap({
+        "display_name": _displayNameController.text,
+        "first_name": _firstNameController.text,
+        "last_name": _lastNameController.text,
+        "email": _emailController.text,
+        "school_id": school == null ? user["school_id"] : school["school_id"],
+        "password": _passwordController.text,
+        "file": await MultipartFile.fromFile(_image.path),
+      });
+    } else {
+      formData = FormData.fromMap({
+        "display_name": _displayNameController.text,
+        "first_name": _firstNameController.text,
+        "last_name": _lastNameController.text,
+        "email": _emailController.text,
+        "school_id": school == null ? user["school_id"] : school["school_id"],
+        "password": _passwordController.text,
+      });
+    }
     Response response = await dio.post(
       "$SERVER_URL/api/user",
       data: formData,
@@ -100,16 +108,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ) 
     );
     return response;
-    // var request = new http.MultipartRequest("POST","$S");
-    // request.fields['display_name'] = 'someone@somewhere.com';
-    // request.files.add(http.MultipartFile.fromPath(
-    //     'package',
-    //     'build/package.tar.gz',
-    //     contentType: new MediaType('application', 'x-tar'),
-    // ));
-    // request.send().then((response) {
-    //   if (response.statusCode == 200) print("Uploaded!");
-    // });
   }
 
   void getSchools() async {
