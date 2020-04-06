@@ -299,7 +299,7 @@ class _ChatPageState extends State<ChatPage> {
         disconnect("default");
         return Navigator.push(
           context, 
-          MaterialPageRoute(builder: (context) => MainPage()),
+          MaterialPageRoute(builder: (context) => MainPage(initialIndex: 0)),
         );
       },
       child: Scaffold(

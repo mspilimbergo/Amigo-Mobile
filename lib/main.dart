@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: amigoRed,
       ),
       home: FutureBuilder(
-        future: jwtOrEmpty,            
+        future: jwtOrEmpty,      
         builder: (context, snapshot) {
           if(!snapshot.hasData) return CircularProgressIndicator();
           if(snapshot.data != "") {
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             } else {
               var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
               if(DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000).isAfter(DateTime.now())) {
-                return MainPage();
+                return MainPage(initialIndex: 0);
               } else {
                 return LoginPage();
               }

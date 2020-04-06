@@ -22,6 +22,8 @@ dependencies:
   adhara_socket_io: ^0.4.1
   getflutter: ^1.0.11
   rxdart: ^0.23.1
+  image_picker: ^0.6.4
+  dio: ^3.0.9
   flutter:
     sdk: flutter
 
@@ -39,6 +41,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

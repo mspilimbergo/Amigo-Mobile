@@ -11,7 +11,7 @@ final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class ChatListPage extends StatefulWidget {
-    @override
+  @override
   _ChatListPageState createState() => _ChatListPageState();
 }
 

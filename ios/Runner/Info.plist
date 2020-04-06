@@ -41,5 +41,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to your photo library in order to upload photos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to your photo library in order to upload photos</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to your photo library in order to use your voice</string>
 </dict>
 </plist>
