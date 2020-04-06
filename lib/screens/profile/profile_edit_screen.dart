@@ -38,6 +38,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
+    _displayNameController.text = user["display_name"];
+    _firstNameController.text = user["first_name"];
+    _lastNameController.text = user["last_name"];
+    _emailController.text = user["email"];
     getSchools();
   }
 
@@ -204,32 +208,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(bottom: 5.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: Colors.black54,
-                                    size: 50.0,
-                                  )
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.0),
-                                  child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("Display Name", style: TextStyle(fontSize: 12.0, color: Colors.black54)),
-                                      Text(user["display_name"], style: TextStyle(fontSize: 18.0, color: Colors.black))
-                                    ],
-                                  )
-                                )
-                              ],
+                            padding: EdgeInsets.only(bottom: 0),
+                            child: TextField(
+                              controller: _displayNameController,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black
+                              ),
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person, size: 50.0),
+                                labelText: 'Display Name',
+                                labelStyle: TextStyle(color: Colors.black),
+                                enabledBorder: InputBorder.none,  
+                                focusedBorder: InputBorder.none,
+                              ),
                             ),
                           ),
                           Padding(
