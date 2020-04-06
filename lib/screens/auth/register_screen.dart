@@ -1,10 +1,10 @@
-import 'package:amigo_mobile/screens/chat/user_search_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 import 'package:amigo_mobile/screens/auth/login_screen.dart';
 import 'package:amigo_mobile/util/colors.dart';
+import 'package:amigo_mobile/screens/auth/school_search_delegate.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -16,7 +16,10 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
-  Map school;
+  final TextEditingController _schoolController = TextEditingController(text: school["school_name"]);
+  final Map school;
+
+  RegisterPage({Key key, @required this.school}) : super(key: key);
 
   void displayDialog(context, title, text) => showDialog(
     context: context,
@@ -37,7 +40,7 @@ class RegisterPage extends StatelessWidget {
         "first_name": _firstNameController.text,
         "last_name": _lastNameController.text,
         "display_name": _displayNameController.text,
-        "school_id": school["school_id"]
+        "school_id": _schoolController.text
       }
     );
     if(res.statusCode == 200) return res.body;
@@ -147,6 +150,36 @@ class RegisterPage extends StatelessWidget {
                       ),  
                       focusedBorder: new UnderlineInputBorder(
                         borderSide: BorderSide(width: 4.0, color: amigoRed),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showSearch(
+                        context: context,
+                        delegate: SchoolSearchDelegate()
+                      );
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: TextField(
+                      enabled: false,
+                      controller: _schoolController,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'School',
+                        labelStyle: TextStyle(color: Colors.black),
+                        disabledBorder: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                        ),
+                        enabledBorder: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
+                        ),  
+                        focusedBorder: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 4.0, color: amigoRed),
+                        ),
                       ),
                     ),
                   ),

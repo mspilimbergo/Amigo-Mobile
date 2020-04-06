@@ -9,9 +9,6 @@ final SERVER_URL = "http://10.0.2.2:3000";
 
 class SchoolSearchDelegate extends SearchDelegate {
   String query = '';
-  final Map user;
-
-  SchoolSearchDelegate({Key key, @required this.user });
 
   Future<String> searchSchools(String query) async {
     var key = await storage.read(key: "jwt");
@@ -224,7 +221,7 @@ class SchoolSearchDelegate extends SearchDelegate {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RegisterPage()
+        builder: (context) => RegisterPage(school: result)
       ),
     );
   }
