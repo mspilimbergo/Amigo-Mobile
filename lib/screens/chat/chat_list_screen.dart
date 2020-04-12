@@ -1,14 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
 import 'package:amigo_mobile/screens/chat/chat_screen.dart';
 import 'package:amigo_mobile/screens/chat/user_search_delegate.dart';
 import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "https://amigo-269801.appspot.com";
+final SERVER_URL = "http://10.0.2.2:3000";
 
 class ChatListPage extends StatefulWidget {
   @override
@@ -207,7 +208,7 @@ class _ChatListPageState extends State<ChatListPage>
                               searchQuery == null || jsonSnap["channels"][index]["name"].toLowerCase().contains(searchQuery.toLowerCase()) ?
                                 listItem = ListTile(
                                   leading: CircleAvatar(
-                                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                                    backgroundImage: jsonSnap["channels"][index]["photo"] != null ? NetworkImage(jsonSnap["channels"][index]["photo"] + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                                   ),
                                   title: Text(jsonSnap["channels"][index]["name"]),
                                   subtitle: Text(jsonSnap["channels"][index]["description"]),
@@ -215,7 +216,7 @@ class _ChatListPageState extends State<ChatListPage>
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false)
+                                        builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false, photo: jsonSnap["channels"][index]["photo"])
                                       ),
                                     );
                                   },
@@ -292,14 +293,14 @@ class _ChatListPageState extends State<ChatListPage>
                               searchQuery == null || jsonSnap["users"][index]["display_name"].toLowerCase().contains(searchQuery.toLowerCase()) ?
                                  listItem = ListTile(
                                   leading: CircleAvatar(
-                                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                                    backgroundImage: jsonSnap["users"][index]["photo"] != null ? NetworkImage(jsonSnap["users"][index]["photo"] + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                                   ),
                                   title: Text(jsonSnap["users"][index]["display_name"]),
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true)
+                                        builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true, photo: jsonSnap["users"][index]["photo"])
                                       ),
                                     );
                                   },
