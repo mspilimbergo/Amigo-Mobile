@@ -32,7 +32,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
       "$SERVER_URL/api/tags?school_id=1&query=$searchQuery",
       headers: {"x-access-token": key},
     );
-
     if (res.statusCode == 200) {
       Map response = json.decode(res.body);
       setState(() {
@@ -155,8 +154,8 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                   child: TagButton(
                                       tagID: allTags[index].tagId,
                                       name: allTags[index].name,
-                                      photo:
-                                          "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg"),
+                                      photo: allTags[index].photo
+                                  )
                                 );
                               },
                               childCount: tagCount,
