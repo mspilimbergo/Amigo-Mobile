@@ -77,8 +77,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                       obscureText: false,
                       enableInteractiveSelection: true,
                       onChanged: (context) {
-                        setState(
-                          () {
+                        setState(() {
                             searchQuery = context;
                             getTags();
                           },
