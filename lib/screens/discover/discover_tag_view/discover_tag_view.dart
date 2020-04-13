@@ -42,7 +42,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
 
         allTags = Tag.fromJson(response).tags;
         tagCount = allTags.length;
-        print(allTags[0].name);
       });
     } else
       print(res.body.toString());
@@ -62,7 +61,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
 
         popularTags = Populartag.fromJson(response).tags;
         popularCount = popularTags.length;
-        print(popularTags[0].name);
       });
     } else
       print(res.body.toString());
@@ -139,7 +137,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                print(index);
                                 return Container(
                                   margin: EdgeInsets.symmetric(horizontal: 10),
                                   child: TagButton(
