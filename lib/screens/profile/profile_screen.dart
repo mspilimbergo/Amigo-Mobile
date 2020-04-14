@@ -10,7 +10,8 @@ import 'package:amigo_mobile/screens/auth/login_screen.dart';
 import 'package:amigo_mobile/screens/profile/profile_edit_screen.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.0.66:3000";
+// final SERVER_URL = "http://10.0.0.66:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 
 class ProfilePage extends StatefulWidget {

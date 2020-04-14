@@ -13,8 +13,8 @@ import 'dart:math';
 //String img = "https://media-exp1.licdn.com/dms/image/C560BAQG4QXbbg39AfQ/company-logo_100_100/0?e=2159024400&v=beta&t=QYCFMlTBClczprYLrvWL1W4sbCrWw0TmGfuUTapBmDY";
 String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
-// final SERVER_URL = "https://amigo-269801.appspot.com";
-final SERVER_URL = "http://10.0.0.66:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
+//final SERVER_URL = "http://10.0.0.66:3000";
 
 class DiscoverTagView extends StatefulWidget {
   final int screen; // 0 - DiscoverTagView  1 - Channel Create
@@ -129,7 +129,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                   text: TextSpan(
                       style: Theme.of(context).textTheme.body1,
                       children: [
-                    WidgetSpan(child: Icon(Icons.pin_drop, size: 20, color: Colors.grey[400],)),
+                    WidgetSpan(child: Icon(Icons.pin_drop, size: 19, color: Colors.grey[400],)),
                     TextSpan(
                         text: "University of Central Florida",
                         style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey[500])),
@@ -198,10 +198,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                         )),
                   ]))
                 ])),
-            Container(
-                child: Column(
-              children: <Widget>[],
-            ))
           ]),
     );
   }

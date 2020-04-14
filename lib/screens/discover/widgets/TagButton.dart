@@ -32,7 +32,7 @@ class TagButton extends StatelessWidget {
     return Container(
         child: Column(children: <Widget>[
       Container(
-          height: 125,
+          height: 117,
           width: 125,
           decoration: BoxDecoration(
             image:
