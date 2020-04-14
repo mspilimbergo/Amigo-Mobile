@@ -1,0 +1,52 @@
+PODS:
+  - adhara_socket_io (0.0.1):
+    - Flutter
+    - Socket.IO-Client-Swift
+    - Starscream
+  - Flutter (1.0.0)
+  - flutter_plugin_android_lifecycle (0.0.1):
+    - Flutter
+  - flutter_secure_storage (3.3.1):
+    - Flutter
+  - image_picker (0.0.1):
+    - Flutter
+  - Socket.IO-Client-Swift (15.2.0):
+    - Starscream (~> 3.1)
+  - Starscream (3.1.1)
+
+DEPENDENCIES:
+  - adhara_socket_io (from `.symlinks/plugins/adhara_socket_io/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Socket.IO-Client-Swift
+    - Starscream
+
+EXTERNAL SOURCES:
+  adhara_socket_io:
+    :path: ".symlinks/plugins/adhara_socket_io/ios"
+  Flutter:
+    :path: Flutter
+  flutter_plugin_android_lifecycle:
+    :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
+
+SPEC CHECKSUMS:
+  adhara_socket_io: a2f8b3079a0de70a1a3f5080a8429a4fb7ae9bea
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_plugin_android_lifecycle: 47de533a02850f070f5696a623995e93eddcdb9b
+  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  image_picker: e3eacd46b94694dde7cf2705955cece853aa1a8f
+  Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+
+PODFILE CHECKSUM: e45c292f618eeca3034958d33b444b6e1249b55f
+
+COCOAPODS: 1.8.4
