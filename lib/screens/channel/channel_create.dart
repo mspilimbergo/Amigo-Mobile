@@ -299,7 +299,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
                               width: 110,
                               child: OutlineButton(
                                   onPressed: () {
-                                    print("Joining");
+                                    createChannel();
                                   },
                                   child: Text(
                                     "Create",
