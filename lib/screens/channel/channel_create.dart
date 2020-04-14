@@ -281,11 +281,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
                               width: 110,
                               child: OutlineButton(
                                   onPressed: () {
-<<<<<<< HEAD
-                                    Navigator.of(context).pop();
-=======
                                     Navigator.pop(context);
->>>>>>> 95ab844b9de826676345b4d44c012598b9d3aa41
                                   },
                                   child: Text(
                                     "Cancel",

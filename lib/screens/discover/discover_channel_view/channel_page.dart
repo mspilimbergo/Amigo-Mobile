@@ -108,7 +108,7 @@ class _ChannelPageState extends State<ChannelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Channel Details', style: TextStyle(color: amigoRed)),
+        title: Text('Channel Details', style: TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: new IconThemeData(color: amigoRed)

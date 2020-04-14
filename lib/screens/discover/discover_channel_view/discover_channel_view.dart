@@ -82,7 +82,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
             Text(
             'Popular Channels',
             textAlign: TextAlign.start,
-            style: TextStyle(color: amigoRed, fontSize: 27, fontWeight: FontWeight.w500),
+            style: TextStyle(color: amigoRed, fontSize: 30, fontWeight: FontWeight.bold),
           ),
           ],)
         ),
@@ -94,7 +94,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
           child: Column(
             children: <Widget>[              
             Container(
-              height: 50,
+              height: 40,
               child: TextField(
               onChanged: (context) {
                 setState(() {
@@ -107,7 +107,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                 fillColor: Colors.grey[200],
                 hintText: 'Try "Pickup Soccer"',
                 prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
-                contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(10.0),

@@ -41,20 +41,10 @@ class TagButton extends StatelessWidget {
           ),
           child: FlatButton(
               onPressed: () {
-<<<<<<< HEAD
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      settings: RouteSettings(name: "ChannelView"),
-                        builder: (context) => DiscoverChannelView(
-                              tagSelected: tagID,
-                            )));
-=======
                 print("Screen $screen");
                 (screen == 0)
                     ? mainTagButtonFunc(context)
                     : channelTagButtonFunc(context);
->>>>>>> 95ab844b9de826676345b4d44c012598b9d3aa41
               },
               child: null)),
       Expanded(

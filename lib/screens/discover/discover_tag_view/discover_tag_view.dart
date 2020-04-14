@@ -88,13 +88,13 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                height: 50,
-                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                height: 40,
+                margin: EdgeInsets.only(top: 5),
                 child: TextField(
                   obscureText: false,
                   enableInteractiveSelection: true,
@@ -104,95 +104,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                         searchQuery = context;
                         getTags();
                       },
-<<<<<<< HEAD
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Try "Pickup Soccer"',
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                    )),
-                Container(
-                  margin: EdgeInsets.fromLTRB(20, 1, 0, 10),
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: RichText(
-                      text: TextSpan(
-                          style: Theme.of(context).textTheme.body1,
-                          children: [
-                        WidgetSpan(child: Icon(Icons.pin_drop, size: 20)),
-                        TextSpan(
-                            text: "University of Central Florida",
-                            style: TextStyle(fontWeight: FontWeight.w500)),
-                      ])),
-                ),
-                Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                      Expanded(
-                          child: CustomScrollView(slivers: <Widget>[
-                        SliverToBoxAdapter(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
-                                child: Text("Popular Now",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)))),
-                        SliverToBoxAdapter(
-                          child: Container(
-                              height: 150,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    if (index > 6)  return null;
-                                    return Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 10),
-                                      child: TagButton(
-                                          tagID: index.toString(),
-                                          name: "BasketballBasket",
-                                          photo:
-                                              "https://i.picsum.photos/id/${rng.nextInt(300)}/200/200.jpg"),
-                                    );
-                                  })),
-                        ),
-                        SliverToBoxAdapter(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(10, 5, 0, 5),
-                                child: Text("Categories",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)))),
-                        SliverGrid(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 0,
-                              childAspectRatio: .95,
-                            ),
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Container(
-                                  // margin: EdgeInsets.symmetric(horizontal: 5),
-                                  margin: EdgeInsets.all(1),
-                                  child: TagButton(
-                                      tagID: allTags[index].tagId,
-                                      name: allTags[index].name,
-                                      photo:
-                                          "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg"),
-                                );
-                              },
-                              childCount: tagCount,
-                            )),
-                      ]))
-                    ])),
-                Container(
-                    child: Column(
-                  children: <Widget>[],
-                ))
-              ]),
-        );
-=======
                     );
                   },
                   decoration: InputDecoration(
@@ -201,7 +112,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                     hintText: 'Try "Coding"',
                     prefixIcon:
                         Icon(Icons.search, color: Colors.grey, size: 20.0),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(10.0),
@@ -213,16 +124,15 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                   ),
                 )),
             Container(
-              margin: EdgeInsets.fromLTRB(20, 1, 0, 10),
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              margin: EdgeInsets.only(top: 15, bottom: 15),
               child: RichText(
                   text: TextSpan(
                       style: Theme.of(context).textTheme.body1,
                       children: [
-                    WidgetSpan(child: Icon(Icons.pin_drop, size: 20)),
+                    WidgetSpan(child: Icon(Icons.pin_drop, size: 20, color: Colors.grey[400],)),
                     TextSpan(
                         text: "University of Central Florida",
-                        style: TextStyle(fontWeight: FontWeight.w500)),
+                        style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey[500])),
                   ])),
             ),
             Expanded(
@@ -233,7 +143,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                       child: CustomScrollView(slivers: <Widget>[
                     SliverToBoxAdapter(
                         child: Container(
-                            margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
                             child: Text("Popular Now",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -245,7 +155,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                margin: EdgeInsets.symmetric(horizontal: 5),
                                 child: TagButton(
                                     screen: widget.screen,
                                     tagID: popularTags[index].tagId,
@@ -259,7 +169,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                     ),
                     SliverToBoxAdapter(
                         child: Container(
-                            margin: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                             child: Text("Categories",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -294,6 +204,5 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
             ))
           ]),
     );
->>>>>>> 95ab844b9de826676345b4d44c012598b9d3aa41
   }
 }
