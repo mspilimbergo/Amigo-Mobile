@@ -2,7 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../discover/discover_tag_view/discover_tag_view.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:dio/dio.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "http://10.0.2.2:3000";
@@ -14,16 +19,30 @@ class ChannelCreate extends StatefulWidget {
 
 class _ChannelCreateState extends State<ChannelCreate> {
   final double textboxheight = 30;
-
   String tagname;
-
   String tagid;
-
   String title;
-
   String description;
-
   String photo;
+  File _image;
+
+  var txt = TextEditingController();
+
+  Future getCameraImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  Future getLibraryImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   void createChannel() async {
     var key = await storage.read(key: "jwt");
@@ -35,15 +54,41 @@ class _ChannelCreateState extends State<ChannelCreate> {
       "description": description,
       "school_id": "1"
     });
-
     if (res.statusCode == 200) {
       print(res.body.toString());
     } else
       print(res.body.toString());
   }
 
-  void checkTag(String tagname) {
-    // Search tag, return tag object.
+  void checkTag(String tagname) {}
+
+  void getTagName() async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  iconTheme: new IconThemeData(color: Colors.red),
+                  title: Center(
+                      child: Text(
+                    "Search tag",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400),
+                  )),
+                ),
+                body: DiscoverTagView(
+                  screen: 1,
+                ))));
+    setState(() {
+      tagname = result['name'];
+      tagid = result['tagID'];
+    });
+    txt.text = tagname;
   }
 
   @override
@@ -57,9 +102,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
             'Create Channel',
             textAlign: TextAlign.start,
             style: TextStyle(
-                color: Colors.red,
-                fontSize: 30,
-                fontWeight: FontWeight.w400),
+                color: Colors.red, fontSize: 30, fontWeight: FontWeight.w400),
           ),
         ),
         body: Container(
@@ -71,35 +114,63 @@ class _ChannelCreateState extends State<ChannelCreate> {
               children: <Widget>[
                 Container(
                     height: 200,
-                    width: 150,
+                    width: 300,
                     // color: Colors.grey,
                     child: Column(children: <Widget>[
-                      Container(
-                        width: 135,
-                        height: 135,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[400], shape: BoxShape.circle),
-                        child: Icon(Icons.image,
-                            size: 70, color: Colors.grey[600]),
+                      CircleAvatar(
+                        backgroundColor: Colors.grey[400],
+                        backgroundImage: _image != null
+                            ? FileImage(_image)
+                            : AssetImage('assets/image-placeholder.jpg'),
+                        radius: MediaQuery.of(context).size.height / 10,
                       ),
                       SizedBox(height: 15),
                       Container(
                           height: 30,
-                          width: 120,
-                          child: OutlineButton(
-                              onPressed: () {
-                                print("Joining");
-                              },
-                              child: Text(
-                                "Upload",
-                                style:
-                                    TextStyle(fontSize: 18, color: Colors.red),
-                              ),
-                              borderSide: BorderSide(
-                                color: Colors.red,
-                                style: BorderStyle.solid,
-                                width: 2,
-                              )))
+                          width: 210,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              OutlineButton(
+                                  onPressed: () {
+                                    getCameraImage();
+                                  },
+                                  child: Container(
+                                    width: 65,
+                                    child: Center(
+                                      child: Text(
+                                        "Camera",
+                                        style: TextStyle(
+                                            fontSize: 18, color: Colors.red),
+                                      ),
+                                    ),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                    style: BorderStyle.solid,
+                                    width: 2,
+                                  )),
+                              OutlineButton(
+                                  onPressed: () {
+                                    getLibraryImage();
+                                  },
+                                  child: Container(
+                                    width: 65,
+                                    child: Center(
+                                      child: Text(
+                                        "Library",
+                                        style: TextStyle(
+                                            fontSize: 18, color: Colors.red),
+                                      ),
+                                    ),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                    style: BorderStyle.solid,
+                                    width: 2,
+                                  ))
+                            ],
+                          ))
                     ])),
                 SizedBox(height: 10),
                 Expanded(
@@ -122,7 +193,11 @@ class _ChannelCreateState extends State<ChannelCreate> {
                           padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                           // color: Colors.red,
                           child: TextField(
-                            maxLength: 5,
+                            readOnly: true,
+                            controller: txt,
+                            onTap: () {
+                              getTagName();
+                            },
                             onChanged: (context) {
                               setState(() {
                                 tagname = context;
@@ -196,7 +271,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
                         )
                       ]),
                     ),
-                    SizedBox(height: 50),
+                    SizedBox(height: 40),
                     Container(
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -206,7 +281,11 @@ class _ChannelCreateState extends State<ChannelCreate> {
                               width: 110,
                               child: OutlineButton(
                                   onPressed: () {
+<<<<<<< HEAD
                                     Navigator.of(context).pop();
+=======
+                                    Navigator.pop(context);
+>>>>>>> 95ab844b9de826676345b4d44c012598b9d3aa41
                                   },
                                   child: Text(
                                     "Cancel",
