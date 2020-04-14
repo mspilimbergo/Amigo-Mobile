@@ -26,6 +26,7 @@ class TagButton extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
+                      settings: RouteSettings(name: "ChannelView"),
                         builder: (context) => DiscoverChannelView(
                               tagSelected: tagID,
                             )));

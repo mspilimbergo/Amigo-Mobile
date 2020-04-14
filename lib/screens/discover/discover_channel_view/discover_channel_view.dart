@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'package:amigo_mobile/screens/channel/channel_create.dart';
+import 'package:amigo_mobile/screens/discover/discover_channel_view/channel_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../../../classes/channel.dart';
 import '../widgets/ChannelCard.dart';
+import '../../discover/discover_channel_view/channel_page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:amigo_mobile/util/colors.dart';
+import 'package:path/path.dart';
 
 
 final storage = FlutterSecureStorage();
@@ -65,7 +69,6 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
 
   @override 
   Widget build(BuildContext context) { 
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -108,6 +111,34 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
               ),
             ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 6.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: RaisedButton(              
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            settings: RouteSettings(name: "ChannelCreate"),
+                            builder: (context) => ChannelCreate() 
+                          ) 
+                        );
+                      },
+                      child: Text(
+                        'Create New Channel',
+                        textAlign: TextAlign.left,), 
+                      color: Colors.grey[200],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0)
+                      ),
+                      
+                      ),
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: FutureBuilder(
                 future: getChannelsData,
@@ -115,20 +146,60 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                   Widget channelsList;
                   if (snapshot.hasData) {
                     channelsList = SliverList(
-                        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {                                                  
                           if (index == channels.length) return null;
-                          return ChannelCard(
-                            channelId: channels[index].channelId,
-                            name: channels[index].name,
-                            description: channels[index].description,
-                            memberCount: 12,
-                            photo: 'https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png'
+                          
+                          var channelId =  channels[index].channelId;
+                          var name = channels[index].name;
+                          var description =channels[index].description;
+                          var memberCount = int.parse(channels[index].memberCount);
+                          var photo ='https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png';
+                          var createdOn = channels[index].createdOn;
+                          
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context, 
+                              MaterialPageRoute(
+                                settings: RouteSettings(name: "ChannelCard"),
+                                builder: (context) => 
+                                
+                                ChannelPage(
+                                  channelId: channelId,
+                                  name: name,
+                                  description: description,
+                                  memberCount: memberCount,
+                                  photo: photo,
+                                  createdOn: createdOn,
+                                  
+                                )));
+                              print("Card Tapped");
+                              },
+                            child: ChannelCard(
+                                  channelId: channelId,
+                                  name: name,
+                                  description: description,
+                                  memberCount: memberCount,
+                                  photo: photo,
+                                  createdOn: createdOn,
+                            )
                           );
                         })
                     );
                   }
                   else {
-                    channelsList = SliverToBoxAdapter(child: Container(child: Text('Loading Page'),),);
+                    channelsList = SliverToBoxAdapter(child: 
+                    Container(
+                      color: Colors.transparent,
+                      height: (MediaQuery.of(context).size.height / 4) * 3,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          valueColor: new AlwaysStoppedAnimation<Color>(amigoRed)
+                        )
+                      )
+                    ));
                   }
                   return CustomScrollView(
                     slivers: <Widget>[

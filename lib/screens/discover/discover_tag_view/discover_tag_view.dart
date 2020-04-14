@@ -11,7 +11,8 @@ import 'dart:math';
 //String img = "https://media-exp1.licdn.com/dms/image/C560BAQG4QXbbg39AfQ/company-logo_100_100/0?e=2159024400&v=beta&t=QYCFMlTBClczprYLrvWL1W4sbCrWw0TmGfuUTapBmDY";
 String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+// final SERVER_URL = "https://amigo-269801.appspot.com";
+final SERVER_URL = "http://10.0.0.66:3000";
 
 class DiscoverTagView extends StatefulWidget {
   @override
@@ -122,6 +123,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
+                                    if (index > 6)  return null;
                                     return Container(
                                       margin:
                                           EdgeInsets.symmetric(horizontal: 10),
@@ -151,7 +153,8 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                             delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                                 return Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  // margin: EdgeInsets.symmetric(horizontal: 5),
+                                  margin: EdgeInsets.all(1),
                                   child: TagButton(
                                       tagID: allTags[index].tagId,
                                       name: allTags[index].name,

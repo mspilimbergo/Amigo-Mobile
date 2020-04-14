@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -50,7 +52,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          iconTheme: new IconThemeData(color: Colors.red),
+          // iconTheme: new IconThemeData(color: Colors.red),
           title: Text(
             'Create Channel',
             textAlign: TextAlign.start,
@@ -204,7 +206,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
                               width: 110,
                               child: OutlineButton(
                                   onPressed: () {
-                                    print("Joining");
+                                    Navigator.of(context).pop();
                                   },
                                   child: Text(
                                     "Cancel",
