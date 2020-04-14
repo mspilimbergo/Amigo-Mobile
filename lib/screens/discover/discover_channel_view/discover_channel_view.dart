@@ -28,14 +28,14 @@ class DiscoverChannelView extends StatefulWidget {
 class _DiscoverChannelViewState extends State<DiscoverChannelView> {
   List<Channel> channels;
   var getChannelsData;
+  String searchQuery = "";
   
 
   Future<List<Channel>> getChannels () async {
     var key = await storage.read(key: "jwt");
     String tagSelected = widget.tagSelected;
-    print(tagSelected);
     Response res = await http.get(
-      "$SERVER_URL/api/channels/?tag_id=$tagSelected",
+      "$SERVER_URL/api/channels/?tag_id=$tagSelected&query=$searchQuery",
       headers: {"x-access-token": key},
     );
     if (res.statusCode == 200) {
@@ -46,6 +46,9 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
       List jsonChannels = response["channels"] as List;
 
       setState(() {
+        if (searchQuery == null) {
+          searchQuery = "";
+        }
         // Iterate through JSON array of channels and turn list into array of Channels
         channels = jsonChannels.map<Channel>((channel) => Channel.fromJson(channel)).toList();        
       });
@@ -93,7 +96,12 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
             Container(
               height: 50,
               child: TextField(
-              // controller: _searchController,
+              onChanged: (context) {
+                setState(() {
+                  searchQuery = context;
+                  getChannels();
+                });
+              },
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.grey[200],
@@ -144,6 +152,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                 future: getChannelsData,
                 builder: (context, snapshot) {
                   Widget channelsList;
+                  
                   if (snapshot.hasData) {
                     channelsList = SliverList(
                         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {                                                  
