@@ -132,21 +132,24 @@ class _ChatListPageState extends State<ChatListPage>
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: Theme(
-                          child: TextField(
-                            controller: _searchController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              hintText: 'Search for your chats',
-                              prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
-                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            height: 40,
+                              child: TextField(
+                              controller: _searchController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                hintText: 'Search for your chats',
+                                prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
                               ),
                             ),
                           ),
