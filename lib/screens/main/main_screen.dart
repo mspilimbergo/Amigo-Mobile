@@ -19,7 +19,7 @@ class MainPageState extends State<MainPage> {
   int selectedIndex;
   final widgetOptions = [
     new ChatListPage(),
-    new DiscoverTagView(),
+    new DiscoverTagView(screen: 0),
     new ProfilePage(),
   ];
 
