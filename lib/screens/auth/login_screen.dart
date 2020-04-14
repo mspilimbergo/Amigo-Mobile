@@ -14,12 +14,12 @@ class LoginPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
 
   void displayDialog(context, title, text) => showDialog(
-      context: context,
-      builder: (context) =>
-        AlertDialog(
-          title: Text(title),
-          content: Text(text)
-        ),
+    context: context,
+    builder: (context) =>
+      AlertDialog(
+        title: Text(title),
+        content: Text(text)
+      ),
     );
 
   Future<String> attemptLogIn(String email, String password) async {
@@ -116,7 +116,7 @@ class LoginPage extends StatelessWidget {
                         var password = _passwordController.text;
                         var res = await attemptLogIn(email, password);
                         if (res == null) {
-                          displayDialog(context, "Error", "Please try again or register if you don't already have an account");
+                          displayDialog(context, "Error", "Your username or password was incorrect. Please try again or go to the register screen and create an account.");
                           return;
                         }
                         var jsonRes = json.decode(res);
@@ -130,7 +130,7 @@ class LoginPage extends StatelessWidget {
                             )
                           );
                         } else {
-                          displayDialog(context, jsonRes["message"], "Please try again or register if you don't already have an account");
+                          displayDialog(context, jsonRes["message"], "Your username or password was incorrect. Please try again or go to the register screen and create an account.");
                         }
                       },
                       child: Text("Log In", style: TextStyle(fontSize: 16.0))
