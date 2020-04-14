@@ -34,7 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController _passwordController = TextEditingController();
   File _image;
   List schools = new List();
-  final school;
+  Map school;
 
   _EditProfilePageState({Key key, @required this.user, @required this.school});
 
@@ -338,11 +338,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           Padding(
                             padding: EdgeInsets.only(bottom: 5.0),
                             child: FlatButton(
-                              onPressed: () {
-                                showSearch(
+                              onPressed: () async {
+                                var res = await showSearch(
                                   context: context,
                                   delegate: SchoolSearchDelegate(user: user)
                                 );
+                                print(res);
+                                this.school = json.decode(res);
                               },
                               padding: EdgeInsets.all(0),
                               child: TextField(
