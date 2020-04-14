@@ -1,16 +1,12 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import '../widgets/TagButton.dart';
 import './Data/tag_object.dart';
 import './Data/populartag_object.dart';
-import '../../channel/channel_create.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' show json, base64, ascii;
+import 'dart:convert' show json;
 import 'dart:math';
 
-//String img = "https://media-exp1.licdn.com/dms/image/C560BAQG4QXbbg39AfQ/company-logo_100_100/0?e=2159024400&v=beta&t=QYCFMlTBClczprYLrvWL1W4sbCrWw0TmGfuUTapBmDY";
 String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -41,7 +37,6 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
       "$SERVER_URL/api/tags?school_id=1&query=$searchQuery",
       headers: {"x-access-token": key},
     );
-
     if (res.statusCode == 200) {
       Map response = json.decode(res.body);
       setState(() {
@@ -150,22 +145,22 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                     fontSize: 18)))),
                     SliverToBoxAdapter(
                       child: Container(
-                          height: 150,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5),
-                                child: TagButton(
-                                    screen: widget.screen,
-                                    tagID: popularTags[index].tagId,
-                                    name: popularTags[index].name,
-                                    photo:
-                                        "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg"),
-                              );
-                            },
-                            itemCount: popularCount,
-                          )),
+                        height: 150,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: TagButton(
+                                  tagID: allTags[index].tagId,
+                                  name: allTags[index].name,
+                                  photo: allTags[index].photo
+                              )
+                            );
+                          },
+                          itemCount: popularCount,
+                        )
+                      ),
                     ),
                     SliverToBoxAdapter(
                         child: Container(
@@ -189,9 +184,8 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                 screen: widget.screen,
                                 tagID: allTags[index].tagId,
                                 name: allTags[index].name,
-                                photo:
-                                    "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg",
-                              ),
+                                photo: allTags[index].photo,
+                              )
                             );
                           },
                           childCount: tagCount,

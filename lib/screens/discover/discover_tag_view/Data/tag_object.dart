@@ -27,18 +27,21 @@ class Tag {
 class Tags {
   String tagId;
   String name;
+  String photo;
 
-  Tags({this.tagId, this.name});
+  Tags({this.tagId, this.name, this.photo});
 
   Tags.fromJson(Map<String, dynamic> json) {
     tagId = json['tag_id'];
     name = json['name'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['tag_id'] = this.tagId;
     data['name'] = this.name;
+    data['photo'] = this.photo;
     return data;
   }
 }

@@ -36,7 +36,7 @@ class TagButton extends StatelessWidget {
           width: 125,
           decoration: BoxDecoration(
             image:
-                DecorationImage(image: NetworkImage(photo), fit: BoxFit.cover),
+                DecorationImage(image: photo != null ? NetworkImage(photo) : AssetImage('assets/placeholder.png'), fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(12),
           ),
           child: FlatButton(

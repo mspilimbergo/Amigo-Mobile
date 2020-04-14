@@ -94,7 +94,7 @@ class SchoolSearchDelegate extends SearchDelegate {
                       ),
                       title: Text(jsonSnap["schools"][index]["name"]),
                       onTap: () {
-                        close(context, jsonSnap["schools"][index]);
+                        close(context, json.encode(jsonSnap["schools"][index]));
                       },
                     );
                   },
@@ -174,7 +174,7 @@ class SchoolSearchDelegate extends SearchDelegate {
                       ),
                       title: Text(jsonSnap["schools"][index]["name"]),
                       onTap: () {
-                        close(context, jsonSnap["schools"][index]);
+                        close(context, json.encode(jsonSnap["schools"][index]));
                       },
                     );
                   },
@@ -221,11 +221,9 @@ class SchoolSearchDelegate extends SearchDelegate {
 
   close(BuildContext context, result) {
     print(result);
-    Navigator.push(
+    Navigator.pop(
       context,
-      MaterialPageRoute(
-        builder: (context) => EditProfilePage(user: user, school: result)
-      ),
+      result
     );
   }
 }
