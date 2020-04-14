@@ -25,16 +25,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _schoolController = TextEditingController();
-  final Map school;
+  Map school;
 
   _RegisterPageState({Key key, @required this.school});
 
   @override
   void initState() {
     super.initState();
-    if (school != null) {
-      _schoolController.text = school["name"];
-    }
   }
 
   void displayDialog(context, title, text) => showDialog(
@@ -170,11 +167,16 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      showSearch(
+                    onTap: () async {
+                      var res = await showSearch(
                         context: context,
                         delegate: SchoolSearchDelegate()
                       );
+                      print(res);
+                      setState(() {
+                        school = json.decode(res);
+                      });
+                      _schoolController.text = school['name'];
                     },
                     behavior: HitTestBehavior.translucent,
                     child: TextField(
