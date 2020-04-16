@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class ChannelCard extends StatefulWidget {
     final String channelId;
@@ -30,10 +31,7 @@ class _ChannelCardState extends State<ChannelCard> {
                   Container(
                       height: 50,
                       width: 50,
-                    child: Image.network(
-                      // "https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png",
-                      widget.photo,
-                    ),
+                    child: widget.photo != null ? Image.network(widget.photo + "?v=${Random().nextInt(10000000).toString()}") : Image.asset('assets/placeholder.png')
                   ),
                   Container(
                       margin: EdgeInsets.only(left: 10.0),

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -44,7 +45,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
     });
   }
 
-  void createChannel() async {
+  Future createChannel() async {
     var key = await storage.read(key: "jwt");
     var res = await http.post("$SERVER_URL/api/channels", headers: {
       "x-access-token": key
@@ -58,6 +59,8 @@ class _ChannelCreateState extends State<ChannelCreate> {
       print(res.body.toString());
     } else
       print(res.body.toString());
+
+      return res;
   }
 
   void checkTag(String tagname) {}
@@ -96,6 +99,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          iconTheme: new IconThemeData(color: amigoRed),
           elevation: 0.0,
           // iconTheme: new IconThemeData(color: Colors.red),
           title: Text(
@@ -296,8 +300,9 @@ class _ChannelCreateState extends State<ChannelCreate> {
                               height: 40,
                               width: 110,
                               child: OutlineButton(
-                                  onPressed: () {
-                                    createChannel();
+                                  onPressed: () async {
+                                    await createChannel();
+                                    Navigator.pop(context);                                    
                                   },
                                   child: Text(
                                     "Create",

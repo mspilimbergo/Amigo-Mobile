@@ -51,13 +51,17 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
 
       // print(jsonChannels);
 
-      setState(() {
-        if (searchQuery == null) {
-          searchQuery = "";
-        }
-        // Iterate through JSON array of channels and turn list into array of Channels
-        channels = jsonChannels.map<Channel>((channel) => Channel.fromJson(channel)).toList();        
-      });     
+      if (searchQuery == null) {
+              searchQuery = "";
+      }
+      // setState(() {
+      //   if (searchQuery == null) {
+      //     searchQuery = "";
+      //   }
+      //   // Iterate through JSON array of channels and turn list into array of Channels
+      //   channels = jsonChannels.map<Channel>((channel) => Channel.fromJson(channel)).toList();        
+      // });     
+      channels = jsonChannels.map<Channel>((channel) => Channel.fromJson(channel)).toList();        
 
       return channels;
     }
@@ -74,7 +78,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
   @override
   void initState() {
     super.initState();
-    getChannelsData = getChannels();
+    getChannels();
   }
 
   @override 
@@ -132,14 +136,18 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                 children: <Widget>[
                   Expanded(
                       child: RaisedButton(              
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             settings: RouteSettings(name: "ChannelCreate"),
-                            builder: (context) => ChannelCreate() 
-                          ) 
-                        );
+                            builder: (context) =>  ChannelCreate())).then((context) {
+                              print('Out of channel creat');
+                              setState(() {
+                                
+                              });
+                            });                            
+                            // getChannelsData = await getChannels();
                       },
                       child: Text(
                         'Create New Channel',
@@ -156,7 +164,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
             ),
             Expanded(
               child: FutureBuilder(
-                future: getChannelsData,
+                future: getChannels(),
                 builder: (context, snapshot) {
                   Widget channelsList;                  
                   if (snapshot.hasData) {
