@@ -10,7 +10,6 @@ final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class ForgotPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   void displayDialog(context, title, text) => showDialog(
     context: context,
@@ -21,14 +20,12 @@ class ForgotPasswordPage extends StatelessWidget {
       ),
     );
 
-  Future<String> attemptLogIn(String email, String password) async {
-    var res = await http.post(
-      "$SERVER_URL/api/login",
-      body: {
-        "email": email,
-        "password": password
-      }
+  Future<String> attemptResetPassword() async {
+    String email = _emailController.text;
+    var res = await http.get(
+      "$SERVER_URL/api/resetpasswordrequest?email=$email",
     );
+    print(res.body);
     if(res.statusCode == 200) return res.body;
     return null;
   }
@@ -92,9 +89,7 @@ class ForgotPasswordPage extends StatelessWidget {
                       color: amigoRed,
                       textColor: Colors.white,
                       onPressed: () async {
-                        var email = _emailController.text;
-                        var password = _passwordController.text;
-                        var res = await attemptLogIn(email, password);
+                        var res = await attemptResetPassword();
                         if (res == null) {
                           displayDialog(context, "Error", "There was an error sending the reset email. Please check your email and try again.");
                           return;
@@ -103,7 +98,7 @@ class ForgotPasswordPage extends StatelessWidget {
                         if(jsonRes["success"]) {
                           displayDialog(context, "Success!", "Link sent succesfully, go to your email for further instructions on resetting your password.");
                         } else {
-                          displayDialog(context, jsonRes["message"], "Your username or password was incorrect. Please try again or go to the register screen and create an account.");
+                          displayDialog(context, jsonRes["message"], "There was an error sending the reset email. Please check your email and try again.");
                         }
                       },
                       child: Text("Send Reset Link", style: TextStyle(fontSize: 16.0))
