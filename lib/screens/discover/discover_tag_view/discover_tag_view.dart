@@ -184,7 +184,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                       name: allTags[index].name,
                                       photo: allTags[index].photo));
                             },
-                            itemCount: popularCount,
+                            itemCount: tagCount,
                           )),
                     ),
                     SliverToBoxAdapter(
