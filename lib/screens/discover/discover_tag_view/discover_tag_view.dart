@@ -178,6 +178,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                               return Container(
                                   margin: EdgeInsets.symmetric(horizontal: 5),
                                   child: TagButton(
+                                      screen: widget.screen,
                                       tagID: allTags[index].tagId,
                                       name: allTags[index].name,
                                       photo: allTags[index].photo));
