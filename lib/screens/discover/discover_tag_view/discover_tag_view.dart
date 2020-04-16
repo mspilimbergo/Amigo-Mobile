@@ -15,8 +15,7 @@ final SERVER_URL = "https://amigo-269801.appspot.com";
 class DiscoverTagView extends StatefulWidget {
   final int screen; // 0 - DiscoverTagView  1 - Channel Create
 
-  const DiscoverTagView({Key key, @required this.screen})
-      : super(key: key);
+  const DiscoverTagView({Key key, @required this.screen}) : super(key: key);
 
   @override
   _DiscoverTagViewState createState() => _DiscoverTagViewState();
@@ -30,11 +29,30 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
   int popularCount = 0;
   var rng = new Random();
   var thing = 'a';
+  Map user;
 
-  void getTags() async {
+  getUser() async {
+    print("Getting the user now");
     var key = await storage.read(key: "jwt");
     var res = await http.get(
-      "$SERVER_URL/api/tags?school_id=1&query=$searchQuery",
+      "$SERVER_URL/api/user",
+      headers: {"x-access-token": key},
+    );
+    print("done");
+    if (res.statusCode == 200) {
+      print(res.body);
+      var map = json.decode(res.body);
+      user = map;
+      return res.body;
+    }
+    print(res.body.toString());
+  }
+
+  getTags() async {
+    print("School id: ${user["school_id"]}");
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "$SERVER_URL/api/tags?school_id=${user["school_id"]}&query=$searchQuery",
       headers: {"x-access-token": key},
     );
     if (res.statusCode == 200) {
@@ -49,7 +67,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
       print(res.body.toString());
   }
 
-  void getPopularTags() async {
+  getPopularTags() async {
     var key = await storage.read(key: "jwt");
     var res = await http.get(
       "$SERVER_URL/api/tags/popular",
@@ -76,8 +94,10 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
   @override
   void initState() {
     super.initState();
-    getTags();
-    getPopularTags();
+    getUser().then((dynamic) {
+      getTags();
+      getPopularTags();
+    });
   }
 
   @override
@@ -124,10 +144,17 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                   text: TextSpan(
                       style: Theme.of(context).textTheme.body1,
                       children: [
-                    WidgetSpan(child: Icon(Icons.pin_drop, size: 19, color: Colors.grey[400],)),
+                    WidgetSpan(
+                        child: Icon(
+                      Icons.pin_drop,
+                      size: 19,
+                      color: Colors.grey[400],
+                    )),
                     TextSpan(
                         text: "University of Central Florida",
-                        style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey[500])),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.grey[500])),
                   ])),
             ),
             Expanded(
@@ -145,22 +172,19 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                                     fontSize: 18)))),
                     SliverToBoxAdapter(
                       child: Container(
-                        height: 150,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.symmetric(horizontal: 5),
-                              child: TagButton(
-                                  tagID: allTags[index].tagId,
-                                  name: allTags[index].name,
-                                  photo: allTags[index].photo
-                              )
-                            );
-                          },
-                          itemCount: popularCount,
-                        )
-                      ),
+                          height: 150,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  child: TagButton(
+                                      tagID: allTags[index].tagId,
+                                      name: allTags[index].name,
+                                      photo: allTags[index].photo));
+                            },
+                            itemCount: popularCount,
+                          )),
                     ),
                     SliverToBoxAdapter(
                         child: Container(
@@ -179,14 +203,13 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             return Container(
-                              margin: EdgeInsets.symmetric(horizontal: 5),
-                              child: TagButton(
-                                screen: widget.screen,
-                                tagID: allTags[index].tagId,
-                                name: allTags[index].name,
-                                photo: allTags[index].photo,
-                              )
-                            );
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                child: TagButton(
+                                  screen: widget.screen,
+                                  tagID: allTags[index].tagId,
+                                  name: allTags[index].name,
+                                  photo: allTags[index].photo,
+                                ));
                           },
                           childCount: tagCount,
                         )),

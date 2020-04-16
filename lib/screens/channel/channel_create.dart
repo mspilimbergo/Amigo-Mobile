@@ -8,9 +8,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'dart:convert' show json;
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
+//final SERVER_URL = "http://10.0.0.66:3000";
 
 class ChannelCreate extends StatefulWidget {
   @override
@@ -25,7 +27,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
   String description;
   String photo;
   File _image;
-
+  Map user;
   var txt = TextEditingController();
 
   Future getCameraImage() async {
@@ -44,6 +46,23 @@ class _ChannelCreateState extends State<ChannelCreate> {
     });
   }
 
+  getUser() async {
+    print("Getting the user now");
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "$SERVER_URL/api/user",
+      headers: {"x-access-token": key},
+    );
+    print("done");
+    if (res.statusCode == 200) {
+      print(res.body);
+      var map = json.decode(res.body);
+      user = map;
+      return res.body;
+    }
+    print(res.body.toString());
+  }
+
   void createChannel() async {
     var key = await storage.read(key: "jwt");
     var res = await http.post("$SERVER_URL/api/channels", headers: {
@@ -52,15 +71,13 @@ class _ChannelCreateState extends State<ChannelCreate> {
       "tag_id": tagid,
       "name": title,
       "description": description,
-      "school_id": "1"
+      "school_id": "${user["school_id"]}",
     });
     if (res.statusCode == 200) {
       print(res.body.toString());
     } else
       print(res.body.toString());
   }
-
-  void checkTag(String tagname) {}
 
   void getTagName() async {
     final result = await Navigator.push(
@@ -89,6 +106,12 @@ class _ChannelCreateState extends State<ChannelCreate> {
       tagid = result['tagID'];
     });
     txt.text = tagname;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
   }
 
   @override
