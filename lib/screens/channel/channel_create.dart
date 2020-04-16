@@ -12,10 +12,6 @@ import 'dart:convert' show json;
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
-<<<<<<< HEAD
-//final SERVER_URL = "http://10.0.0.66:3000";
-=======
->>>>>>> 4bc73a8930a3e4df26b233c7f6f5efb06f811c84
 
 class ChannelCreate extends StatefulWidget {
   @override
