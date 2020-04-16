@@ -9,7 +9,7 @@ import 'package:amigo_mobile/screens/chat/user_search_delegate.dart';
 import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class ChatListPage extends StatefulWidget {
   @override
