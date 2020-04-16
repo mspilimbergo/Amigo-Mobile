@@ -8,7 +8,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
+<<<<<<< HEAD
 import 'package:amigo_mobile/util/colors.dart';
+=======
+import 'dart:convert' show json;
+>>>>>>> ffbd8f21517935161668da3f8253b7d16c2472bb
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -26,7 +30,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
   String description;
   String photo;
   File _image;
-
+  Map user;
   var txt = TextEditingController();
 
   Future getCameraImage() async {
@@ -45,25 +49,75 @@ class _ChannelCreateState extends State<ChannelCreate> {
     });
   }
 
+<<<<<<< HEAD
   Future createChannel() async {
+=======
+  getUser() async {
+    print("Getting the user now");
+>>>>>>> ffbd8f21517935161668da3f8253b7d16c2472bb
     var key = await storage.read(key: "jwt");
-    var res = await http.post("$SERVER_URL/api/channels", headers: {
-      "x-access-token": key
-    }, body: {
-      "tag_id": tagid,
-      "name": title,
-      "description": description,
-      "school_id": "1"
-    });
+    var res = await http.get(
+      "$SERVER_URL/api/user",
+      headers: {"x-access-token": key},
+    );
+    print("done");
     if (res.statusCode == 200) {
+<<<<<<< HEAD
       print(res.body.toString());
     } else
       print(res.body.toString());
 
       return res;
+=======
+      print(res.body);
+      var map = json.decode(res.body);
+      user = map;
+      return res.body;
+    }
+    print(res.body.toString());
+>>>>>>> ffbd8f21517935161668da3f8253b7d16c2472bb
   }
 
-  void checkTag(String tagname) {}
+  Future<Response> createChannel() async {
+    var dio = Dio();
+    var key = await storage.read(key: "jwt");
+    // var res = await http.post("$SERVER_URL/api/channels", headers: {
+    //   "x-access-token": key
+    // }, body: {
+    //   "tag_id": tagid,
+    //   "name": title,
+    //   "description": description,
+    //   "school_id": "${user["school_id"]}",
+    // });
+    FormData formData;
+    if (_image != null) {
+      formData = FormData.fromMap({
+        "tag_id": tagid,
+        "name": title,
+        "description": description,
+        "school_id": "${user["school_id"]}",
+        "file": await MultipartFile.fromFile(_image.path),
+      });
+    } else {
+      formData = FormData.fromMap({
+                "tag_id": tagid,
+        "name": title,
+        "description": description,
+        "school_id": "${user["school_id"]}",
+      });
+    }
+    Response response = await dio.post(
+      "$SERVER_URL/api/channels",
+      data: formData,
+      options: RequestOptions(
+        headers: {
+          "x-access-token": key,
+        },
+      ) 
+    );
+
+    return response;
+  }
 
   void getTagName() async {
     final result = await Navigator.push(
@@ -92,6 +146,12 @@ class _ChannelCreateState extends State<ChannelCreate> {
       tagid = result['tagID'];
     });
     txt.text = tagname;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
   }
 
   @override
