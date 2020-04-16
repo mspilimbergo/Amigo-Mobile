@@ -7,7 +7,7 @@ import 'package:amigo_mobile/util/colors.dart';
 import 'package:amigo_mobile/screens/auth/school_search_delegate.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "https://amigo-269801.appspot.com";
+final SERVER_URL = "http://10.0.2.2:3000";
 
 class RegisterPage extends StatefulWidget {
   final Map school;
@@ -44,6 +44,10 @@ class _RegisterPageState extends State<RegisterPage> {
   );
 
   Future<String> attemptSignUp() async {
+    print("I got this far");
+    if (school == null) {
+      displayDialog(context, "Error", "You must provide a school");
+    }
     var res = await http.post(
       '$SERVER_URL/api/signup',
       body: {
@@ -53,11 +57,11 @@ class _RegisterPageState extends State<RegisterPage> {
         "first_name": _firstNameController.text,
         "last_name": _lastNameController.text,
         "display_name": _displayNameController.text,
-        "school_id": school["school_id"]
+        "school_id": school['school_id']
       }
     );
-    if(res.statusCode == 200) return res.body;
-    return null;
+    print(res.body);
+    return res.body;
   }
 
     @override
@@ -257,10 +261,16 @@ class _RegisterPageState extends State<RegisterPage> {
                             return;
                           }
                           var jsonRes = json.decode(res);
+                          print(jsonRes);
                           if(jsonRes["success"]) {
                             displayDialog(context, "Success!", jsonRes["message"] + "Please verify the account with the email provided and then login with your credentials.");
                           } else {
-                            displayDialog(context, "Error", "Error with values provided, please fix errors and try again");
+                            var errors = StringBuffer();
+                            print(jsonRes['errors']);
+                            jsonRes['errors'].forEach((item) => {
+                              errors.writeln(item['msg'])
+                            });
+                            displayDialog(context, "Error", errors.toString());
                           }
                         },
                         child: Text("Sign up", style: TextStyle(fontSize: 16.0))
