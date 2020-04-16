@@ -6,11 +6,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 import 'dart:math';
+import 'package:path/path.dart';
 
 String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
-//final SERVER_URL = "http://10.0.0.66:3000";
 
 class DiscoverTagView extends StatefulWidget {
   final int screen; // 0 - DiscoverTagView  1 - Channel Create
@@ -82,13 +82,22 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
 
   @override
   Widget build(BuildContext context) {
+    
+    var route = ModalRoute.of(context);
+    var routeName = route.settings.name;
+    
+    if (route != null) {
+      print('route name: $routeName');
+    }
+    // Navigator.pop(context);
+
     return Container(
       margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                height: 40,
+                height: 50,
                 margin: EdgeInsets.only(top: 5),
                 child: TextField(
                   obscureText: false,
@@ -107,7 +116,7 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                     hintText: 'Try "Coding"',
                     prefixIcon:
                         Icon(Icons.search, color: Colors.grey, size: 20.0),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(10.0),
@@ -120,15 +129,13 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
                 )),
             Container(
               margin: EdgeInsets.only(top: 15, bottom: 15),
-              child: RichText(
-                  text: TextSpan(
-                      style: Theme.of(context).textTheme.body1,
-                      children: [
-                    WidgetSpan(child: Icon(Icons.pin_drop, size: 19, color: Colors.grey[400],)),
-                    TextSpan(
-                        text: "University of Central Florida",
-                        style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey[500])),
-                  ])),
+              child: Row(children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.school, size: 19, color: Colors.grey[400]),
+                ),
+                Text('University of Central Florida', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey[600]))
+              ],)
             ),
             Expanded(
                 child: Column(

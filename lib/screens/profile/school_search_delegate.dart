@@ -5,7 +5,7 @@ import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class SchoolSearchDelegate extends SearchDelegate {
   String query = '';

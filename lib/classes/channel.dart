@@ -5,8 +5,9 @@ class Channel {
   String schoolId;
   String memberCount;
   String createdOn; 
+  String photo;
 
-  Channel({this.channelId, this.name, this.description, this.schoolId, this.memberCount, this.createdOn});
+  Channel({this.channelId, this.name, this.description, this.schoolId, this.memberCount, this.createdOn, this.photo});
 
   Channel.fromJson(Map<String, dynamic> json) {
     channelId = json['channel_id'];
@@ -15,6 +16,7 @@ class Channel {
     schoolId = json['school_id'];
     memberCount = json['member_count'];
     createdOn = json['created_on'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {

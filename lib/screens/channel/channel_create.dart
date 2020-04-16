@@ -10,7 +10,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+// final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "http://10.0.0.66:3000";
 
 class ChannelCreate extends StatefulWidget {
   @override
@@ -113,8 +114,6 @@ class _ChannelCreateState extends State<ChannelCreate> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                    height: 200,
-                    width: 300,
                     // color: Colors.grey,
                     child: Column(children: <Widget>[
                       CircleAvatar(

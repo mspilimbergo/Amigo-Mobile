@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:amigo_mobile/screens/channel/channel_create.dart';
 import 'package:amigo_mobile/screens/discover/discover_channel_view/channel_page.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ import 'package:path/path.dart';
 
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "https://amigo-269801.appspot.com";
+// final SERVER_URL = "https://amigo-269801.appspot.com";
+final SERVER_URL = "http://10.0.0.66:3000";
 
 class DiscoverChannelView extends StatefulWidget {
   final String tagSelected;
@@ -41,9 +43,13 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
     if (res.statusCode == 200) {
       // Deserialize JSON into a map
       Map response = jsonDecode(res.body);
+
+      print('request response: $response');
       
       // Store JSON array of channels into a List
       List jsonChannels = response["channels"] as List;
+
+      // print(jsonChannels);
 
       setState(() {
         if (searchQuery == null) {
@@ -51,7 +57,8 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
         }
         // Iterate through JSON array of channels and turn list into array of Channels
         channels = jsonChannels.map<Channel>((channel) => Channel.fromJson(channel)).toList();        
-      });
+      });     
+
       return channels;
     }
     else {
@@ -94,7 +101,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
           child: Column(
             children: <Widget>[              
             Container(
-              height: 40,
+              height: 50,
               child: TextField(
               onChanged: (context) {
                 setState(() {
@@ -107,7 +114,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                 fillColor: Colors.grey[200],
                 hintText: 'Try "Pickup Soccer"',
                 prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
-                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(10.0),
@@ -151,8 +158,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
               child: FutureBuilder(
                 future: getChannelsData,
                 builder: (context, snapshot) {
-                  Widget channelsList;
-                  
+                  Widget channelsList;                  
                   if (snapshot.hasData) {
                     channelsList = SliverList(
                         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {                                                  
@@ -162,7 +168,8 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                           var name = channels[index].name;
                           var description =channels[index].description;
                           var memberCount = int.parse(channels[index].memberCount);
-                          var photo ='https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png';
+                          // var photo = "https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png";
+                          var photo = channels[index].photo;
                           var createdOn = channels[index].createdOn;
                           
                           return InkWell(
@@ -174,7 +181,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                                 builder: (context) => 
                                 
                                 ChannelPage(
-                                  channelId: channelId,
+                                  currentChannelId: channelId,
                                   name: name,
                                   description: description,
                                   memberCount: memberCount,
