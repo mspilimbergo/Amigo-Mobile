@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:amigo_mobile/screens/auth/register_screen.dart';
-import 'package:amigo_mobile/screens/auth/forgot_password_screen.dart';
-import 'package:amigo_mobile/screens/main/main_screen.dart';
+import 'package:amigo_mobile/screens/auth/login_screen.dart';
 import 'package:amigo_mobile/util/colors.dart';
 import 'dart:convert' show json;
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
 
-class LoginPage extends StatelessWidget {
+class ForgotPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -53,47 +51,28 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Welcome Back!',
+                  'Forgot?',
                   textAlign: TextAlign.left,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 45.0),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
                   child: Text(
-                    'Please sign in below',
+                    'Enter your email to send a reset password link.',
                     style: new TextStyle(color: Colors.grey, fontSize: 16.0)
                   ),
                 ),
-                TextField(
-                  controller: _emailController,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    height: 1.5,
-                    color: Colors.black                  
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
-                    ),  
-                    focusedBorder: new UnderlineInputBorder(
-                      borderSide: BorderSide(width: 4.0, color: amigoRed),
-                    ),
-                  ),
-                ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 10),
                   child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
+                    controller: _emailController,
                     style: TextStyle(
                       fontSize: 16.0,
                       height: 1.5,
                       color: Colors.black                  
                     ),
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Email',
                       labelStyle: TextStyle(color: Colors.black),
                       enabledBorder: new UnderlineInputBorder(
                         borderSide: BorderSide(width: 4.0, color: Colors.grey[350]),
@@ -105,7 +84,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 18),
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 14),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 14.0,
@@ -117,57 +96,20 @@ class LoginPage extends StatelessWidget {
                         var password = _passwordController.text;
                         var res = await attemptLogIn(email, password);
                         if (res == null) {
-                          displayDialog(context, "Error", "Your username or password was incorrect. Please try again or go to the register screen and create an account.");
+                          displayDialog(context, "Error", "There was an error sending the reset email. Please check your email and try again.");
                           return;
                         }
                         var jsonRes = json.decode(res);
                         if(jsonRes["success"]) {
-                          var jwt = jsonRes["x-access-token"];
-                          storage.write(key: "jwt", value: jwt);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainPage(initialIndex: 0)
-                            )
-                          );
+                          displayDialog(context, "Success!", "Link sent succesfully, go to your email for further instructions on resetting your password.");
                         } else {
                           displayDialog(context, jsonRes["message"], "Your username or password was incorrect. Please try again or go to the register screen and create an account.");
                         }
                       },
-                      child: Text("Log In", style: TextStyle(fontSize: 16.0))
+                      child: Text("Send Reset Link", style: TextStyle(fontSize: 16.0))
                     )
                   ),
                 ),
-                // Padding(
-                //   padding: EdgeInsets.only(bottom: 1),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: new FlatButton(
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterPage(school: null),
-                          ),
-                        );
-                      },
-                      child: new RichText(
-                        text: new TextSpan(
-                          // Note: Styles for TextSpans must be explicitly defined.
-                          // Child text spans will inherit styles from parent
-                          style: new TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey,
-                          ),
-                          children: <TextSpan>[
-                            new TextSpan(text: 'Don\'t have an account yet? '),
-                            new TextSpan(text: 'Sign up now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      )
-                    )
-                  ),
-                // ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: new FlatButton(
@@ -175,7 +117,7 @@ class LoginPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ForgotPasswordPage(),
+                          builder: (context) => LoginPage(),
                         ),
                       );
                     },
@@ -188,13 +130,13 @@ class LoginPage extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         children: <TextSpan>[
-                          new TextSpan(text: 'Forgot your password? '),
-                          new TextSpan(text: 'Reset it here!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
+                          new TextSpan(text: 'Remembered your password? '),
+                          new TextSpan(text: 'Log in now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     )
                   )
-                )
+                ),
               ],
             ),
           )
