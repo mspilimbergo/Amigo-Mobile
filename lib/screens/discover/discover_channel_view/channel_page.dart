@@ -4,9 +4,12 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:amigo_mobile/util/colors.dart';
-import '../../chat/chat_list_screen.dart';
 import '../../chat/chat_screen.dart';
 import '../.../../../../classes/channel.dart';
+
+final storage = FlutterSecureStorage();
+final SERVER_URL = "https://amigo-269801.appspot.com";
+
 
 class ChannelPage extends StatefulWidget {
   final String currentChannelId;
