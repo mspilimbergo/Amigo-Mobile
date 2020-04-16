@@ -8,11 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-<<<<<<< HEAD
 import 'package:amigo_mobile/util/colors.dart';
-=======
 import 'dart:convert' show json;
->>>>>>> ffbd8f21517935161668da3f8253b7d16c2472bb
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -49,12 +46,8 @@ class _ChannelCreateState extends State<ChannelCreate> {
     });
   }
 
-<<<<<<< HEAD
-  Future createChannel() async {
-=======
   getUser() async {
     print("Getting the user now");
->>>>>>> ffbd8f21517935161668da3f8253b7d16c2472bb
     var key = await storage.read(key: "jwt");
     var res = await http.get(
       "$SERVER_URL/api/user",
@@ -62,20 +55,12 @@ class _ChannelCreateState extends State<ChannelCreate> {
     );
     print("done");
     if (res.statusCode == 200) {
-<<<<<<< HEAD
-      print(res.body.toString());
-    } else
-      print(res.body.toString());
-
-      return res;
-=======
       print(res.body);
       var map = json.decode(res.body);
       user = map;
       return res.body;
     }
     print(res.body.toString());
->>>>>>> ffbd8f21517935161668da3f8253b7d16c2472bb
   }
 
   Future<Response> createChannel() async {

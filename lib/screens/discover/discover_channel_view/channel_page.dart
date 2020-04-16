@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:amigo_mobile/util/colors.dart';
 import '../../chat/chat_screen.dart';
 import '../.../../../../classes/channel.dart';
+import 'dart:math';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
@@ -182,7 +183,7 @@ class _ChannelPageState extends State<ChannelPage> {
                     padding: EdgeInsets.only(left: 20.0, right: 20.0),
                       child: CircleAvatar(
                       // backgroundImage: user["photo"] != null ? NetworkImage(user["photo"]+ "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/profile-placeholder.jpg'),
-                      backgroundImage: AssetImage('assets/profile-placeholder.jpg'),
+                      backgroundImage: widget.photo != null ? NetworkImage(widget.photo + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                       radius: MediaQuery.of(context).size.height / 20,
                       ),
                   ),

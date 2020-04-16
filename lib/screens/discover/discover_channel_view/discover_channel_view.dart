@@ -194,8 +194,7 @@ class _DiscoverChannelViewState extends State<DiscoverChannelView> {
                                   description: description,
                                   memberCount: memberCount,
                                   photo: photo,
-                                  createdOn: createdOn,
-                                  
+                                  createdOn: createdOn,                                  
                                 )));
                               print("Card Tapped");
                               },
