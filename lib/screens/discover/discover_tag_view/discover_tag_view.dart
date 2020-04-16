@@ -10,7 +10,6 @@ import 'dart:math';
 String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
-//final SERVER_URL = "http://10.0.0.66:3000";
 
 class DiscoverTagView extends StatefulWidget {
   final int screen; // 0 - DiscoverTagView  1 - Channel Create

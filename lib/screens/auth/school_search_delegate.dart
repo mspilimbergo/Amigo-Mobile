@@ -1,11 +1,10 @@
-import 'package:amigo_mobile/screens/auth/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class SchoolSearchDelegate extends SearchDelegate {
   String query = '';
@@ -87,7 +86,7 @@ class SchoolSearchDelegate extends SearchDelegate {
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                        backgroundImage: AssetImage('assets/placeholder.png'),
                       ),
                       title: Text(jsonSnap["schools"][index]["name"]),
                       onTap: () {
@@ -167,7 +166,7 @@ class SchoolSearchDelegate extends SearchDelegate {
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                        backgroundImage: AssetImage('assets/placeholder.png'),
                       ),
                       title: Text(jsonSnap["schools"][index]["name"]),
                       onTap: () {

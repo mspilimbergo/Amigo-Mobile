@@ -8,7 +8,7 @@ import 'dart:math';
 import 'package:amigo_mobile/util/colors.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.0.66:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 
 class ChannelPage extends StatefulWidget {

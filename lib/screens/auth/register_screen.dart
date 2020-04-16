@@ -7,7 +7,7 @@ import 'package:amigo_mobile/util/colors.dart';
 import 'package:amigo_mobile/screens/auth/school_search_delegate.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class RegisterPage extends StatefulWidget {
   final Map school;
