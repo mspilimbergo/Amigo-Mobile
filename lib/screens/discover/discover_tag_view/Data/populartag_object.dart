@@ -28,13 +28,15 @@ class Populartags {
   String tagId;
   String name;
   String memberCount;
+  String photo;
 
-  Populartags({this.tagId, this.name, this.memberCount});
+  Populartags({this.tagId, this.name, this.memberCount, this.photo});
 
   Populartags.fromJson(Map<String, dynamic> json) {
     tagId = json['tag_id'];
     name = json['name'];
     memberCount = json['member_count'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +44,7 @@ class Populartags {
     data['tag_id'] = this.tagId;
     data['name'] = this.name;
     data['member_count'] = this.memberCount;
+    data['photo'] = this.photo;
     return data;
   }
 }
