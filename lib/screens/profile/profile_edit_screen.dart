@@ -12,7 +12,7 @@ import 'package:dio/dio.dart';
 import 'package:amigo_mobile/screens/main/main_screen.dart';
 
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class EditProfilePage extends StatefulWidget {
   final Map user;
@@ -34,7 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController _passwordController = TextEditingController();
   File _image;
   List schools = new List();
-  final school;
+  Map school;
 
   _EditProfilePageState({Key key, @required this.user, @required this.school});
 
@@ -338,11 +338,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           Padding(
                             padding: EdgeInsets.only(bottom: 5.0),
                             child: FlatButton(
-                              onPressed: () {
-                                showSearch(
+                              onPressed: () async {
+                                var res = await showSearch(
                                   context: context,
                                   delegate: SchoolSearchDelegate(user: user)
                                 );
+                                print(res);
+                                this.school = json.decode(res);
                               },
                               padding: EdgeInsets.all(0),
                               child: TextField(

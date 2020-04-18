@@ -1,8 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
 import 'package:amigo_mobile/screens/chat/chat_screen.dart';
 import 'package:amigo_mobile/screens/chat/user_search_delegate.dart';
 import 'package:amigo_mobile/util/colors.dart';
@@ -131,21 +132,24 @@ class _ChatListPageState extends State<ChatListPage>
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: Theme(
-                          child: TextField(
-                            controller: _searchController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              hintText: 'Search for your chats',
-                              prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
-                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            height: 40,
+                              child: TextField(
+                              controller: _searchController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                hintText: 'Search for your chats',
+                                prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
                               ),
                             ),
                           ),
@@ -207,7 +211,7 @@ class _ChatListPageState extends State<ChatListPage>
                               searchQuery == null || jsonSnap["channels"][index]["name"].toLowerCase().contains(searchQuery.toLowerCase()) ?
                                 listItem = ListTile(
                                   leading: CircleAvatar(
-                                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                                    backgroundImage: jsonSnap["channels"][index]["photo"] != null ? NetworkImage(jsonSnap["channels"][index]["photo"] + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                                   ),
                                   title: Text(jsonSnap["channels"][index]["name"]),
                                   subtitle: Text(jsonSnap["channels"][index]["description"]),
@@ -215,7 +219,7 @@ class _ChatListPageState extends State<ChatListPage>
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false)
+                                        builder: (context) => ChatPage(name: jsonSnap["channels"][index]["name"], id: jsonSnap["channels"][index]["channel_id"], display: displayName, sender: userId, direct: false, photo: jsonSnap["channels"][index]["photo"])
                                       ),
                                     );
                                   },
@@ -292,14 +296,14 @@ class _ChatListPageState extends State<ChatListPage>
                               searchQuery == null || jsonSnap["users"][index]["display_name"].toLowerCase().contains(searchQuery.toLowerCase()) ?
                                  listItem = ListTile(
                                   leading: CircleAvatar(
-                                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                                    backgroundImage: jsonSnap["users"][index]["photo"] != null ? NetworkImage(jsonSnap["users"][index]["photo"] + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                                   ),
                                   title: Text(jsonSnap["users"][index]["display_name"]),
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true)
+                                        builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: displayName, sender: userId, direct: true, photo: jsonSnap["users"][index]["photo"])
                                       ),
                                     );
                                   },

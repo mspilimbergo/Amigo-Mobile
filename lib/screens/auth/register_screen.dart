@@ -25,16 +25,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _schoolController = TextEditingController();
-  final Map school;
+  Map school;
 
   _RegisterPageState({Key key, @required this.school});
 
   @override
   void initState() {
     super.initState();
-    if (school != null) {
-      _schoolController.text = school["name"];
-    }
   }
 
   void displayDialog(context, title, text) => showDialog(
@@ -47,6 +44,10 @@ class _RegisterPageState extends State<RegisterPage> {
   );
 
   Future<String> attemptSignUp() async {
+    print("I got this far");
+    if (school == null) {
+      displayDialog(context, "Error", "You must provide a school");
+    }
     var res = await http.post(
       '$SERVER_URL/api/signup',
       body: {
@@ -56,11 +57,11 @@ class _RegisterPageState extends State<RegisterPage> {
         "first_name": _firstNameController.text,
         "last_name": _lastNameController.text,
         "display_name": _displayNameController.text,
-        "school_id": school["school_id"]
+        "school_id": school['school_id']
       }
     );
-    if(res.statusCode == 200) return res.body;
-    return null;
+    print(res.body);
+    return res.body;
   }
 
     @override
@@ -170,11 +171,16 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      showSearch(
+                    onTap: () async {
+                      var res = await showSearch(
                         context: context,
                         delegate: SchoolSearchDelegate()
                       );
+                      print(res);
+                      setState(() {
+                        school = json.decode(res);
+                      });
+                      _schoolController.text = school['name'];
                     },
                     behavior: HitTestBehavior.translucent,
                     child: TextField(
@@ -255,10 +261,16 @@ class _RegisterPageState extends State<RegisterPage> {
                             return;
                           }
                           var jsonRes = json.decode(res);
+                          print(jsonRes);
                           if(jsonRes["success"]) {
                             displayDialog(context, "Success!", jsonRes["message"] + "Please verify the account with the email provided and then login with your credentials.");
                           } else {
-                            displayDialog(context, "Error", "Error with values provided, please fix errors and try again");
+                            var errors = StringBuffer();
+                            print(jsonRes['errors']);
+                            jsonRes['errors'].forEach((item) => {
+                              errors.writeln(item['msg'])
+                            });
+                            displayDialog(context, "Error", errors.toString());
                           }
                         },
                         child: Text("Sign up", style: TextStyle(fontSize: 16.0))
@@ -303,124 +315,4 @@ class _RegisterPageState extends State<RegisterPage> {
       )
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: SingleChildScrollView(
-  //       padding: EdgeInsets.only(left: 30.0, right: 30.0, top: MediaQuery.of(context).size.height / 12, bottom: 20.0),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: <Widget>[
-  //           Text(
-  //             'Sign Up',
-  //             textAlign: TextAlign.left,
-  //             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40.0),
-  //           ),
-  //           Padding(
-  //             padding: EdgeInsets.only(bottom: 30.0),
-  //             child: Text(
-  //               'Sign up to join'
-  //             ),
-  //           ),
-  //           TextField(
-  //             controller: _emailController,
-  //             decoration: InputDecoration(
-  //               labelText: 'Email'
-  //             ),
-  //           ),
-  //           TextField(
-  //             controller: _passwordController,
-  //             obscureText: true,
-  //             decoration: InputDecoration(
-  //               labelText: 'Password'
-  //             ),
-  //           ),
-  //           TextField(
-  //             controller: _confirmController,
-  //             obscureText: true,
-  //             decoration: InputDecoration(
-  //               labelText: 'Confirm Password'
-  //             ),
-  //           ),
-  //           TextField(
-  //             controller: _firstNameController,
-  //             decoration: InputDecoration(
-  //               labelText: 'First Name'
-  //             ),
-  //           ),
-  //           TextField(
-  //             controller: _lastNameController,
-  //             decoration: InputDecoration(
-  //               labelText: 'Last Name'
-  //             ),
-  //           ),
-  //           DropdownButton(
-  //             items: <String>['A', 'B', 'C', 'D'].map((String value) {
-  //               return new DropdownMenuItem<String>(
-  //                 value: value,
-  //                 child: new Text(value),
-  //               );
-  //             }).toList(),
-  //             onChanged: (String selectedSchool) {
-  //               schoolId = selectedSchool;
-  //             }
-  //           ),
-  //           Padding(
-  //             padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 20),
-  //             child: TextField(
-  //               controller: _displayNameController,
-  //               decoration: InputDecoration(
-  //                 labelText: 'Display Name'
-  //               ),
-  //             ),
-  //           ),
-  //           Padding(
-  //             padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 20),
-  //             child: SizedBox(
-  //               width: MediaQuery.of(context).size.width,
-  //               child: new RaisedButton(
-  //                 onPressed: () async {
-  //                   var email = _emailController.text;
-  //                   var password = _passwordController.text;
-  //                   var confirm = _confirmController.text;
-  //                   var firstName = _firstNameController.text;
-  //                   var lastName = _lastNameController.text;
-  //                   var displayName = _displayNameController.text;
-  //                   var res = await attemptSignUp(email, password, confirm, firstName, lastName, displayName, schoolId);
-  //                   if (res == null) {
-  //                     displayDialog(context, "Error", "An error occured, please try registering again.");
-  //                     return;
-  //                   }
-  //                   var jsonRes = json.decode(res);
-  //                   if(jsonRes["success"]) {
-  //                     displayDialog(context, "Success!", jsonRes["message"] + "Please verify the account with the email provided and then login with your credentials.");
-  //                   } else {
-  //                     displayDialog(context, "Error", "Error with values provided, please fix errors and try again");
-  //                   }
-  //                 },
-  //                 child: Text("Sign Up")
-  //               )
-  //             ),
-  //           ),
-  //           SizedBox(
-  //             width: MediaQuery.of(context).size.width,
-  //             child: new FlatButton(
-  //               onPressed: () async {
-  //                 Navigator.push(
-  //                   context,
-  //                   MaterialPageRoute(
-  //                     builder: (context) => LoginPage(),
-  //                   ),
-  //                 );
-  //               },
-  //               child: Text("Already have an account? Log in!")
-  //             )
-  //           )
-  //         ],
-  //       ),
-  //     )
-  //   );
-  // }
 }

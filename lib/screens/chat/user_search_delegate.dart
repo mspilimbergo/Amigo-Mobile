@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json;
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:amigo_mobile/screens/chat/chat_screen.dart';
 
@@ -89,14 +90,14 @@ class UserSearchDelegate extends SearchDelegate {
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                        backgroundImage: jsonSnap["users"][index]["photo"] != null ? NetworkImage(jsonSnap["users"][index]["photo"] + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                       ),
                       title: Text(jsonSnap["users"][index]["display_name"]),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: display, sender: sender, direct: true)
+                            builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: display, sender: sender, direct: true, photo: jsonSnap["users"][index]["photo"])
                           ),
                         );
                       },
@@ -174,14 +175,14 @@ class UserSearchDelegate extends SearchDelegate {
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                        backgroundImage: jsonSnap["users"][index]["photo"] != null ? NetworkImage(jsonSnap["users"][index]["photo"]+ "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                       ),
                       title: Text(jsonSnap["users"][index]["display_name"]),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: display, sender: sender, direct: true)
+                            builder: (context) => ChatPage(name: jsonSnap["users"][index]["display_name"], id: jsonSnap["users"][index]["user_id"], display: display, sender: sender, direct: true, photo: jsonSnap["users"][index]["photo"])
                           ),
                         );
                       },

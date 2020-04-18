@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:amigo_mobile/screens/auth/register_screen.dart';
+import 'package:amigo_mobile/screens/auth/forgot_password_screen.dart';
 import 'package:amigo_mobile/screens/main/main_screen.dart';
 import 'package:amigo_mobile/util/colors.dart';
 import 'dart:convert' show json;
@@ -14,12 +15,12 @@ class LoginPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
 
   void displayDialog(context, title, text) => showDialog(
-      context: context,
-      builder: (context) =>
-        AlertDialog(
-          title: Text(title),
-          content: Text(text)
-        ),
+    context: context,
+    builder: (context) =>
+      AlertDialog(
+        title: Text(title),
+        content: Text(text)
+      ),
     );
 
   Future<String> attemptLogIn(String email, String password) async {
@@ -104,7 +105,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 12),
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 18),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 14.0,
@@ -116,7 +117,7 @@ class LoginPage extends StatelessWidget {
                         var password = _passwordController.text;
                         var res = await attemptLogIn(email, password);
                         if (res == null) {
-                          displayDialog(context, "Error", "Please try again or register if you don't already have an account");
+                          displayDialog(context, "Error", "Your username or password was incorrect. Please try again or go to the register screen and create an account.");
                           return;
                         }
                         var jsonRes = json.decode(res);
@@ -130,13 +131,43 @@ class LoginPage extends StatelessWidget {
                             )
                           );
                         } else {
-                          displayDialog(context, jsonRes["message"], "Please try again or register if you don't already have an account");
+                          displayDialog(context, jsonRes["message"], "Your username or password was incorrect. Please try again or go to the register screen and create an account.");
                         }
                       },
                       child: Text("Log In", style: TextStyle(fontSize: 16.0))
                     )
                   ),
                 ),
+                // Padding(
+                //   padding: EdgeInsets.only(bottom: 1),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: new FlatButton(
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterPage(school: null),
+                          ),
+                        );
+                      },
+                      child: new RichText(
+                        text: new TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: new TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.grey,
+                          ),
+                          children: <TextSpan>[
+                            new TextSpan(text: 'Don\'t have an account yet? '),
+                            new TextSpan(text: 'Sign up now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      )
+                    )
+                  ),
+                // ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: new FlatButton(
@@ -144,7 +175,7 @@ class LoginPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RegisterPage(school: null),
+                          builder: (context) => ForgotPasswordPage(),
                         ),
                       );
                     },
@@ -157,8 +188,8 @@ class LoginPage extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         children: <TextSpan>[
-                          new TextSpan(text: 'Don\'t have an account yet? '),
-                          new TextSpan(text: 'Sign up now!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
+                          new TextSpan(text: 'Forgot your password? '),
+                          new TextSpan(text: 'Reset it here!', style: new TextStyle(color: amigoRed, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     )

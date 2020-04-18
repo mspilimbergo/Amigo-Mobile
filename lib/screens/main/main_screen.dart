@@ -19,7 +19,7 @@ class MainPageState extends State<MainPage> {
   int selectedIndex;
   final widgetOptions = [
     new ChatListPage(),
-    new DiscoverTagView(),
+    new DiscoverTagView(screen: 0),
     new ProfilePage(),
   ];
 
@@ -31,7 +31,7 @@ class MainPageState extends State<MainPage> {
     selectedIndex = initialIndex;
   }
 
-  final titles = ["Chats", "What are your interests?", "Profile"];
+  final titles = ["Chats", "Discover", "Profile"];
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +43,17 @@ class MainPageState extends State<MainPage> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             iconTheme: new IconThemeData(color: Colors.red),
-            title: Center(
-                child: Text(
-              "${titles[selectedIndex]}",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: Colors.red, fontSize: 30, fontWeight: FontWeight.w400),
-            )),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "${titles[selectedIndex]}",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                  color: amigoRed, fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           )
         : null,
         body: Center(

@@ -1,15 +1,15 @@
-class Tag {
+class Populartag {
   bool success;
-  List<Tags> tags;
+  List<Populartags> tags;
 
-  Tag({this.success, this.tags});
+  Populartag({this.success, this.tags});
 
-  Tag.fromJson(Map<String, dynamic> json) {
+  Populartag.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['tags'] != null) {
-      tags = new List<Tags>();
+      tags = new List<Populartags>();
       json['tags'].forEach((v) {
-        tags.add(new Tags.fromJson(v));
+        tags.add(new Populartags.fromJson(v));
       });
     }
   }
@@ -24,24 +24,24 @@ class Tag {
   }
 }
 
-class Tags {
+class Populartags {
   String tagId;
   String name;
-  String photo;
+  String memberCount;
 
-  Tags({this.tagId, this.name, this.photo});
+  Populartags({this.tagId, this.name, this.memberCount});
 
-  Tags.fromJson(Map<String, dynamic> json) {
+  Populartags.fromJson(Map<String, dynamic> json) {
     tagId = json['tag_id'];
     name = json['name'];
-    photo = json['photo'];
+    memberCount = json['member_count'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['tag_id'] = this.tagId;
     data['name'] = this.name;
-    data['photo'] = this.photo;
+    data['member_count'] = this.memberCount;
     return data;
   }
 }

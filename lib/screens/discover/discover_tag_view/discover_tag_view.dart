@@ -1,19 +1,21 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import '../widgets/TagButton.dart';
 import './Data/tag_object.dart';
+import './Data/populartag_object.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' show json, base64, ascii;
+import 'dart:convert' show json;
 import 'dart:math';
 
-//String img = "https://media-exp1.licdn.com/dms/image/C560BAQG4QXbbg39AfQ/company-logo_100_100/0?e=2159024400&v=beta&t=QYCFMlTBClczprYLrvWL1W4sbCrWw0TmGfuUTapBmDY";
 String randimg = "https://source.unsplash.com/random";
 final storage = FlutterSecureStorage();
-final SERVER_URL = "http://10.0.2.2:3000";
+final SERVER_URL = "https://amigo-269801.appspot.com";
 
 class DiscoverTagView extends StatefulWidget {
+  final int screen; // 0 - DiscoverTagView  1 - Channel Create
+
+  const DiscoverTagView({Key key, @required this.screen}) : super(key: key);
+
   @override
   _DiscoverTagViewState createState() => _DiscoverTagViewState();
 }
@@ -23,13 +25,51 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
   var popularTags;
   var allTags;
   int tagCount = 0;
+  int popularCount = 0;
   var rng = new Random();
   var thing = 'a';
+  Map user;
 
-  void getTags() async {
+  getUser() async {
+    print("Getting the user now");
     var key = await storage.read(key: "jwt");
     var res = await http.get(
-      "$SERVER_URL/api/tags?school_id=1&query=$searchQuery",
+      "$SERVER_URL/api/user",
+      headers: {"x-access-token": key},
+    );
+    print("done");
+    if (res.statusCode == 200) {
+      print(res.body);
+      var map = json.decode(res.body);
+      user = map;
+      return res.body;
+    }
+    print(res.body.toString());
+  }
+
+  getTags() async {
+    print("School id: ${user["school_id"]}");
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "$SERVER_URL/api/tags?school_id=${user["school_id"]}&query=$searchQuery",
+      headers: {"x-access-token": key},
+    );
+    if (res.statusCode == 200) {
+      Map response = json.decode(res.body);
+      setState(() {
+        if (searchQuery == null) searchQuery = "";
+
+        allTags = Tag.fromJson(response).tags;
+        tagCount = allTags.length;
+      });
+    } else
+      print(res.body.toString());
+  }
+
+  getPopularTags() async {
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "$SERVER_URL/api/tags/popular",
       headers: {"x-access-token": key},
     );
 
@@ -38,18 +78,11 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
       setState(() {
         if (searchQuery == null) searchQuery = "";
 
-        allTags = Tag.fromJson(response).tags;
-        tagCount = allTags.length;
-        print(allTags[0].name);
+        popularTags = Populartag.fromJson(response).tags;
+        popularCount = popularTags.length;
       });
     } else
       print(res.body.toString());
-  }
-
-  Widget searchMode() {
-    if (searchQuery.isEmpty) {
-      return null;
-    }
   }
 
   @override
@@ -60,114 +93,129 @@ class _DiscoverTagViewState extends State<DiscoverTagView> {
   @override
   void initState() {
     super.initState();
-    getTags();
+    getUser().then((dynamic) {
+      getTags();
+      getPopularTags();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                    height: 40,
-                    margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                    child: TextField(
-                      obscureText: false,
-                      enableInteractiveSelection: true,
-                      onChanged: (context) {
-                        setState(
-                          () {
-                            searchQuery = context;
-                            getTags();
-                          },
-                        );
+      margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                height: 40,
+                margin: EdgeInsets.only(top: 5),
+                child: TextField(
+                  obscureText: false,
+                  enableInteractiveSelection: true,
+                  onChanged: (context) {
+                    setState(
+                      () {
+                        searchQuery = context;
+                        getTags();
                       },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Try "Pickup Soccer"',
-                        prefixIcon: Icon(Icons.search),
-                      ),
+                    );
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Try "Coding"',
+                    prefixIcon:
+                        Icon(Icons.search, color: Colors.grey, size: 20.0),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                )),
+            Container(
+              margin: EdgeInsets.only(top: 15, bottom: 15),
+              child: RichText(
+                  text: TextSpan(
+                      style: Theme.of(context).textTheme.body1,
+                      children: [
+                    WidgetSpan(
+                        child: Icon(
+                      Icons.pin_drop,
+                      size: 19,
+                      color: Colors.grey[400],
                     )),
-                Container(
-                  margin: EdgeInsets.fromLTRB(20, 1, 0, 10),
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: RichText(
-                      text: TextSpan(
-                          style: Theme.of(context).textTheme.body1,
-                          children: [
-                        WidgetSpan(child: Icon(Icons.pin_drop, size: 20)),
-                        TextSpan(
-                            text: "University of Central Florida",
-                            style: TextStyle(fontWeight: FontWeight.w500)),
-                      ])),
-                ),
-                Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                      Expanded(
-                          child: CustomScrollView(slivers: <Widget>[
-                        SliverToBoxAdapter(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
-                                child: Text("Popular Now",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)))),
-                        SliverToBoxAdapter(
-                          child: Container(
-                              height: 150,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 10),
-                                      child: TagButton(
-                                          tagID: index.toString(),
-                                          name: "BasketballBasket",
-                                          photo:
-                                              "https://i.picsum.photos/id/${rng.nextInt(300)}/200/200.jpg"),
-                                    );
-                                  })),
-                        ),
-                        SliverToBoxAdapter(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(10, 5, 0, 5),
-                                child: Text("Categories",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)))),
-                        SliverGrid(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 0,
-                              childAspectRatio: .95,
-                            ),
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Container(
+                    TextSpan(
+                        text: "University of Central Florida",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.grey[500])),
+                  ])),
+            ),
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                  Expanded(
+                      child: CustomScrollView(slivers: <Widget>[
+                    SliverToBoxAdapter(
+                        child: Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                            child: Text("Popular Now",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18)))),
+                    SliverToBoxAdapter(
+                      child: Container(
+                          height: 150,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Container(
                                   margin: EdgeInsets.symmetric(horizontal: 5),
                                   child: TagButton(
+                                      screen: widget.screen,
                                       tagID: allTags[index].tagId,
                                       name: allTags[index].name,
-                                      photo:
-                                          "https://i.picsum.photos/id/${rng.nextInt(500)}/200/200.jpg"),
-                                );
-                              },
-                              childCount: tagCount,
-                            )),
-                      ]))
-                    ])),
-                Container(
-                    child: Column(
-                  children: <Widget>[],
-                ))
-              ]),
-        );
+                                      photo: allTags[index].photo));
+                            },
+                            itemCount: popularCount,
+                          )),
+                    ),
+                    SliverToBoxAdapter(
+                        child: Container(
+                            margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                            child: Text("Categories",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18)))),
+                    SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 0,
+                          childAspectRatio: .95,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return Container(
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                child: TagButton(
+                                  screen: widget.screen,
+                                  tagID: allTags[index].tagId,
+                                  name: allTags[index].name,
+                                  photo: allTags[index].photo,
+                                ));
+                          },
+                          childCount: tagCount,
+                        )),
+                  ]))
+                ])),
+          ]),
+    );
   }
 }

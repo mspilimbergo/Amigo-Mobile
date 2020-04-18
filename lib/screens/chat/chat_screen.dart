@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:amigo_mobile/screens/main/main_screen.dart';
 import 'package:amigo_mobile/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,12 @@ class ChatPage extends StatefulWidget {
   final String id;
   final String display;
   final String sender;
+  final String photo;
   final bool direct;
 
-  ChatPage({Key key, @required this.name, @required this.id, @required this.display, @required this.sender, @required this.direct}) : super(key: key);
+  ChatPage({Key key, @required this.name, @required this.id, @required this.display, @required this.sender, @required this.direct, @required this.photo}) : super(key: key);
   @override
-  _ChatPageState createState() => _ChatPageState(name: name, id: id, display: display, sender: sender, direct: direct);
+  _ChatPageState createState() => _ChatPageState(name: name, id: id, display: display, sender: sender, direct: direct, photo: photo);
 }
 
 class _ChatPageState extends State<ChatPage> {
@@ -26,6 +28,7 @@ class _ChatPageState extends State<ChatPage> {
   final String id;
   final String display;
   final String sender;
+  final String photo;
   final bool direct;
 
   List<Map> messages = new List<Map>();
@@ -37,7 +40,7 @@ class _ChatPageState extends State<ChatPage> {
   Map<String, SocketIO> sockets = {};
 
 
-  _ChatPageState({Key key, @required this.name, @required this.id, @required this.display, @required this.sender, @required this.direct});
+  _ChatPageState({Key key, @required this.name, @required this.id, @required this.display, @required this.sender, @required this.direct, @required this.photo});
 
   @override
   void initState() {
@@ -320,7 +323,7 @@ class _ChatPageState extends State<ChatPage> {
                 child: new Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage("https://picsum.photos/seed/picsum/200"),
+                    backgroundImage: this.photo != null ? NetworkImage(this.photo + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                     radius: 25.0,
                   ),
                 )
