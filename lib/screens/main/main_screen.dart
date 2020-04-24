@@ -5,6 +5,7 @@ import 'package:amigo_mobile/screens/discover/discover_tag_view/discover_tag_vie
 import 'package:amigo_mobile/util/colors.dart';
 import 'package:amigo_mobile/screens/profile/profile_screen.dart';
 
+
 class MainPage extends StatefulWidget {
   final int initialIndex;
 
@@ -50,7 +51,7 @@ class MainPageState extends State<MainPage> {
                   "${titles[selectedIndex]}",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                  color: amigoRed, fontSize: 30, fontWeight: FontWeight.bold),
+                  color: amigoRed, fontSize: 35, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

@@ -1,25 +1,26 @@
-import 'package:amigo_mobile/screens/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:amigo_mobile/util/colors.dart';
+import '../../chat/chat_screen.dart';
+import '../.../../../../classes/channel.dart';
+import 'dart:math';
 
 final storage = FlutterSecureStorage();
 final SERVER_URL = "https://amigo-269801.appspot.com";
 
 
 class ChannelPage extends StatefulWidget {
-  final String channelId;
+  final String currentChannelId;
   final String name;
   final String description;
   final int memberCount;
   final String photo;
   String createdOn;
 
-  ChannelPage({Key key, @required this.channelId, this.name, this.description, this.memberCount, this.photo, this.createdOn }) : super(key: key);
+  ChannelPage({Key key, @required this.currentChannelId, this.name, this.description, this.memberCount, this.photo, this.createdOn }) : super(key: key);
 
   @override
   _ChannelPageState createState() => _ChannelPageState();
@@ -30,6 +31,8 @@ class _ChannelPageState extends State<ChannelPage> {
   final SERVER_URL = "https://amigo-269801.appspot.com";
   String userId;
   String displayName;
+  var userIsInChannel;
+  List<Channel> userChannels;
   final months = [
     "January",
     "February",
@@ -84,6 +87,38 @@ class _ChannelPageState extends State<ChannelPage> {
     return res.body.toString();
   }
 
+  Future<bool> getUserChannels() async {
+    var key = await storage.read(key: "jwt");
+    var res = await http.get(
+      "$SERVER_URL/api/user/channels",
+      headers: { "x-access-token": key },
+    );
+
+    if (res.statusCode == 200) {
+      // Deserialize JSON into a map
+      Map response = jsonDecode(res.body);
+      
+      // Store JSON array of channels into a List
+      List jsonChannels = response["channels"] as List;
+        
+      userChannels = jsonChannels.map<Channel>((channel) => Channel.fromJson(channel)).toList();        
+
+      for (Channel c in userChannels) {
+        if (c.channelId == widget.currentChannelId) {
+          return true;
+          // setState(() {
+          //   userIsInChannel = true;
+          // });
+        }
+      }
+      return false;
+    }
+
+    else {
+      //handle error
+    }
+  }
+
   initUser() async {
     String jsonSnap = await getUser();
     var map = json.decode(jsonSnap);
@@ -100,6 +135,7 @@ class _ChannelPageState extends State<ChannelPage> {
   @override
   void initState() {
     initUser();
+    // userIsInChannel = false;
     super.initState();
     
   }
@@ -115,7 +151,7 @@ class _ChannelPageState extends State<ChannelPage> {
       ,),
       body: Container(
         width: double.infinity,
-        height: double.infinity,
+        // height: double.infinity,
         margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -147,7 +183,7 @@ class _ChannelPageState extends State<ChannelPage> {
                     padding: EdgeInsets.only(left: 20.0, right: 20.0),
                       child: CircleAvatar(
                       // backgroundImage: user["photo"] != null ? NetworkImage(user["photo"]+ "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/profile-placeholder.jpg'),
-                      backgroundImage: AssetImage('assets/profile-placeholder.jpg'),
+                      backgroundImage: widget.photo != null ? NetworkImage(widget.photo + "?v=${Random().nextInt(10000000).toString()}") : AssetImage('assets/placeholder.png'),
                       radius: MediaQuery.of(context).size.height / 20,
                       ),
                   ),
@@ -274,23 +310,51 @@ class _ChannelPageState extends State<ChannelPage> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(25, 0, 20, 10),
-                        child: RaisedButton(                         
-                          color: amigoRed,
-                          onPressed: () {
-                            addUserToChannel(widget.channelId);
-                            Navigator.pushAndRemoveUntil(
-                              context, 
-                              MaterialPageRoute(
-                                builder: (context) => ChatPage(name: widget.name, id: widget.channelId, display: displayName, sender: userId, direct: false)
-                                ), 
-                              ModalRoute.withName("ChannelView")
-                            );                     
-                          },
-                          child: Text('Join Channel', style: TextStyle(color: Colors.white),), ),
+                        child: FutureBuilder(
+                          future: getUserChannels(),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {                            
+                                if (snapshot.hasData) {
+                                  if (snapshot.data == true) {
+                                  return new RaisedButton(                         
+                                    color:Colors.grey[400],
+                                    onPressed: () => null,
+                                    child: Text('Joined', style: TextStyle(color: Colors.white))
+                                    );
+                                  }
+                                  else {
+                                  return new RaisedButton(                         
+                                    color: amigoRed,
+                                    onPressed: () {
+                                      addUserToChannel(widget.currentChannelId);
+                                      Navigator.pushAndRemoveUntil(
+                                        context, 
+                                        MaterialPageRoute(builder: (context) => ChatPage(name: widget.name, id: widget.currentChannelId, display: displayName, sender: userId, direct: false, photo: "")),
+                                        // MaterialPageRoute(builder: (context) => ChatListPage()),
+                                        // (Route<dynamic> route) => false                               
+                                        ModalRoute.withName("ChannelView")
+                                      );                     
+                                    },
+                                    child: Text('Join Channel', style: TextStyle(color: Colors.white)));  
+                                  }
+                                }
+                                else {
+                                  return Container(
+                                    color: Colors.transparent,
+                                    // height: (MediaQuery.of(context).size.height / 4) * 3,
+                                    // width: MediaQuery.of(context).size.width,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        backgroundColor: Colors.white,
+                                        valueColor: new AlwaysStoppedAnimation<Color>(amigoRed)
+                                      )
+                                    )
+                                  );
+                                }
+
+                          }                                                  
+                        ),
                       ),
                     ),
-
-
                 ],)
               ),
             ),            
@@ -299,4 +363,28 @@ class _ChannelPageState extends State<ChannelPage> {
       )
       );
   }
+
+  // Widget buildDisabledButton() {
+  //   assert(!isUserInChannel);
+  //   return new RaisedButton(                         
+  //     color:Colors.grey[400],
+  //     onPressed: () => null,
+  //     child: Text('Joined', style: TextStyle(color: Colors.white)));
+  // }
+  //   Widget buildEnabledButton() {
+  //   assert(isUserInChannel);
+  //   return new RaisedButton(                         
+  //     color: amigoRed,
+  //     onPressed: () {
+  //       addUserToChannel(widget.currentChannelId);
+  //       Navigator.pushAndRemoveUntil(
+  //         context, 
+  //         // MaterialPageRoute(builder: (context) => ChatPage(name: widget.name, id: widget.channelId, display: displayName, sender: userId, direct: false, photo: "")),
+  //         MaterialPageRoute(builder: (context) => ChatListPage()),
+  //         (Route<dynamic> route) => false                               
+  //         // ModalRoute.withName("ChannelView")
+  //       );                     
+  //     },
+  //     child: Text('Join Channel', style: TextStyle(color: Colors.white)));
+  // }
 }

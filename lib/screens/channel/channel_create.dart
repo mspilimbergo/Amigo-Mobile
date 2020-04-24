@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:amigo_mobile/util/colors.dart';
 import 'dart:convert' show json;
 
 final storage = FlutterSecureStorage();
@@ -62,20 +63,45 @@ class _ChannelCreateState extends State<ChannelCreate> {
     print(res.body.toString());
   }
 
-  void createChannel() async {
+  Future<Response> createChannel() async {
+    var dio = Dio();
     var key = await storage.read(key: "jwt");
-    var res = await http.post("$SERVER_URL/api/channels", headers: {
-      "x-access-token": key
-    }, body: {
-      "tag_id": tagid,
-      "name": title,
-      "description": description,
-      "school_id": "${user["school_id"]}",
-    });
-    if (res.statusCode == 200) {
-      print(res.body.toString());
-    } else
-      print(res.body.toString());
+    // var res = await http.post("$SERVER_URL/api/channels", headers: {
+    //   "x-access-token": key
+    // }, body: {
+    //   "tag_id": tagid,
+    //   "name": title,
+    //   "description": description,
+    //   "school_id": "${user["school_id"]}",
+    // });
+    FormData formData;
+    if (_image != null) {
+      formData = FormData.fromMap({
+        "tag_id": tagid,
+        "name": title,
+        "description": description,
+        "school_id": "${user["school_id"]}",
+        "file": await MultipartFile.fromFile(_image.path),
+      });
+    } else {
+      formData = FormData.fromMap({
+                "tag_id": tagid,
+        "name": title,
+        "description": description,
+        "school_id": "${user["school_id"]}",
+      });
+    }
+    Response response = await dio.post(
+      "$SERVER_URL/api/channels",
+      data: formData,
+      options: RequestOptions(
+        headers: {
+          "x-access-token": key,
+        },
+      ) 
+    );
+
+    return response;
   }
 
   void getTagName() async {
@@ -118,6 +144,7 @@ class _ChannelCreateState extends State<ChannelCreate> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          iconTheme: new IconThemeData(color: amigoRed),
           elevation: 0.0,
           // iconTheme: new IconThemeData(color: Colors.red),
           title: Text(
@@ -135,8 +162,6 @@ class _ChannelCreateState extends State<ChannelCreate> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                    height: 200,
-                    width: 300,
                     // color: Colors.grey,
                     child: Column(children: <Widget>[
                       CircleAvatar(
@@ -320,8 +345,9 @@ class _ChannelCreateState extends State<ChannelCreate> {
                               height: 40,
                               width: 110,
                               child: OutlineButton(
-                                  onPressed: () {
-                                    createChannel();
+                                  onPressed: () async {
+                                    await createChannel();
+                                    Navigator.pop(context);                                    
                                   },
                                   child: Text(
                                     "Create",

@@ -108,7 +108,7 @@ class _ChatListPageState extends State<ChatListPage>
                             margin: const EdgeInsets.only(left: 20.0, bottom: 10.0),
                             child: Text(
                               'Chats',
-                              style: TextStyle(fontSize: 30.0, color: amigoRed, fontWeight: FontWeight.bold)
+                              style: TextStyle(fontSize: 35.0, color: amigoRed, fontWeight: FontWeight.bold)
                             )
                           ),
                           Container(
@@ -133,7 +133,7 @@ class _ChatListPageState extends State<ChatListPage>
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: Theme(
                           child: Container(
-                            height: 40,
+                            height: 50,
                               child: TextField(
                               controller: _searchController,
                               decoration: InputDecoration(
@@ -141,7 +141,7 @@ class _ChatListPageState extends State<ChatListPage>
                                 fillColor: Colors.grey[200],
                                 hintText: 'Search for your chats',
                                 prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20.0),
-                                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.circular(10.0),
@@ -169,6 +169,7 @@ class _ChatListPageState extends State<ChatListPage>
                   controller: _tabController,
                   indicatorColor: amigoRed,
                   labelColor: Colors.black,
+                  labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   unselectedLabelColor: Colors.grey,
                   tabs: <Tab>[
                     new Tab(text: "Groups"),

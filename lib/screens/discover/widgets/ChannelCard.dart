@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert';
+import 'dart:math';
 
 class ChannelCard extends StatefulWidget {
     final String channelId;
@@ -19,32 +17,6 @@ class ChannelCard extends StatefulWidget {
 
 class _ChannelCardState extends State<ChannelCard> {
 
-  final storage = FlutterSecureStorage();
-  final SERVER_URL = "https://amigo-269801.appspot.com";
-
-  void addUserToChannel(String channelId) async {
-    print('in addUserToChannel');
-    var key = await storage.read(key: "jwt");
-
-    var res = await http.post(
-      "$SERVER_URL/api/channels/join",
-      headers: {"x-access-token": key},
-      body: {
-        "channel_id": channelId
-      }
-    );
-
-    var responseMessage = jsonDecode(res.body);
-    print(responseMessage);
-
-
-    if (res.statusCode == 200) {
-      print('User was added to channel');
-      return jsonDecode(res.body);
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,9 +31,7 @@ class _ChannelCardState extends State<ChannelCard> {
                   Container(
                       height: 50,
                       width: 50,
-                    child: Image.network(
-                      "https://cdn2.iconfinder.com/data/icons/activity-5/50/1F3C0-basketball-512.png",
-                    ),
+                    child: widget.photo != null ? Image.network(widget.photo + "?v=${Random().nextInt(10000000).toString()}") : Image.asset('assets/placeholder.png')
                   ),
                   Container(
                       margin: EdgeInsets.only(left: 10.0),
@@ -91,23 +61,6 @@ class _ChannelCardState extends State<ChannelCard> {
                             Text('Member Count: ' + widget.memberCount.toString(),
                                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.grey[500])),
                           ])),
-                    //      Padding(
-                    //       padding: const EdgeInsets.only(left: 25.0),
-                    //       child: Text("Joined "),
-                    // ), 
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 60.0),
-                  //   child: IconButton(
-                  //       onPressed: () => addUserToChannel(widget.channelId),
-                  //       icon: Icon(Icons.add)
-                  //       // child: Text("Join"),
-                  //       // borderSide: BorderSide(
-                  //       //   color: Colors.grey[400],
-                  //       //   style: BorderStyle.solid,
-                  //       //   width: 2,
-                  //       // )
-                  //       ),
-                  // )
                 ],
               ),
             )));
