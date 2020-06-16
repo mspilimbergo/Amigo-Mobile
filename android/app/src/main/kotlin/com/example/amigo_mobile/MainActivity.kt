@@ -1,4 +1,4 @@
-package com.example.amigo_mobile
+package com.amigodevs.amigo_mobile
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
